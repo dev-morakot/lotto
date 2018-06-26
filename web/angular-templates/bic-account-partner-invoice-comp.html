@@ -1,0 +1,104 @@
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Account Invoices: {{ctrl.selectedPartner.code}} {{ctrl.selectedPartner.name}}</h3>
+                <small class="help help-block"></small>
+
+                <input class="form form-control" 
+                       ng-show="ctrl.view_mode==='full_mode'"
+                       type="text" 
+                       ng-model="search"
+                       name="filter" 
+                       placeholder="ค้นหา คู่ค้า" 
+                       ng-change="ctrl.refreshPartners()"></input>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row" ng-if="ctrl.view_mode==='full_mode'">
+            <div class="col-sm-12">
+                <b>1. เลือกคู่ค้า:</b>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>รหัส</th>
+                            <th>ชื่อ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="p in ctrl.partners" ng-click="ctrl.onSelectPartner(p)">
+                            <td><label ng-show="p.selected" class="label label-info">เลือก</label></td>
+                            <td>{{p.code}}</td>
+                            <td>{{p.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination boundary-links="true" 
+                    total-items="ctrl.partnerTotalItems" 
+                    ng-change="ctrl.partnerPageChanged()"
+                    ng-model="ctrl.partnerCurrentPage" 
+                    items-per-page="ctrl.partnerItemsPerPage"
+                    max-size="5"
+                    num-pages="numPages"
+                    class="pagination-sm" 
+                    previous-text="&lsaquo;" 
+                    next-text="&rsaquo;" 
+                    first-text="&laquo;" 
+                    last-text="&raquo;">
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <b>2. เลือกเอกสาร:</b>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>เลขที่เอกสาร</th>
+                            <th>อ้างอิง</th>
+                            <th>วันที่</th>
+                            <th>เครดิต</th>
+                            <th>ครบกำหนด</th>
+                            <th class="text-right">มูลค่า</th>
+                            <th class="text-right">ค้างจ่าย</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in ctrl.invoices" ng-click="ctrl.onSelectInvoice(o)">
+                            <td><label ng-show="o.selected" class="label label-info">เลือก</label></td>
+                            <td>{{o.name}}</td>
+                            <td>{{o.origin}}</td>
+                            <td>{{o.date_invoice | date:'dd MMM yyyy'}}</td>
+                            <td>{{o.duration}}</td>
+                            <td>{{o.date_due | date:'dd MMM yyyy'}}</td>
+                            <td class="text-right">{{o.amount_total | number:2}}</td>
+                            <td class="text-right">{{o.residual | number:2}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination boundary-links="true" 
+                    total-items="ctrl.invoiceTotalItems" 
+                    ng-change="ctrl.invoicePageChanged()"
+                    ng-model="ctrl.invoiceCurrentPage" 
+                    items-per-page="ctrl.invoiceItemsPerPage"
+                    max-size="5"
+                    num-pages="numPages"
+                    class="pagination-sm" 
+                    previous-text="&lsaquo;" 
+                    next-text="&rsaquo;" 
+                    first-text="&laquo;" 
+                    last-text="&raquo;">
+                </ul>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ctrl.done()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="ctrl.cancel()">ปิด</button>
+    </div>
+</div>

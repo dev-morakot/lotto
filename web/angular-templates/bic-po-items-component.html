@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <h3>เลือกเอกสาร Purchase Order / {{mctrl.viewMode}}</h3>
+        <span class="label label-info" ng-if="mctrl.partner!=null">
+            Supplier:{{mctrl.partner.code}}  {{mctrl.partner.name}}
+                <span class="glyphicon glyphicon-remove" ng-click="mctrl.onRemovePartner()"></span>
+                </span>
+        <small class="help help-block">คลิกเพื่อเลือกรายการ</small>
+        <div class="pull-right">
+            <label class="label label-success">S</label> = สินค้านับสต๊อค
+        </div>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="text" 
+                       ng-model="mctrl.modalSearch"
+                       ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                       class="form-control input-sm">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหา</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="mctrl.is_residual" ng-change="mctrl.loadData()">ค้างรับ</label>
+                </div>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-sm-12">
+                <h5>1. เลือก Purchase Order:</h5>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>เลือก</th>
+                            <th>
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('name')">เลขที่เอกสาร</a>
+                                </th>
+                            <th>
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('date_order')">วันที่</a>
+                                </th>
+                            <th>
+                                กำหนดส่ง
+                            </th>
+                            <th>
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('partner')">ลูกค้า</a>
+                            </th>
+                            <th>
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('amount_total')">มูลค่า</a>
+                            </th>
+                            <th>
+                                สถานะ
+                            </th>
+                            <th>% รับแล้ว</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in mctrl.purchaseOrders" ng-click="mctrl.onSelectPO(o)">
+                            <td><span ng-show="o.selected" class="label label-info">เลือก</span></td>
+                            <td>{{o.name}}</td>
+                            <td>{{o.date_order | date}}</td>
+                            <td>{{o.minimum_planned_date | date}}</td>
+                            <td>{{o.partner_name}}</td>
+                            <td>{{o.amount_total | number:2}}</td>
+                            <td>{{o.state}}</td>
+                            <td>
+                                <div class="progress">
+                                  <div class="progress-bar progress-bar-success" role="progressbar" 
+                                       aria-valuenow="{{mctrl.percent(o.stock_item_receipt_qty,o.stock_item_order_qty)}}" 
+                                       aria-valuemin="0" 
+                                       aria-valuemax="100" 
+                                       style="width:{{mctrl.percent(o.stock_item_receipt_qty,o.stock_item_order_qty)}}%">
+                                      {{mctrl.percent(o.stock_item_receipt_qty,o.stock_item_order_qty)}}
+                                </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>2. เลือกสินค้า:</h5>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>เลือก</th>
+                            <th>รหัสสินค้า</th>
+                            <th>ชื่อรายการ</th>
+                            <th>จำนวนสั่ง</th>
+                            <th>ยอดรับ(คลัง)</th>
+                            <th>ค้างรับ(คลัง)</th>
+                            <th>หน่วย</th>
+                            <th>มูลค่า</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="line in mctrl.purchaseOrderLines" ng-click="mctrl.onSelectLine(line)">
+                            <td>
+                                <span ng-show="line.selected" class="label label-info">เลือก</span>
+                            </td>
+                            <td>{{line.product_default_code}} <label ng-show="line.product_type=='stock'" class="label label-success">S</label></td>
+                            <td>{{line.name}}</td>
+                            <td>{{line.product_qty | number:3}}</td>
+                            <td>{{line.receive_stock_qty | number:3}}</td>
+                            <td>{{(line.product_qty - line.receive_stock_qty) | number:3}}</td>
+                            <td>{{line.uom_name}}</td>
+                            <td>{{(line.product_qty*line.price_unit) - line.discount_amount | number:2}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+    </div>
+</div>

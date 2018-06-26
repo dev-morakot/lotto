@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <h3>Account Invoices:</h3>
+        <small class="help help-block"></small>
+        <input class="form form-control" type="text" ng-model="search" name="filter" 
+               placeholder="ค้นหา เลขที่เอกสาร หรือ รหัสคู่ค้า"></input>
+        </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>เลขที่เอกสาร</th>
+                            <th>วันที่</th>
+                            <th>คู่ค้า</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in ctrl.items" ng-click="ctrl.onSelectItem(o)">
+                            <td><span ng-show="o.selected" class="label label-info">เลือก</span></td>
+                            <td>{{o.name}}</td>
+                            <td>{{o.date_invoice}}</td>
+                            <td>[{{o.partner.code}}] {{o.partner.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination boundary-links="true" 
+                    total-items="ctrl.totalItems" 
+                    ng-change="ctrl.pageChanged()"
+                    ng-model="ctrl.currentPage" 
+                    items-per-page="ctrl.itemsPerPage"
+                    max-size="5"
+                    num-pages="numPages"
+                    class="pagination-sm" 
+                    previous-text="&lsaquo;" 
+                    next-text="&rsaquo;" 
+                    first-text="&laquo;" 
+                    last-text="&raquo;">
+                </ul>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ctrl.ok()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="ctrl.cancel()">ปิด</button>
+    </div>
+</div>

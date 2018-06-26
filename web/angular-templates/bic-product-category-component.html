@@ -1,0 +1,29 @@
+
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">เลือกกลุ่มสินค้า</h3>
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+            <div class="col-sm-12 table-responsive">
+                <table class="table table-condensed">
+
+                    <tbody>
+                        <tr ng-repeat="p in mctrl.items" ng-click="mctrl.select(p)">
+                            <td>
+                                <span ng-show="p.selected" class="label label-info">selected</span>
+                                <button 
+                                    ng-show="p.selected==null"
+                                    class="btn btn-default btn-sm">เลือก</button></td>
+                            <td>{{p.code}}</td>
+                            <td>{{p.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="mctrl.done()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+    </div>
+</div>

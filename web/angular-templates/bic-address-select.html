@@ -1,0 +1,20 @@
+ <div class="input-group" style="width:100%">
+ <ui-select
+        ng-model="$ctrl.bicModel" 
+        ng-attr-name="$ctrl.name"
+        reset-search-input="true"
+        ng-required="$ctrl.required"
+        ng-class="{'bic-required-field':$ctrl.required==='true'}"
+        uis-open-close='$ctrl.onAddressOpenClose(isOpen)'
+        on-select="$ctrl.select($select.selected)"
+        title="เลือกที่อยู่">
+        <ui-select-match 
+            allow-clear="true"
+            placeholder="กรุณาเลือกที่อยู่จัดส่ง...">{{$select.selected.address1 + ' ' + $select.selected.address2}}</ui-select-match>
+        <ui-select-choices 
+            repeat="c in $ctrl.addresses | propsFilter: {address1: $select.search}">
+            <div ng-bind-html="c.address1+' '+c.address2 | highlight: $select.search"></div>
+            <small>{{c.district.name}} {{c.province.name}}</small>
+        </ui-select-choices>
+</ui-select>
+ </div>

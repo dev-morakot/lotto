@@ -1,0 +1,52 @@
+<div class="input-group form-group-sm" style="width:100%">    
+    <ui-select ng-model="$ctrl.bicModel"
+               ng-attr-name="$ctrl.name"
+               ng-required="$ctrl.required"
+               ng-class="{'bic-required-field':$ctrl.required==true}"
+               style="min-width: 150px"
+               theme="bootstrap"
+               reset-search-input="true"
+               title="Choose Lot"
+               ng-disabled='$ctrl.disabled()'
+               on-select="$ctrl.select($select.selected)"
+               uis-open-close='$ctrl.onLotOpenClose(isOpen,$ctrl.dependProductId)'>
+        <ui-select-match 
+            placeholder='ล็อตสินค้า'
+            allow-clear='true'
+            >{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="lot in $ctrl.lots track by $index"
+            refresh="$ctrl.refreshLots($ctrl.dependProductId,$select.search)"
+            refresh-delay="0"
+            refresh-on-active="true">
+            <small ng-bind-html="lot.name"></small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        <button type="button"
+                ng-show="$ctrl.showTable===true"
+                ng-click="$ctrl.openModal()"
+                class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon glyphicon-th-list"></span>
+        </button>
+        <button type="button" 
+                ng-show="$ctrl.showView==='true' && $ctrl.bicModel.id!=null"
+                ng-click="$ctrl.viewLot($ctrl.bicModel.id)"
+                class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-eye-open"></span>
+        </button>
+        <button type="button" 
+                ng-show="$ctrl.bicModel.id!=null && $ctrl.editable"
+                ng-click="$ctrl.editLot($ctrl.bicModel.id)"
+                class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon glyphicon-pencil"></span>
+        </button>
+        <button type="button" 
+                ng-show="$ctrl.showAdd==='true'"
+                ng-disabled="$ctrl.dependProductId==null"
+                class="btn btn-default btn-sm"
+                ng-click="$ctrl.createLot($ctrl.dependProductId)">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </span>
+</div>

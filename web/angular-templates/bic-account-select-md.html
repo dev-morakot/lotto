@@ -1,0 +1,19 @@
+<ui-select 
+    id="{{$ctrl.bicId}}"
+    ng-attr-name="{{$ctrl.name}}"
+    ng-model="$ctrl.bicModel"
+    ng-class="{'bic-required-field':$ctrl.required==='true'}"
+    reset-search-input="true"
+    title="Choose an account"
+    ng-required="{{$ctrl.required}}">
+    <ui-select-match 
+        allow-clear="true"
+        placeholder="Enter a account...">[{{$select.selected.code}}] {{$select.selected.name}}</ui-select-match>
+    <ui-select-choices 
+        repeat="acc in $ctrl.accounts track by $index"
+        refresh="$ctrl.refreshAccounts($select.search)"
+        refresh-delay="0"
+        refresh-on-active="true">
+        <small>[{{acc.code}}] {{acc.name}}</small>
+    </ui-select-choices>
+</ui-select>

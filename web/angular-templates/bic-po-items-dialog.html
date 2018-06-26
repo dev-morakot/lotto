@@ -1,0 +1,116 @@
+<!-- ใช้ใน account invoice -->
+<button type="button" 
+        ng-click="ctrl.openModal()"
+        class="btn btn-primary btn-sm">
+    {{ctrl.title}}
+</button>
+<script type="text/ng-template" id="poItemsModalContent.html">
+    <div class="modal-header">
+        <div class="modal-title" id="modal-title">
+            <h3>เลือกเอกสาร Purchase Order / {{mctrl.viewMode}}</h3>
+            <small class="help help-block">คลิกเพื่อเลือกรายการ</small>
+            </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-sm-6 input-group pull-right">
+                    <input type="text" 
+                           ng-model="mctrl.modalSearch"
+                           ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                           class="form-control input-sm"></input>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหา</button>
+                    </span>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>1. เลือก Purchase Order:</h5>
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('name')">เลขที่เอกสาร</a>
+                                    </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('date_order')">วันที่</a>
+                                    </th>
+                                <th>
+                                    กำหนดส่ง
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('partner')">ลูกค้า</a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('amount_total')">มูลค่า</a>
+                                </th>
+                                <th>
+                                    สถานะ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="o in mctrl.purchaseOrders" ng-click="mctrl.onSelectPO(o)">
+                                <td><span ng-show="o.selected" class="label label-info">เลือก</span></td>
+                                <td>{{o.name}}</td>
+                                <td>{{o.date_order | date}}</td>
+                                <td>{{o.minimum_planned_date | date}}</td>
+                                <td>{{o.supplier.name}}</td>
+                                <td>{{o.amount_total | number:2}}</td>
+                                <td>{{o.state}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>2. เลือกสินค้า:</h5>
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>รหัสสินค้า</th>
+                                <th>ชื่อรายการ</th>
+                                <th>จำนวนสั่ง</th>
+                                <th>รับแล้ว</th>
+                                <th>ค้างรับ</th>
+                                <th>ยอดรับ(คลัง)</th>
+                                <th>ค้างรับ(คลัง)</th>
+                                <th>หน่วย</th>
+                                <th>ราคาต่อหน่วย</th>
+                                <th>ส่วนลด</th>
+                                <th>มูลค่า</th>
+                                <th>ใบรับคลัง</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="line in mctrl.purchaseOrderLines" ng-click="mctrl.onSelectLine(line)">
+                                <td>
+                                    <span ng-show="line.selected" class="label label-info">เลือก</span>
+                                </td>
+                                <td>{{line.product.default_code}}</td>
+                                <td>{{line.name}}</td>
+                                <td>{{line.product_qty | number:3}}</td>
+                                <td>{{line.receive_qty | number:3}}</td>
+                                <td>{{line.residual_qty | number:3}}</td>
+                                <td>
+                                    <span ng-show="line.gi_name == null">{{line.receive_stock_qty | number:3}}</span>
+                                    <span ng-show="line.gi_name != null">{{line.gi_product_uom_qty | number:3}}</span>
+                                    </td>
+                                <td>{{line.residual_stock_qty | number:3}}</td>
+                                <td>{{line.uom.name}}</td>
+                                <td>{{line.price_unit}}</td>
+                                <td>{{line.discount_amount}}</td>
+                                <td>{{(line.product_qty*line.price_unit) - line.discount_amount | number:2}}</td>
+                                <td>{{line.gi_name}}{{line.prec_name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+            <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+        </div>
+    </div>
+</script>

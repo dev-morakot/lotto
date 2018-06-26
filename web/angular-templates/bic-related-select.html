@@ -1,0 +1,58 @@
+
+
+<div class="input-group form-group-sm">
+    <ui-select ng-model="ctrl.bicRelatedTable" 
+               ng-attr-required="ctrl.required" 
+               theme="bootstrap" 
+               ng-class="{'bic-required-field':ctrl.required === 'true'}"
+               reset-search-input="true" 
+               title="Choose an address" 
+               on-select="ctrl.onTableSelect($select.selected)"
+               uis-open-close='$ctrl.onTableOpenClose(isOpen,$ctrl.dependProductId)'>
+        <ui-select-match placeholder="เอกสาร...">
+            {{$select.selected}}</ui-select-match>
+        <ui-select-choices repeat="table as table in ctrl.related_tables track by $index" 
+                           refresh="ctrl.refreshTables($select.search)" 
+                           refresh-delay="0">
+            <div ng-bind-html="table | highlight: $select.search"></div>
+            
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        
+    </span>
+    <ui-select ng-model="ctrl.bicRelatedId" 
+               ng-attr-required="ctrl.required" 
+               theme="bootstrap" 
+               ng-class="{'bic-required-field':ctrl.required === 'true'}"
+               reset-search-input="true" 
+               title="Choose an address" 
+               on-select="ctrl.onModelSelect($select.selected)"
+               uis-open-close='ctrl.onModelOpenClose(isOpen)'>
+        <ui-select-match placeholder="เลขที่...">
+            {{$select.selected.name}}</ui-select-match>
+        <ui-select-choices repeat="model.id as model in ctrl.related_models track by $index" 
+                           refresh="ctrl.refreshModels($select.search)" 
+                           refresh-delay="0">
+            <div ng-bind-html="model.name | highlight: $select.search"></div>
+            <small>
+                id {{model.id}}
+            </small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        <button type="button" 
+                ng-click="ctrl.delete()" 
+                class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+    </span>
+</div>
+<tt>{{ctrl.bicRelatedTable}}:</tt>
+<tt>{{ctrl.bicRelatedId}}</tt>
+
+
+<!--<div class="input-group form-group-sm">
+    
+</div>-->
+

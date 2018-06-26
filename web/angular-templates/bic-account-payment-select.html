@@ -1,0 +1,33 @@
+<div class="input-group form-group-sm">
+    <ui-select ng-model="ctrl.bicModel"
+               ng-required="ctrl.required"
+               theme="bootstrap"
+               ng-class="{'bic-required-field':ctrl.required==='true'}"
+               reset-search-input="true"
+               title="เลือกเอกสาร"
+               on-select="ctrl.select($select.selected)"
+               uis-open-close="ctrl.onOpenClose(isOpen)"
+               >
+        <ui-select-match 
+            allow-clear="true"
+            placeholder="ค้นหา เอกสาร...">
+            {{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="item in ctrl.accountPayments track by $index"
+            refresh="ctrl.refreshAccountPayments($select.search)"
+            refresh-delay="0"
+            refresh-on-active="true">
+            <div ng-bind-html="item.name | highlight: $select.search"></div>
+            <small>
+                คู่ค้า: {{item.partner.name}}
+            </small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        <button type="button" 
+                ng-click="ctrl.openAccountInvoiceInfo()"
+                class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+        </button>
+    </span>
+</div>

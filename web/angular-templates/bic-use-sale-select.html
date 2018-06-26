@@ -1,0 +1,23 @@
+<div class="input-group form-group-sm" style="width: 100%">
+    <ui-select ng-model="$ctrl.bicModel"
+        ng-attr-name="$ctrl.name"
+        ng-required="$ctrl.required"
+        ng-class="{'bic-required-field': $ctrl.required ==true}"
+        style="min-width: 150px"
+        theme="bootstrap"
+        reset-search-input="true"
+        title="ผู้ขาย"
+        on-select="$ctrl.select($select.selected)"
+        uis-open-close="$ctrl.onUseSaleClose(isOpen, $ctrl.dependUseSaleId)">
+    <ui-select-match 
+        placeholder="ระบุชื่อผู้ขาย"
+        allow-clear="true">{{$select.selected.firstname}} - {{$select.selected.email}}</ui-select-match>
+    <ui-select-choices
+        repeat="use in $ctrl.useSale track by $index"
+        refresh="$ctrl.refreshUseSale($ctrl.dependUseSaleId, $select.search)"
+        refresh-delay="0"
+        refresh-on-active="true">
+        <small>{{use.firstname}} - {{use.email}}</small>
+    </ui-select-choices>
+    </ui-select>
+</div>

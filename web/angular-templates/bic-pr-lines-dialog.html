@@ -1,0 +1,84 @@
+<button type="button" 
+        ng-click="ctrl.openModal()"
+        class="btn btn-primary btn-sm">
+    {{ctrl.title}}
+</button>
+<script type="text/ng-template" id="prLinesModalContent.html">
+    <div class="modal-header">
+        <div class="modal-title" id="modal-title">
+            <h3>เลือกรายการขอซื้อ</h3>
+            <small class="help help-block">คลิกเพื่อเลือกรายการ</small>
+            </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-sm-6 input-group pull-right">
+                    <input type="text" 
+                           placeholder="ค้นหา เลข PR หรือ ชื่อรายการ"
+                           ng-model="mctrl.modalSearch"
+                           ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                           class="form-control input-sm"></input>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหา</button>
+                    </span>
+                </div>
+                <div class="col-sm-3">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="mctrl.purchase_state" 
+                                ng-true-value="'none'"
+                                ng-false-value="null"
+                                ng-click="mctrl.loadData()">รอเปิด PO
+                        </label>
+                    </div>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('name')">เลขที่เอกสาร</a>
+                                    </th>
+                                <th>รหัสสินค้า</th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('date_order')">ชื่อรายการ</a>
+                                    </th>
+                                
+                                <th>วันที่ต้องการ</th>
+                                <th>ผู้จำหน่าย</th>
+                                <th>จำนวนขอซื้อ</th>
+                                <th>หน่วย</th>
+                                <th>ยอด PO</th>
+                                <th>
+                                    สถานะ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="line in mctrl.lines" ng-click="mctrl.onSelectLine(line)">
+                                <td><span ng-show="line.selected" class="label label-info">เลือก</span></td>
+                                <td>{{line.request.name}}</td>
+                                <td>{{line.product.default_code}}</td>
+                                <td>{{line.name}}</td>
+                                <td>{{line.date_required | date}}</td>
+                                <td>{{line.supplier_name}}</td>
+                                <td class="text-right">{{line.product_qty}}</td>
+                                <td class="text-right">{{line.productUom.name}}</td>
+                                <td class="text-right">{{line.purchaseQty}}</td>
+                                <td>{{line.request_state}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+            <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+        </div>
+    </div>
+</script>

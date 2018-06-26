@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <h3>ตรวจสอบรายการ Stock Card</h3>
+        <small class="help help-block"></small>
+        </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>รหัสบัญชี</th>
+                            <th>สินค้า</th>
+                            <th>ยอดโอน</th>
+                            <th>หน่วย</th>
+                            <th>น้ำหนักชั่ง</th>
+                            <th>ต้นทาง</th>
+                            <th>ปลายทาง</th>
+                            <th>Lot/Ctrl/Serial</th>
+                            <th>สถานะ</th>
+                            <th>หมายเหตุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in ctrl.items" ng-click="ctrl.onSelectPO(o)">
+                            <td>{{o.product.default_code}}</th>
+                            <td>{{o.name}}</td>
+                            <td>{{o.product_uom_qty}}</td>
+                            <td>{{o.productUom.name}}</td>
+                            <td>{{o.qty2}}</td>
+                            <td><span class="label label-primary">{{o.locationSrc.name}}</span></td>
+                            <td><span class="label label-success">{{o.locationDest.name}}</span></td>
+                            <td>{{o.lot.name}}</td>
+                            <td><span ng-class="ctrl.stateLabel(o.state)">{{o.state}}</span></td>
+                            <td><input type='text' class='form-control' ng-model="o.notes"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ctrl.ok()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="ctrl.cancel()">ปิด</button>
+    </div>
+</div>

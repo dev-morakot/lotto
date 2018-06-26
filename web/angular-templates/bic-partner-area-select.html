@@ -1,0 +1,26 @@
+<div class="input-group form-group-sm" style="width:100%">
+    <ui-select ng-model="$ctrl.bicModel"
+               ng-attr-name="$ctrl.name"
+               ng-required="$ctrl.required"
+               ng-class="{'bic-required-field':$ctrl.required==='true'}"
+               style="min-width: 150px"
+               theme="bootstrap"
+               reset-search-input="true"
+               title="Choose Partner"
+               on-select="$ctrl.select($select.selected)"
+               uis-open-close='$ctrl.onPartnerAreaClose(isOpen,$ctrl.dependPartnerId)'>
+        <ui-select-match 
+            placeholder="ลูกค้า"
+             allow-clear="true"
+            >[{{ $select.selected.code }}] - {{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="partners in $ctrl.partnerArea track by $index"
+            refresh="$ctrl.refreshPartnerArea($ctrl.dependPartnerId,$select.search)"
+            refresh-delay="0"
+            refresh-on-active="true">
+            [<small ng-bind-html="partners.code"></small>]  - <small ng-bind-html="partners.name | highlight: $select.search"></small>
+        </ui-select-choices>
+    </ui-select>
+   
+    
+</div>

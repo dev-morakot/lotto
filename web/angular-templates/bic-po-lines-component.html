@@ -1,0 +1,92 @@
+<!-- เลือก แบบ รายการ PO Lines โดยตรง -->
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <h3>เลือกรายการ Purchase Order</h3>
+        <small class="help help-block">คลิกเพื่อเลือกรายการ</small>
+        </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="input-group">
+                <input type="text" 
+                       ng-model="mctrl.modalSearch"
+                       ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                       class="form-control input-sm"></input>
+                <span class="input-group-btn">
+                    <button class="btn btn-default btn-sm"
+                            ng-click="mctrl.loadData()"
+                            >ค้นหา</button>
+                </span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="mctrl.view_residual" ng-click="mctrl.pageChanged()">ค้างรับ
+                    </label>
+                </div>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>เลือก</th>
+                            <th>PO</th>
+                            
+                            <th>ชื่อรายการ</th>
+                            <th class="text-right">จำนวนสั่ง</th>
+                            
+                            <th class="text-right">รับแล้ว(คลัง)</th>
+                            <th class="text-right">ค้างรับ(คลัง)</th>
+                            <th class="text-right">หน่วย</th>
+                            <th class="text-right">ราคาต่อหน่วย</th>
+                            <th class="text-right">ส่วนลด</th>
+                            <th class="text-right">มูลค่า</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="line in mctrl.purchaseOrderLines" ng-click="mctrl.onSelectLine(line)">
+                            <td>
+                                <span ng-show="line.selected" class="label label-info">เลือก</span>
+                            </td>
+                            <td>{{line.order_name}}</td>
+                            
+                            <td>{{line.prod_default_code}}<br>{{line.name}}</td>
+                            <td class="text-right">{{line.product_qty | number:3}}</td>
+                            
+                            <td class="text-right">{{line.receive_stock_qty | number:3}}</td>
+                            <td class="text-right">{{line.residual_stock_qty | number:3}}</td>
+                            <td class="text-right">{{line.uom_name}}</td>
+                            <td class="text-right">{{line.price_unit}}</td>
+                            <td class="text-right">{{line.discount_amount}}</td>
+                            <td class="text-right">{{(line.product_qty*line.price_unit) - line.discount_amount | number:2}}</td>
+                            
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>           
+    </div>
+    <ul uib-pagination boundary-links="true" 
+        total-items="mctrl.totalItems" 
+        ng-change="mctrl.pageChanged()"
+        ng-model="mctrl.currentPage" 
+        items-per-page="mctrl.itemsPerPage"
+        max-size="5"
+        num-pages="numPages"
+        class="pagination-sm" 
+        previous-text="&lsaquo;" 
+        next-text="&rsaquo;" 
+        first-text="&laquo;" 
+        last-text="&raquo;">
+    </ul>
+    <pre>หน้า {{mctrl.currentPage}} / {{numPages}}</pre>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+    </div>
+</div>

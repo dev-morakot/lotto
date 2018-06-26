@@ -1,0 +1,33 @@
+<style>
+    .ui-select-me .ui-select-toggle {
+        min-width: 120px;
+        padding:4px;
+        font-size:10px;
+        line-height:11px;
+    }
+    .ui-select-me2 .ui-select-toggle {
+        
+        min-width: 120px;
+        line-height:11px;
+    }
+</style>
+<ui-select
+    ng-model="ctrl.bicModel" 
+    class="ui-select-me form-group-sm"
+    title="Choose an Account">
+    <ui-select-match 
+        allow-clear="true"
+        placeholder="Select Journal...">
+        {{$select.selected.code}}:<br>
+        {{$select.selected.name}}
+    </ui-select-match>
+    <ui-select-choices 
+        repeat="model in ctrl.accounts"
+        refresh="ctrl.refreshAccounts($select.search)"
+        refresh-delay="0"
+        refresh-on-active="true">
+        <small>
+            <span ng-bind-html="'['+model.code+'] '+model.name | highlight: $select.search"></span>
+        </small>
+    </ui-select-choices>
+</ui-select>

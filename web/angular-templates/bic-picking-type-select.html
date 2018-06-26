@@ -1,0 +1,19 @@
+ <div class="input-group" style="width:100%">
+ <ui-select
+        ng-model="$ctrl.bicModel" 
+        reset-search-input="true"
+        ng-required="$ctrl.required"
+        ng-class="{'bic-required-field':$ctrl.required==='true'}"
+        uis-open-close='$ctrl.onPickingTypeOpenClose(isOpen)'
+        on-select="$ctrl.select($select.selected)"
+        title="Choose a Picking Type">
+        <ui-select-match 
+            allow-clear="true"
+            placeholder="Select Picking...">{{$select.selected.name + ' ' + $select.selected.warehouse_name}}</ui-select-match>
+        <ui-select-choices 
+            group-by="$ctrl.whGroupFn"
+            repeat="c as c in $ctrl.pickingTypes | propsFilter: {name: $select.search}">
+            <div ng-bind-html="c.name | highlight: $select.search"></div>
+        </ui-select-choices>
+</ui-select>
+ </div>

@@ -1,0 +1,51 @@
+<style>
+    .ui-select-me .ui-select-toggle {
+        min-width: 120px;
+        padding:4px;
+        font-size:10px;
+        line-height:11px;
+    }
+    .ui-select-me2 .ui-select-toggle {
+        
+        min-width: 120px;
+        line-height:11px;
+    }
+</style>
+<div class="input-group form-group-sm">
+    <ui-select ng-model="ctrl.bicModel"
+               ng-required="ctrl.required"
+               class="ui-select-me"
+               theme="bootstrap"
+               ng-class="{'bic-required-field':ctrl.required===true}"
+               reset-search-input="true"
+               title="เลือกสินค้า"
+               on-select="ctrl.select($select.selected)"
+               on-remove="ctrl.delete($item,$model)"
+               uis-open-close='ctrl.onOpenClose(isOpen)'
+               >
+        <ui-select-match 
+            allow-clear="true"
+            placeholder="ค้นหาหรือเลือกสินค้า...">
+            {{$select.selected.default_code}}<br> {{$select.selected.name}}
+        </ui-select-match>
+        <ui-select-choices 
+            style="min-width:300px;"
+            repeat="product in ctrl.products track by $index"
+            refresh="ctrl.refreshProducts($select.search)"
+            refresh-delay="0"
+            refresh-on-active="true">
+            <div ng-bind-html="product.name | highlight: $select.search"></div>
+            <div ng-bind-html="product.name_en | highlight: $select.search"></div>
+            <small ng-bind-html="product.default_code | highlight: $select.search">
+            </small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        
+        <button type="button" 
+                ng-click="ctrl.openProductInfo()"
+                class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+        </button>
+    </span>
+</div>

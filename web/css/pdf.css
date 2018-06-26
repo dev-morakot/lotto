@@ -1,0 +1,109 @@
+body {
+    font-family:"Garuda";
+    font-size:12px;
+    margin:     0;
+    padding:    0;
+    width:      21cm;
+    height:     29.7cm;
+}
+
+table.container {
+    width:100%;
+    border-collapse: collapse;
+    /*border: solid red;*/
+    margin-bottom: 10px;
+    display:table;
+}
+
+table.container tr th {
+    /*border:solid blue;*/
+    text-align:left;
+}
+
+table.container tr td {
+    /*border:solid blue;*/
+    padding-top: 10px;
+    display:table;
+}
+
+tr.bottom-line td {
+    border-bottom:1px solid black;
+}
+
+tr.bottom-line-dot td {
+    border-bottom:1px dotted black;
+}
+
+tr.top-line td {
+    border-top:1px solid black;
+}
+
+table.line-list {
+    border:1px solid black;
+    padding:4px;
+}
+
+table.line-list tr th {
+    border:0.5px solid black;
+    padding:4px;
+}
+
+table.line-list tr td {
+    border-left:0.5px solid black;
+    border-right: 0.5px solid black;
+    padding:4px;
+}
+
+table.inner-container {
+    border-collapse: collapse;
+    /*border:1px solid black;*/
+    display: table;
+}
+
+table.inner-container tr td {
+    border-collapse: collapse;
+    border:0px;
+    width:100%;
+}
+
+.contact {
+    font-size:10px;
+}
+
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+.debug {
+    border-style: solid;
+    border: 1px solid red;
+    /* width:100%; */
+    /* height: 10px; */
+}

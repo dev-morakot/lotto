@@ -1,0 +1,34 @@
+<div class="input-group" style="width:100%">
+    <ui-select
+        ng-model="ctrl.bicModel"
+        ng-attr-name="ctrl.name"
+        ng-required="ctrl.required"
+        ng-class="{'bic-required-field':ctrl.required==true}"
+        reset-search-input="true"
+        theme="bootstrap"
+        on-select="ctrl.select($select.selected)"
+        title="เขตการขาย">
+        <ui-select-match 
+            placeholder="เลือกเขตการขาย"
+            allow-clear="false"
+            >[{{$select.selected.code}}] {{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="area in ctrl.areas track by $index"
+            refresh="ctrl.refreshSaleAreas($select.search)"
+            refresh-on-active="true"
+            refresh-delay="0">
+            <div ng-bind-html="area.name | highlight: $select.search"></div>
+            <small>
+                รหัสเขต: {{area.code}}
+            </small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        <button type="button" 
+                class="btn btn-default btn-sm"
+                ng-click="ctrl.delete()"
+                >
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+    </span>
+</div>

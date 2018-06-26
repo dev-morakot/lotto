@@ -1,0 +1,89 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title"><label ng-if='fctrl.lot.id==-1'>สร้าง</label> Lot/Control/Batch No.</h3>
+    <h4 class="modal-title" id="modal-title">สินค้า:{{fctrl.product.default_code}} {{fctrl.product.name}}</h4>
+    <div class="modal-body" id="modal-body">
+
+        <form class="form-vertical">
+            <div class="alert alert-warning" ng-show="fctrl.msgs">
+                {{fctrl.msgs}}
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label class="control-label">Lot/Ctrl/Batch No. เลขที่:<small class="help help-block">รหัสควบคุมภายใน</small></label>
+                <input type="text" 
+                       required
+                       class="form-control"
+                       ng-model="fctrl.lot.name">
+            </div>
+            <div class="form-group" style="margin-bottom:20px" ng-show="fctrl.formReceivedDate">
+                <label class="control-label">วันที่/เวลารับ<small class="help help-block">วันที่รับสินค้า Lot/Control นี้ ตามวันที่รับจากการซื้อ หรือวันที่รับจากการผลิต</small></label>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <input type="text"
+                                   class="input-sm form-control"
+                                   uib-datepicker-popup="dd/MM/yyyy"
+                                   ng-model="fctrl.lot.received_date"
+                                   datepicker-options="datepickerOptions"
+                                   is-open="fctrl.datepicker3.opened"
+                                   close-text="Close"
+                                   ng-click="fctrl.datepicker3.opened = true"
+                                   />
+                        </div>
+                        <div class="col-sm-3">
+                            <div uib-timepicker ng-model="fctrl.lot.received_date" ng-change="changed()" hour-step="1" minute-step="1" 
+                                 show-meridian="false" show-spinners="false"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label class="control-label">Supplier Batch No.<small class="help help-block">ระบุ Batch No จากผู้ผลิต/ผู้ขาย (ถ้ามี)</small></label>
+                <input type="text" 
+                       class="form-control"
+                       ng-model="fctrl.lot.batch_no">
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label class="control-label">ผู้ผลิต<small class="help help-block">ระบุผู้ผลิต (ถ้ามี)</small></label>
+                <input type="text" 
+                       class="form-control"
+                       ng-model="fctrl.lot.mfg_by">
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label class="control-label">MFG Date </label>
+                <input type="text"
+                       class="input-sm form-control"
+                       uib-datepicker-popup="dd/MM/yyyy"
+                       ng-model="fctrl.lot.mfg_date"
+                       datepicker-options="datepickerOptions"
+                       is-open="fctrl.datepicker1.opened"
+                       close-text="Close"
+                       ng-click="fctrl.datepicker1.opened = true"
+                       />
+            </div>
+            <div class="form-group form-group-sm" style="margin-bottom:20px">
+                <label class="control-label">EXP Date </label>
+                <input type="text"
+                       class="input-sm form-control"
+                       uib-datepicker-popup="dd/MM/yyyy"
+                       ng-model="fctrl.lot.expired_date"
+                       datepicker-options="datepickerOptions"
+                       is-open="fctrl.datepicker2.opened"
+                       close-text="Close"
+                       ng-click="fctrl.datepicker2.opened = true"
+                       />
+            </div>
+        </form>         
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-success" type="button" ng-click="fctrl.save()">Save</button>
+                <button class="btn btn-warning" type="button" ng-click="fctrl.cancel()">Cancel</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<button type="button" 
+        ng-click="ctrl.openModal()"
+        class="btn btn-primary btn-sm">
+    เลือกจาก PO
+</button>
+<script type="text/ng-template" id="poModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">เลือกเอกสาร PO</h3>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-sm-6 input-group pull-right">
+                    <input type="text" 
+                           ng-model="mctrl.modalSearch"
+                           ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                           class="form-control input-sm"></input>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหา</button>
+                    </span>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('name')">เลขที่เอกสาร</a>
+                                    </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('date_order')">วันที่</a>
+                                    </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('partner')">คู่ค้า</a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('amount_total')">มูลค่า</a>
+                                </th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="po in mctrl.purchaseOrders">
+                                <td><button 
+                                        ng-click="mctrl.select(po)"
+                                        class="btn btn-default btn-sm">เลือก</button></td>
+                                <td>{{po.name}}</td>
+                                <td>{{po.date_order}}</td>
+                                <td>{{po.supplier.name}}</td>
+                                <td>{{po.amount_total | number:2}}</td>
+                                <td>{{po.state}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">Cancel</button>
+        </div>
+    </div>
+</script>

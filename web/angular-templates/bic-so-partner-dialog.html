@@ -1,0 +1,80 @@
+<button type="button"
+    ng-click="ctrl.openModal()"
+    class="btn btn-primary btn-sm">
+    {{ ctrl.title }}
+</button>
+<script type="text/ng-template" id="soPartnerModalContent.html">
+    <div class="modal-header">
+        <div class="modal-title" id="modal-title">
+            <h3>เลือกชื่อลูกค้า</h3>
+            <small class="help help-block"> คลิกเพื่อเลิกรายการ </small>
+        </div>
+        <div class="modal-body" id="modal-body">
+
+            <div class="row">
+                <div class="pull-right col-sm-6">
+                <div class="input-group">
+                    <input type="text"
+                        placeholder="ระบุ รหัสลูกค้า หรือ ชื่อลูกค้า เพื่อค้นหา"
+                        ng-model="mctrl.modalSearch"
+                        ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                        class="form-control input-sm">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                        ng-click="mctrl.loadData()"> ค้นหา </button>
+                    </span>
+                </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+          
+            <div class="row">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th width="100px">เลือก </th>
+                            <th width="150px">
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('code')"> รหัสลูกค้า </a>
+                            </th>
+                            <th>
+                                <a href="javascript:void(0)" ng-click="mctrl.sortToggle('name')"> ชื่อลูกค้า </a>
+                            </th>
+
+                        </tr>
+                       
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="line in mctrl.lines" ng-click="mctrl.onSelectLine(line, $index)">
+                                <td>
+                                    <span ng-show="mctrl.num !== $index" class="btn btn-default btn-sm"> เลือก </span>
+                                    <span ng-show="mctrl.num == $index" class="label label-success"> เลือก </span></td>
+                                <td>{{ line.code }} </td>
+                                <td>{{line.name }} </td>
+                              
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <ul uib-pagination boundary-links="true"
+            total-items="mctrl.totalItems"
+            ng-change="mctrl.pageChanged()"
+            ng-model="mctrl.currentPage"
+            items-per-page="mctrl.itemsPerPage"
+            max-size="5"
+            num-pages="numPages"
+            class="pagination-sm"
+            previous-text="&lsaquo;" 
+            next-text="&rsaquo;" 
+            first-text="&laquo;" 
+            last-text="&raquo;">
+        </ul>
+        <pre> หน้า {{ mctrl.currentPage }} / {{ numPages}} </pre>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+            <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,129 @@
+<div class="modal-header">
+    <h3 class="modal-title">เพิ่ม/แก้ไข สินค้า</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="poLineForm" id="poLineForm" novalidate>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group form-group-sm">
+                <label for="inputProductId" class="col-sm-3 control-label">สินค้า</label>
+                <div class="col-sm-9">
+                    <bic-product-select bic-model="modline.product"
+                                        on-select="modProductChange(cProduct)"
+                                        on-delete="modProductRemove()"
+                                        required="true"
+                                        ></bic-product-select>
+                    <label class="label label-info" ng-if="mctrl.new_supp">สินค้าไม่เคยซื้อกับผู้จำหน่ายรายนี้</label>
+                    <small class="help-block" ng-bind-html="modline.product.default_code + ' - ' + modline.product.name"></small>
+                </div>
+            </div>
+            <div class="form-group form-group-sm" ng-class="{'has-error':modline.prod_desc_error}">
+                <label for="inputProdDesc" class="col-sm-3 control-label">Description</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control bic-required-field" 
+                              id="modline-name" name="inputProdDesc" 
+                              placeholder="Description" ng-model="modline.name"></textarea>
+                    <div class="help-block help-block-error"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">วันส่งของ:</label>
+                <div class="col-sm-9">
+                    <p class="input-group">
+                        <input type="text" class="input-sm form-control bic-required-field" 
+                               id='modline-date_planned'
+                               uib-datepicker-popup='dd/MM/yyyy' 
+                               ng-model="modline.date_planned" 
+                               datepicker-options="datepickerOptions"
+                               is-open="datepicker3.opened"
+                               close-text="Close"
+                               required="true"
+                               />
+                        <span class="input-group-btn">
+                            <button type="button" 
+                                    class="input-sm btn btn-default" 
+                                    ng-click="openDatepicker3()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <div class="help-block help-block-error"></div>
+
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="inputProdQty" class="col-sm-3 control-label">จำนวน</label>
+                <div class="col-sm-9">
+                    <input type="number" 
+                           class="form-control input-sm numeric-only effect-val bic-required-field" 
+                           id="modline-product_qty" 
+                           string-to-number
+                           name="inputProdQty" value="" placeholder="จำนวน"
+                           ng-model="modline.product_qty"
+                           ng-change="sumLineTotalAmount(modline)"
+                           autocomplete="off"
+                           required="true"
+                           onClick='this.select()'
+                           >
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group form-group-sm">
+                <label for="inputUomId" class="col-sm-3 control-label">หน่วย</label>
+                <div class="col-sm-9">
+                    <bic-uom-select
+                        bic-model="modline.uom"
+                        required="true"
+                        depend-product-id="modline.product.id"
+                        on-select="changeUom(cUom)">
+                    </bic-uom-select>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="inputPricePerUnit" class="col-sm-3 control-label">Price/Unit</label>
+                <div class="col-sm-9">
+                    <input type="number" 
+                           class="form-control input-sm numeric-only effect-val" 
+                           id="inputPricePerUnit" 
+                           name="inputPricePerUnit" 
+                           string-to-number
+                           placeholder="ราคาต่อหน่วย"
+                           ng-model="modline.price_unit"
+                           ng-change="sumLineTotalAmount(modline)"
+                           onClick='this.select()'
+                           autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="inputDiscountAmount" class="col-sm-3 control-label">ส่วนลด</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control input-sm numeric-only effect-val" 
+                           id="inputDiscountAmount" 
+                           name="inputDiscountAmount" value="" placeholder="ส่วนลดรวม"
+                           string-to-number
+                           ng-model="modline.discount_amount"
+                           ng-change="sumLineTotalAmount(modline)"
+                           onClick='this.select()'
+                           autocomplete="off">
+
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="inputLineTotal" class="col-sm-3 control-label">ราคารวม</label>
+                <div class="col-sm-9">
+                    <span class="form-control text-right"
+                          style="background-color:#449D44;color: white;" 
+                          >{{modline.line_total_amount| number:2}}</span>
+
+                </div>
+            </div>
+        </div>
+    </div> 
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="label label-warning" ng-show="poLineForm.$invalid">ฟอร์มไม่สมบูรณ์</span>
+    <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+    <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+</div>
+

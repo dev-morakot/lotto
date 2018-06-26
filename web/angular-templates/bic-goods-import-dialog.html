@@ -1,0 +1,80 @@
+<button type="button" 
+        ng-click="ctrl.openModal()"
+        class="btn btn-primary btn-sm">
+    {{ctrl.title}}
+</button>
+<script type="text/ng-template" id="goodsImportModalContent.html">
+    <div class="modal-header">
+        <div class="modal-title" id="modal-title">
+            <h3>เลือกเอกสาร Purchase Order {{mctrl.viewMode}}</h3>
+            <small class="help help-block">คลิกเพื่อเลือกรายการ</small>
+            </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-sm-6 input-group pull-right">
+                    <input type="text" 
+                           ng-model="mctrl.modalSearch"
+                           ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                           class="form-control input-sm"></input>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหา</button>
+                    </span>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>1. เลือกสินค้า:</h5>
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>รหัสสินค้า</th>
+                                <th>ชื่อรายการ</th>
+                                <th>จำนวน</th>
+                                <th ng-show="mctrl.viewMode!='stock'">รับแล้ว</th>
+                                <th ng-show="mctrl.viewMode!='stock'">ค้างรับ</th>
+                                <th ng-show="mctrl.viewMode=='stock'">รับแล้ว(คลัง)</th>
+                                <th ng-show="mctrl.viewMode=='stock'">ค้างรับ(คลัง)</th>
+                                <th>หน่วย</th>
+                                <th>ราคาต่อหน่วย</th>
+                                <th>ส่วนลด</th>
+                                <th>มูลค่า</th>
+                                <th>PO</th>
+                                <th>ใบรับ</th>
+                                <th>วันที่</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="line in mctrl.docs" 
+                                ng-click="mctrl.onSelectLine(line)">
+                                <td>
+                                    <span ng-show="line.selected" class="label label-info">เลือก</span>
+                                </td>
+                                <td>{{line.product.default_code}}</td>
+                                <td>{{line.product.name}}</td>
+                                <td>{{line.product_uom_qty | number:3}}</td>
+                                <td ng-show="mctrl.viewMode!='stock'">{{line.receive_qty | number:3}}</td>
+                                <td ng-show="mctrl.viewMode!='stock'">{{line.residual_qty | number:3}}</td>
+                                <td ng-show="mctrl.viewMode=='stock'">{{line.receive_stock_qty | number:3}}</td>
+                                <td ng-show="mctrl.viewMode=='stock'">{{line.residual_stock_qty | number:3}}</td>
+                                <td>{{line.productUom.name}}</td>
+                                <td>{{line.price_unit}}</td>
+                                <td>{{line.discount_amount}}</td>
+                                <td>{{(line.product_qty*line.price_unit) - line.discount_amount | number:2}}</td>
+                                <td>{{line.purchaseOrder.name}}</td>
+                                <td>{{line.name}}</td>
+                                <td>{{line.doc_date | date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="mctrl.done()">ตกลง</button>
+            <button class="btn btn-warning" type="button" ng-click="mctrl.cancel()">ปิด</button>
+        </div>
+    </div>
+</script>

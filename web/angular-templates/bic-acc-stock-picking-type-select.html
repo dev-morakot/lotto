@@ -1,0 +1,23 @@
+<div class="input-group form-group-sm" style="width:100%">
+    <ui-select ng-model="$ctrl.bicModel"
+               ng-attr-name="$ctrl.name"
+               ng-attr-required="$ctrl.required"
+               ng-class="{'bic-required-field':$ctrl.required==='true'}"
+               class="bic-uom-select"
+               theme="bootstrap"
+               reset-search-input="true"
+               title="Choose Uom"
+               on-select="$ctrl.select($select.selected)">
+        <ui-select-match 
+            placeholder="เลขที่เอกสาร"
+            allow-clear='true'
+            >{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="pickingType in $ctrl.pickingTypes track by $index"
+            refresh="$ctrl.refreshPickingTypes($select.search)"
+            refresh-delay="0"
+            refresh-on-active="true">
+            <small ng-bind-html="pickingType.name"></small>
+        </ui-select-choices>
+    </ui-select>
+</div>

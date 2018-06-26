@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <div class="modal-title" id="modal-title">
+        <h3>บันทึกผลการวิเคราะห์ - {{model.name}}</h3>
+        <small class="help help-block">สินค้าใน Control No. ที่เคยทำรับเข้าด้วยเอกสารใบอื่น จะไม่สามารถเปลี่ยนผลวิเคราะห์</small>
+        </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate class="form-horizontal" name="qcform" id="qcform">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>ผลวิเคราะห์</h4>
+                            <small class="help help-block">บันทึกผลการวิเคราะห์สินค้า</small>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-an_no">AN NO</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" ng-model="model.an_no">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-potency">Potency</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" ng-model="model.potency">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-coa">COA No.</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" ng-model="model.coa_no">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-state">วันที่บันทึกผล</label>
+                                <div class="col-sm-8">
+                                    <p class="input-group">
+                                      <input type="text" class="form-control" uib-datepicker-popup="{{format}}" 
+                                             ng-model="model.date_qc" 
+                                             is-open="popup1.opened" 
+                                             datepicker-options="dateOptions" 
+                                             ng-required="true" 
+                                             close-text="Close" />
+                                      <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="popup1.opened=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                      </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-state">QC Pass</label>
+                                <div class="col-sm-8">
+                                    <select ng-model="model.qc_state" 
+                                            class="form-control input-sm"
+                                            required>
+                                        <option value="pass">Pass</option>
+                                        <option value="failed">Failed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <!--
+                            <h4>จำนวนการใช้</h4>
+                            <small class="help help-block">บันทึกปริมาณการใช้สินค้าที่นำไปวิเคราะห์(สูญเสีย)</small>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-used_qty">จำนวนที่ใช้</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" ng-model="model.qc_used_qty">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-used_qty2">น้ำหนักที่ใช้</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" ng-model="model.qc_used_qty2">
+                                </div>
+                            </div>
+                            -->
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-4" for="qc-notes">Notes</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control input-sm" ng-model="model.qc_note"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>ข้อมูลอื่นๆ </h4>
+                            <table class="table">
+                                <tr>
+                                    <th>Supp Batch no:</th><td>{{model.batch_no}}</td>
+                                </tr>
+                                <tr>
+                                    <th>MFG Date:</th><td>{{model.mfg_date}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exp Date:</th><td>{{model.expired_date}}</td>
+                                </tr>
+                                <tr>
+                                    <th>COA No:</th><td>{{model.coa_no}}</td>
+                                </tr>
+                                <tr>
+                                    <th>An No:</th><td>{{model.an_no}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Potency:</th><td>{{model.potency}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ผล QC</th><td>{{model.qc_state}}</td>
+                                </tr>
+                                <tr>
+                                    <th>วันที่บันทึกผล</th><td>{{model.date_qc | date:"yyyy-MM-dd"}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>           
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ctrl.ok()">ตกลง</button>
+        <button class="btn btn-warning" type="button" ng-click="ctrl.cancel()">ปิด</button>
+    </div>
+</div>

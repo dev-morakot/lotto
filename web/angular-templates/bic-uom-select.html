@@ -1,0 +1,25 @@
+<div class="input-group form-group-sm" style="width:100%">
+    <ui-select ng-model="$ctrl.bicModel"
+               ng-attr-name="$ctrl.name"
+               ng-attr-required="$ctrl.required"
+               ng-class="{'bic-required-field':$ctrl.required===true}"
+               ng-disabled="$ctrl.ngDisabled"
+               class="bic-uom-select"
+               theme="bootstrap"
+               reset-search-input="true"
+               title="Choose Uom"
+               on-select="$ctrl.select($select.selected)"
+               uis-open-close='$ctrl.onUomOpenClose(isOpen,$ctrl.dependProductId)'>
+        <ui-select-match 
+            placeholder="หน่วย"
+            allow-clear='true'
+            >{{$ctrl.choiceText($select.selected)}}</ui-select-match>
+        <ui-select-choices 
+            repeat="uom in $ctrl.uoms track by $index"
+            refresh="$ctrl.refreshUoms($ctrl.dependProductId,$select.search)"
+            refresh-delay="0"
+            refresh-on-active="false">
+            <small>{{$ctrl.choiceText(uom)}}</small>
+        </ui-select-choices>
+    </ui-select>
+</div>

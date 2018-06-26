@@ -1,0 +1,74 @@
+/* 
+* https://work.smarchal.com/twbscolor/css/e74c3cc0392becf0f1ffbbbc0 
+* bootstrap version 3.3.7
+*/ 
+
+.navbar-default {
+  background-color: #e4ebff;
+  border-color: #2b36c0;
+}
+.navbar-default .navbar-brand {
+  color: #314bd2;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #a9a9a9;
+}
+.navbar-default .navbar-text {
+  color: #314bd2;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #314bd2;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #a9a9a9;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #a9a9a9;
+  background-color: #2b36c0;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+  color: #a9a9a9;
+  background-color: #2b36c0;
+}
+.navbar-default .navbar-toggle {
+  border-color: #2b36c0;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #2b36c0;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #314bd2;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #314bd2;
+}
+.navbar-default .navbar-link {
+  color: #314bd2;
+}
+.navbar-default .navbar-link:hover {
+  color: #a9a9a9;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #314bd2;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #a9a9a9;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #a9a9a9;
+    background-color: #2b36c0;
+  }
+}

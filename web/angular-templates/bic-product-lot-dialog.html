@@ -1,0 +1,147 @@
+<button type="button" 
+        ng-click="ctrl.openModal()"
+        class="btn btn-primary btn-sm">
+        {{ctrl.title}}
+</button>
+<script type="text/ng-template" id="productLotModalContent.html">
+    <div class="modal-header">
+        <div class="modal-title" id="modal-title">
+            <h4>เลือกสินค้า/วัตถุดิบ</h4>
+            <span class="label label-info" ng-show="mctrl.locationModel">
+            จากตำแหน่ง:{{mctrl.locationModel.name}}
+                <span class="glyphicon glyphicon-remove" ng-click="mctrl.onRemoveLocation()"></span>
+                </span>
+            
+            
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    
+                        <input type="text" 
+                           placeholder="ระบุ ชื่อสินค้าคลัง รหัสบัญชี หรือ เลข Lot/Control เพื่อค้นหา"
+                           ng-model="mctrl.modalSearch"
+                           ng-keyup="$event.keyCode == 13 && mctrl.loadData()"
+                           class="form-control input-sm"></input>
+                        <label>แสดงยอดหลังหักจอง
+                            <input type="checkbox" ng-model="mctrl.showOnlyVirt" ng-change="mctrl.loadData()">
+                        </label>
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control input-sm" ng-model="mctrl.selected_cat_id">
+                        <option value="{{null}}">ทั้งหมด</option>
+                        <option ng-repeat="option in mctrl.categories" value="{{option.id}}">{{option.code}} {{option.name}}</option>
+                    </select>
+                    
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-info btn-sm"
+                                ng-click="mctrl.loadData()"
+                                >ค้นหาสินค้าคลัง</button>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('p.default_code')"><small>รหัสบัญชี</small></a> /
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('p.name')"><small>ชื่อสินค้า</small></a>
+                                    </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('sp.name')"><small>ชื่อสินค้าคลัง</small></a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('lot.name')"><small>Lot/Control</small></a>
+                                </th>
+                                <th>
+                                    <small>Sup Batch No</small>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('lot.received_date')"><small>วันรับสินค้า</small></a>
+                                    <small class="help help-block">dd/mm/yy</small>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('lot.expired_date')"><small>Expired</small></a>
+                                    <small class="help help-block">dd/mm/yy</small>
+                                </th>
+                                <th>
+                                    <small>QC</small>
+                                </th>
+                                <th class="text-right" ng-hide="mctrl.showOnlyVirt">
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('q.qty')"><small title="สินค้าคงคลัง">Qty</small></a>
+                                </th>
+                                <th class="text-right">
+                                    <small title="Forecast Qty = จำนวนคงคลัง - จำนวนโอนเข้าและออก(ที่ยืนยันแล้ว)">Qty (FC)</small>
+                                </th>
+                                <th class="text-right">
+                                    <small>หน่วย</small>
+                                </th>
+                                <th class="text-right" ng-hide="mctrl.showOnlyVirt">
+                                    <a href="javascript:void(0)" ng-click="mctrl.sortToggle('q.qty2')"><small>Qty2</small></a>
+                                </th>
+                                <th class="text-right">
+                                    <small>Qty2 (FC)</small>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="p in mctrl.products" ng-click="mctrl.addSelect(p)">
+                                <td>
+                                    <span ng-show="p.selected" class="label label-info">selected</span>
+                                    <button 
+                                        ng-show="p.selected==null"
+                                        class="btn btn-default btn-sm">เลือก</button></td>
+                                
+                                <td><small>{{p.default_code}}</small><br><small>{{p.name}}</small></td>
+                                <td><small>{{p.stock_product_name}}</small></td>
+                                <td><small>{{p.lot_name}}</small></td>
+                                <td><small>{{p.lot_batch_no}}</small></td>
+                                <td><small>{{(p.received_date)?(p.received_date | date:'dd/MM/yyyy'):""}}</small></td>
+                                <td><small>{{p.expired_date | date:'dd/MM/yyyy'}}</small></td>
+                                <td>
+                                    <span class="label" ng-class="mctrl.getQcLabel(p)" ng-if="mctrl.getQcState(p)!=null">{{mctrl.getQcState(p)}}</span>
+                                    </td>
+                                <td class="text-right" ng-hide="mctrl.showOnlyVirt"><small>{{p.qty | number:3}}</small></td>
+                                <td class="text-right"><small>{{p.qty_virt | number:3}}</small></td>
+                                <td class="text-right"><small>{{p.uom_name}}</small></td>
+                                <td class="text-right" ng-hide="mctrl.showOnlyVirt"><small>{{p.qty2 | number:3}}</small></td>
+                                <td class="text-right"><small>{{p.qty2_virt | number:3}}</small></td>
+                                <td>
+                                    <a ng-href="/stock/stock-move/index?StockMoveSearchEager[product_id]={{p.id}}&StockMoveSearchEager[location_src_id]={{mctrl.locationModel.id}}&StockMoveSearchEager[lot_name]={{p.lot_name}}" 
+                                                target="_blank" 
+                                                title="ตรวจสอบข้อมูลการโอนย้าย">
+                                        <span class="glyphicon glyphicon-arrow-right"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
+        </div>
+        <ul uib-pagination boundary-links="true" 
+            total-items="mctrl.totalItems" 
+            ng-change="mctrl.pageChanged()"
+            ng-model="mctrl.currentPage" 
+            items-per-page="mctrl.itemsPerPage"
+            max-size="5"
+            num-pages="numPages"
+            class="pagination-sm" 
+            previous-text="&lsaquo;" 
+            next-text="&rsaquo;" 
+            first-text="&laquo;" 
+            last-text="&raquo;">
+        </ul>
+        <pre>หน้า {{mctrl.currentPage}} / {{numPages}}</pre>
+        <div class="modal-footer">
+            <button class="btn btn-success btn-sm" type="button" ng-click="mctrl.done()">ตกลง</button>
+            <button ng-if="mctrl.showBtn2=='true'" class="btn btn-success btn-sm" type="button" ng-click="mctrl.done('fill_qty')">ตกลง และใส่จำนวน</button>
+            <button class="btn btn-warning btn-sm" type="button" ng-click="mctrl.cancel()">ปิด</button>
+        </div>
+    </div>
+</script>

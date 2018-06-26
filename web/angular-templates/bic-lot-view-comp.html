@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Lot/Control No.</h3>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Lot/Ctrl No. เลขที่</label>
+                <div>{{fctrl.lot.name}}</div>
+                <label>สินค้า</label>
+                <div>{{fctrl.lot.product.default_code}}:{{fctrl.lot.product.name}}</div>
+                <label>วันที่ผลิต (MFG Date)</label>
+                <div>{{fctrl.lot.mfg_date | date:'dd/MM/yyyy'}}</div>
+                <label>วันที่หมดอายุ (Expired Date)</label>
+                <div>{{fctrl.lot.expired_date | date:'dd/MM/yyyy'}}</div>
+                <label>Supplier Batch No.</label>
+                <div>{{fctrl.lot.batch_no || "-"}}</div>
+                <label>ผู้ผลิต (Manufactured by)</label>
+                <div>{{fctrl.lot.mfg_by || "-"}}</div>
+            </div>
+            <div class="col-sm-6">
+                <label>ผลการตรวจ</label>
+                <div>{{fctrl.lot.qc_state || "-"}}</div>
+                <label>วันที่ตรวจ</label>
+                <div>{{fctrl.lot.date_qc | date:'dd/MM/yyyy'}}</div>
+                <label>Potency</label>
+                <div>{{fctrl.lot.potency || "-"}}</div>
+                <label>AN No</label>
+                <div>{{fctrl.lot.an_no || "-"}}</div>
+                <label>COA No.</label>
+                <div>{{fctrl.lot.coa_no || "-"}}</div>
+                <label>Qc Notes</label>
+                <div>{{fctrl.lot.qc_note || "-"}}</div>
+                <label>Released</label>
+                <div>{{fctrl.lot.lock_state}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-warning" type="button" ng-click="fctrl.cancel()">ปิด</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

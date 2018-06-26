@@ -1,0 +1,16 @@
+body {
+    font-family:"Garuda";
+    font-size:8px;
+    margin:     0;
+    padding:    0;
+    width:      21cm;
+    height:     29.7cm;
+}
+
+
+.debug {
+    border-style: solid;
+    border: 1px solid red;
+    
+    
+}

@@ -1,0 +1,16 @@
+
+<span class="input-group">
+    <input type="text" class="input-sm form-control" 
+           uib-datepicker-popup='dd/MM/yyyy' 
+           ng-model="params.filter()[name]" 
+           datepicker-options="datepickerOptions"
+           is-open="isShow"
+           close-text="Close"
+           datepicker-to-string='DD/MM/YYYY'
+           />
+    <span class="input-group-btn">
+        <button type="button" 
+                class="input-sm btn btn-default" 
+                ng-click="isShow=!isShow"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+</span>

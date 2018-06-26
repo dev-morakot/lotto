@@ -1,0 +1,27 @@
+<div class="input-group form-group-sm" style="width:100%">
+    <ui-select ng-model="$ctrl.bicModel"
+               ng-attr-name="$ctrl.name"
+               ng-attr-required="$ctrl.required"
+               ng-class="{'bic-required-field':$ctrl.required ==='true'}"
+               theme="bootstrap"
+               class="bic-transport-select"
+               reset-search-input="true"
+               title="Choose an Transport"
+               uis-open-close="$ctrl.onTransportOpenClose(isOpen)"
+    required>
+    <ui-select-match placeholder="Enter a Transport..."
+                allow-clear="true">{{$select.selected.name}}</ui-select-match>
+    <ui-select-choices
+        repeat="transport in $ctrl.transports track by $index"
+        refresh="$ctrl.refreshTransport($select.search)"
+        refresh-delay="0">
+        <small>{{transport.name}}</small>
+    </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn" ng-show="$ctrl.showView">
+        <button type="button" 
+                class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-eye-open"></span>
+        </button>
+    </span>
+</div>

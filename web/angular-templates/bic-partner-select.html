@@ -1,0 +1,33 @@
+<div class="input-group" style="width:100%">
+    <ui-select
+        ng-model="$ctrl.bicModel"
+        ng-attr-name="$ctrl.name"
+        ng-required="$ctrl.required"
+        ng-class="{'bic-required-field':$ctrl.required==='true'}"
+        on-select="$ctrl.select($select.selected)"
+        title="Choose a person">
+        <ui-select-match 
+            placeholder="Select Partner..."
+            allow-clear="true"
+            >[{{$select.selected.code}}] {{$select.selected.name}}</ui-select-match>
+        <ui-select-choices 
+            repeat="person in $ctrl.partners"
+            refresh="$ctrl.refreshPartners($select.search)"
+            refresh-on-active="true"
+            refresh-delay="0">
+            <div ng-bind-html="person.name | highlight: $select.search"></div>
+            <small>
+                code: {{person.code}}
+                phone: <span ng-bind-html="''+person.phone | highlight: $select.search"></span>
+            </small>
+        </ui-select-choices>
+    </ui-select>
+    <span class="input-group-btn">
+        <button type="button" 
+                class="btn btn-default btn-sm"
+                ng-click="$ctrl.viewPartner($ctrl.bicModel.id)"
+                >
+            <span class="glyphicon glyphicon-eye-open"></span>
+        </button>
+    </span>
+</div>

@@ -1,0 +1,23 @@
+
+<ui-select
+    ng-model="$ctrl.bicModel" 
+    ng-attr-name="$ctrl.name"
+    ng-required="$ctrl.required"
+    ng-class="{'bic-required-field':$ctrl.required==='true'}"
+    on-select="$ctrl.select($select.selected)"
+    title="Choose an Journal">
+    <ui-select-match 
+        allow-clear="true"
+        placeholder="Select Journal...">
+        {{$select.selected.code}}:{{$select.selected.name}}
+    </ui-select-match>
+    <ui-select-choices 
+        repeat="model in $ctrl.journals | propsFilter: {name: $select.search}"
+        refresh="$ctrl.refreshJournals($select.search)"
+        refresh-delay="0"
+        refresh-on-active="true">
+        <small>
+            <span ng-bind-html="'['+model.code+'] '+model.name | highlight: $select.search"></span>
+        </small>
+    </ui-select-choices>
+</ui-select>

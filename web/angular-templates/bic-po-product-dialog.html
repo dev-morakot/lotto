@@ -1,0 +1,68 @@
+<button class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-po-product-modal-lg">เลือกจากเอกสาร PO</button>
+<div class="modal fade bs-po-product-modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">เลือกจากเอกสาร PO</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding:20px">
+                    <div class="form-group">
+                        <label>เอกสาร PO:</label>
+                        <ui-select
+                            ng-model="ctrl.purchaseOrder" 
+                            class="form-group-sm"
+                            on-select="ctrl.onPoSelect()"
+                            title="Choose an PO">
+                            <ui-select-match 
+                                allow-clear="true"
+                                placeholder="ค้นหา/เลือก...">
+                                {{$select.selected.name}}:{{$select.selected.supplier.name}}
+                            </ui-select-match>
+                            <ui-select-choices 
+                                repeat="model in ctrl.purchaseOrders | propsFilter: {name: $select.search}"
+                                refresh="ctrl.refreshPurchaseOrders($select.search)"
+                                refresh-delay="1">
+                                <small>
+                                    <span ng-bind-html="'['+model.name+'] '+model.supplier.name | highlight: $select.search"></span>
+                                </small>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>สินค้า:</label>
+                        <ui-select
+                            ng-model="ctrl.poLine" 
+                            class="form-group-sm"
+                            title="Choose an Account">
+                            <ui-select-match 
+                                allow-clear="true"
+                                placeholder="Select Journal...">
+                                {{$select.selected.product.default_code}}:{{$select.selected.name}} = {{$select.selected.receive_stock_qty}}/{{$select.selected.product_qty}} {{$select.selected.uom.name}}
+                            </ui-select-match>
+                            <ui-select-choices 
+                                repeat="model in ctrl.purchaseOrder.purchaseOrderLines | propsFilter: {name: $select.search}"
+                                >
+                                <small>
+                                    <span ng-bind-html="'['+model.product.default_code+'] '+model.name+ ' ค้างรับ '+(model.product_qty-model.receive_stock_qty) | highlight: $select.search"></span>
+                                </small>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div ng-show="ctrl.poLine">
+                            <small>ยอดซื้อ = {{ctrl.poLine.product_qty}}</small>
+                            <small>รับแล้ว = {{ctrl.poLine.receive_stock_qty}}</small>
+                            <small>ค้างรับ = {{ctrl.poLine.product_qty-ctrl.poLine.receive_stock_qty}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="ctrl.done()">ตกลง</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
