@@ -4522,3 +4522,66 @@ app.component('bicProductCategoryComponent', {
     },
     controllerAs: 'mctrl'
 });
+
+/**
+ * 
+ * res_users
+ * 
+ */
+app.component('bicResUsersSelect', {
+    templateUrl: '/angular-templates/bic-res-users-select.html',
+    controller: function ($http, $scope) {
+        var ctrl = this;
+
+        ctrl.users = [];;
+        ctrl.onOpenClose = function (isOpen) {
+            if(isOpen) {
+                ctrl.refreshUsers("");
+            }
+        }
+
+        ctrl.refreshUsers = function (user) {
+            var params = {
+                q: user,
+                limit: 50,
+            };
+            console.log("bicUserSelect params", params);
+            return $http.get('/resource/res-doc-lotto/user-json', {params: params})
+                .then(function (response) {
+                    ctrl.users = response.data;
+                });
+        };
+
+        ctrl.openUsersInfo = function (){
+            if(ctrl.bicModel) {
+                var _user_id = ctrl.bicModel.id;
+                console.log(_user_id);
+                window.open(
+                    '/resource/res-users/view?id=' + _user_id,
+                    '_blank'
+                );
+            }
+        };
+
+        ctrl.delete = function (item, model) {
+            ctrl.onDelete({
+                cUser: ctrl.bicModel
+            });
+            ctrl.bicModel = null;
+        };
+        ctrl.select = function (selected) {
+            ctrl.onSelect({
+                cUser: selected
+            });
+        };
+    },
+    bindings: {
+        bicModel: '=',
+        name: '@',
+        required: '<?',
+        onDelete: '&',
+        onSelect: '&',
+
+    },
+    controllerAs: 'ctrl'
+});

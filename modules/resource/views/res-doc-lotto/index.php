@@ -1,0 +1,144 @@
+<?php
+use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\web\View;
+use app\modules\resource\assets\ResDocLottoAsset;
+
+
+ResDocLottoAsset::register($this);
+/* @var $this yii\web\View */
+/* @var $model app\modules\resource\models\ResUsers */
+
+$this->title = Yii::t('app', 'คีย์ข้อมูลหวย');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['/admin/default']];
+$this->params['breadcrumbs'][] = $this->title;
+
+$this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}');
+?>
+<div ng-app="myapp" ng-cloak ng-controller="FormController" class="res-doc-lotto">
+    <h1><?= Html::encode($this->title) ?></h1>   
+
+    <form novalidate class="form-horizontal" name="form">
+        <div id="my-message"></div>
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">ผู้ซื้อ/คนเดินโพย</label>
+                        <div class="col-sm-9">
+                            <bic-res-users-select bic-model="model.user"
+                                on-delete="modUserRemove(cUser)"
+                                on-select="modUserChange(cUser)">
+                            </bic-res-users-select>
+
+                          
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">ตัวเลข</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bic-required-field" ng-model="model.number" />
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">บน (จำนวนเงิน)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bic-required-field" ng-model="model.top_amount" />
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">ล่าง (จำนวนเงิน)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bic-required-field" ng-model="model.below_amount" />
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">โต๊ด/กลับ (จำนวนเงิน)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bic-required-field" ng-model="model.otd_amount" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="pull-left">
+        <button type="button" class="btn btn-primary" id="po-line-add3" ng-click="openAddLine()">เพิ่มรายการ</button>
+    </div>
+    <div class="clearfix"></div>
+
+    <div id="gridModelLine">
+    <table class="table table-striped table-hover" style="margin-top: 15px">
+        <thead style="background-color: #87CEFA;color: #000">
+            <tr>
+                <th></th>
+                <th class="one">ประเภทหวย</th>
+                <th class="one">ตัวเลข </th>
+                <th class="one">จำนวนเงิน </th>
+                <th class="one">ผู้ซื้อ </th>
+                <th>-</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="line in lottos">
+                <td>
+                    <span class="label label-primary"></span>
+                </td>
+                <td align="center"></td>
+                <td align="center">{{ line.number }}</td>
+                <td align="right"></td>
+                <td align="center">{{ line.firstname }}</td>
+                <td>
+                    <span class="btn btn-default btn-sm" ng-click="doRemoveLine(line)">ลบ</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <form novalidate class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 form-horizontal">
+                <div class="form-group form-group-sm">
+    				<div class="col-xs-3"></div>
+    				<div class="col-xs-9">
+    					<div style="border-top:thick solid #D3D3D3"></div>
+    				</div>
+    			</div>
+                
+
+                <div class="form-group form-group-sm">
+                    <label for="purchaseorder-amount_untaxed" class="col-xs-3 control-label">ยอดรวมทั้งหมด </label>
+                    <div class="col-xs-9">
+                        <p id='purchaseorder-amount_total' 
+                        style="background-color:#449D44;color: white;"
+                           class="form-control show-number text-right" 
+                           >{{model.amount_total| number:3}}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col-sm-6">
+            <button type="button" class="btn btn-primary" ng-click="formSave()"> บันทึก </button>
+            <?php
+            echo Html::a('ยกเลิก', Url::to(['index']), ['class' => 'btn btn-warning']);
+            ?>
+        </div>
+    </div>
+
+</div>

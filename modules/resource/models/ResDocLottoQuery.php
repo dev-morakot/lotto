@@ -3,11 +3,11 @@
 namespace app\modules\resource\models;
 
 /**
- * This is the ActiveQuery class for [[ResAttach]].
+ * This is the ActiveQuery class for [[ResDocLotto]].
  *
- * @see ResAttach
+ * @see ResDocLotto
  */
-class ResAttachQuery extends \yii\db\ActiveQuery
+class ResDocLottoQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ResAttachQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return ResAttach[]|array
+     * @return ResDocLotto[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ResAttachQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return ResAttach|array|null
+     * @return ResDocLotto|array|null
      */
     public function one($db = null)
     {

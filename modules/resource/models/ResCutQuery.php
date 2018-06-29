@@ -2,12 +2,14 @@
 
 namespace app\modules\resource\models;
 
+use Yii;
+use app\modules\resource\models\ResCut;
 /**
- * This is the ActiveQuery class for [[ResCurrency]].
+ * This is the ActiveQuery class for [[ResCut]].
  *
- * @see ResCurrency
+ * @see ResCut
  */
-class ResCurrencyQuery extends \yii\db\ActiveQuery
+class ResCutQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +18,7 @@ class ResCurrencyQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return ResCurrency[]|array
+     * @return ResCut[]|array
      */
     public function all($db = null)
     {
@@ -25,10 +27,14 @@ class ResCurrencyQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return ResCurrency|array|null
+     * @return ResCut|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function current(){
+        return $this->andWhere(['id' => Yii::$app->params['res_cut']]);
     }
 }
