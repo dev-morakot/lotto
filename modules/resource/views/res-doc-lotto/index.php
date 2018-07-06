@@ -42,9 +42,12 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">ตัวเลข</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bic-required-field" ng-model="model.number" />
+                            <input type="text" name="input" class="form-control bic-required-field" ng-model="model.number" min="0" max="999" required />
+                            <small class="help-block help-block-error" ng-show="form.input.$error.max">กรุณาใส่จำนวนตัวเลขไม่เกิน 3 หลัก</small>
                         </div>
+                        
                     </div>
+                    
 
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">บน (จำนวนเงิน)</label>
@@ -79,27 +82,27 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 
     <div id="gridModelLine">
     <table class="table table-striped table-hover" style="margin-top: 15px">
-        <thead style="background-color: #87CEFA;color: #000">
+        <thead>
             <tr>
                 <th></th>
-                <th class="one">ประเภทหวย</th>
-                <th class="one">ตัวเลข </th>
-                <th class="one">จำนวนเงิน </th>
-                <th class="one">ผู้ซื้อ </th>
-                <th>-</th>
+                <th style="text-align: center">ประเภทหวย</th>
+                <th style="text-align: center">ตัวเลข </th>
+                <th style="text-align: center">จำนวนเงิน </th>
+                <th style="text-align: center">ผู้ซื้อ </th>
+                <th style="text-align: center">-</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="line in lottos">
-                <td>
-                    <span class="label label-primary"></span>
+                <td align="center">
+                    <span class="label label-primary">{{ $index + 1 }}</span>
                 </td>
-                <td align="center"></td>
+                <td align="center">{{ line.type }}</td>
                 <td align="center">{{ line.number }}</td>
-                <td align="right"></td>
+                <td align="right"> {{ line.amount | number }}</td>
                 <td align="center">{{ line.firstname }}</td>
-                <td>
-                    <span class="btn btn-default btn-sm" ng-click="doRemoveLine(line)">ลบ</span>
+                <td align="center">
+                    <span class="btn btn-warning btn-sm" ng-click="doRemoveLine(line)">ลบ</span>
                 </td>
             </tr>
         </tbody>
@@ -124,7 +127,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         <p id='purchaseorder-amount_total' 
                         style="background-color:#449D44;color: white;"
                            class="form-control show-number text-right" 
-                           >{{model.amount_total| number:3}}</p>
+                           >{{modline.amount_total| number }}</p>
                     </div>
                 </div>
 

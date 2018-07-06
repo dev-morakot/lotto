@@ -57,11 +57,10 @@
 
     <h4>สรุปรายงานยอดหวย</h4>
     <ul>
-        <li><a href="/resource/res-doc-sequence">สรุปยอดซื้อ</a></li>
-        <li><a href="/resource/res-doc-sequence">สรุปเลขวิ่ง</a></li>
-        <li><a href="/resource/res-doc-sequence">สรุปเลขสองตัว</a></li>
-        <li><a href="/resource/res-doc-sequence">สรุปเลขสามตัว</a></li>
-        <li><a href="/resource/res-doc-sequence">สรุปเลขทั้งหมด</a></li>
+        <li><a href="/resource/res-doc-report/report-all">สรุปยอดซื้อ</a></li>
+        <li><a href="/resource/res-doc-report/report-two">สรุปเลขสองตัว</a></li>
+        <li><a href="/resource/res-doc-report/report-three">สรุปเลขสามตัว</a></li>
+        <li><a href="/resource/res-doc-report/report-number">สรุปเลขทั้งหมด</a></li>
     </ul>
     </div>
 </div>

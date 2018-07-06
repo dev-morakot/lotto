@@ -18,14 +18,8 @@ use app\modules\resource\models\ResUsers;
  */
 class AppUserlog extends \yii\db\ActiveRecord
 {
-    const PURCHASE_ORDER = "PO";
-    const PURCHASE_REQUEST = "PR";
-    const ACCOUNT_MOVE = "AM";
-    const ACCOUNT_INVOICE = "IV";
-    const ACCOUNT_PAYMENT = "PAY";
-    const STOCK_PICKING = "SP";
-    const STOCK_MOVE = "STM";
-    const SALE_ORDER = "SO";
+    
+    const RES_DOC_LOTTO = "LOTTO";
 
     /**
      * @inheritdoc

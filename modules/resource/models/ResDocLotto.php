@@ -3,7 +3,7 @@
 namespace app\modules\resource\models;
 use app\modules\resource\models\ResUsers;
 use Yii;
-
+use yii\db\Expression;
 /**
  * This is the model class for table "res_doc_lotto".
  *
@@ -13,6 +13,7 @@ use Yii;
  * @property int $top_amount บน/จำนวนเงิน
  * @property int $below_amount ล่าง/จำนวนเงิน
  * @property int $otd_amount โต๊ด/กลับ จำนวนเงิน
+ * @property string $type ประเภทหวย
  * @property int $create_uid
  * @property string $create_date
  * @property int $write_uid
@@ -35,6 +36,7 @@ class ResDocLotto extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'number', 'top_amount', 'below_amount', 'otd_amount', 'create_uid', 'write_uid'], 'integer'],
+            [['type'], 'string', 'max' => 30],
             [['create_date', 'write_date'], 'safe'],
         ];
     }
@@ -51,11 +53,28 @@ class ResDocLotto extends \yii\db\ActiveRecord
             'top_amount' => 'บน/จำนวนเงิน',
             'below_amount' => 'ล่าง/จำนวนเงิน',
             'otd_amount' => 'โต๊ด/กลับ จำนวนเงิน',
+            'type' => 'ประเภทหวย',
             'create_uid' => 'Create Uid',
             'create_date' => 'Create Date',
             'write_uid' => 'Write Uid',
             'write_date' => 'Write Date',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($isInsert) {
+        if($isInsert){
+            $this->create_uid = Yii::$app->user->id;
+            $this->create_date = new Expression("NOW()");
+            $this->write_uid = Yii::$app->user->id;
+            $this->write_date = new Expression("NOW()");
+        } else {
+            $this->write_uid = Yii::$app->user->id;
+            $this->write_date = new Expression("NOW()");
+        }
+        return true;
     }
 
     public function getUser(){
