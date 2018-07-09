@@ -34,13 +34,15 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                     <th style="text-align: center">สามตัวโต๊ด</th>                   
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach($result as $line): ?>
+            <tbody>                
                 <tr>
-                    <td><?php echo $line['two_top_amount']; ?></td>
-                    <td><?php echo $line['two_below_amount']; ?></td>
+                    <td align="right"><?php echo number_format($temp['two_top_amount']); ?></td>  
+                    <td align="right" ><?php echo number_format($temp['two_below_amount']); ?></td>
+                    <td align="right"><?php echo number_format($temp['three_top_amount']); ?></td>  
+                    <td align="right"><?php echo number_format($temp['three_below_amount']); ?></td>
+                    <td align="right"><?php echo number_format($temp['three_otd_amount']); ?></td>               
                 </tr>
-                <?php endforeach; ?>
+                
             </tbody>
         </table>
     </div>

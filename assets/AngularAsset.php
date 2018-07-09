@@ -32,7 +32,15 @@ class AngularAsset extends AssetBundle
         'js/angular-extras/angular-resource.min.js',
         'js/bic-angular-common.js',
         'js/bic-angular-module.js',
-        'js/bic-angular-common-stock.js'
+        'js/bic-angular-common-stock.js',
+        'js/tableExport.js',
+        'js/jquery.base64.js',
+        'js/sprintf.js',
+        'js/jspdf.js',
+        'js/base64.js',
+        'js/html2canvas.min.js',
+        'js/pdfmake.min.js'
+       
     ];
     public $depends = [
         'yii\web\YiiAsset',
