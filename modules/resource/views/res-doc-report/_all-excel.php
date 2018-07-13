@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped export-table" style='margin-top:10px;width: 100%'>
+<table class="table table-bordered table-striped" style='margin-top:10px;width: 100%'>
             <thead>
                 <tr>
                     <th style='text-align:center'> ประเภทหวย</th>

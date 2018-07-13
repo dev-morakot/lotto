@@ -39,16 +39,16 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
     
     </div>
     <div class="pull-left">        
-        <a href="#" class="btn btn-primary btn-sm" data-ng-click="exportAction('pdf')"> Export Excel</a>
+        <a href="#" class="btn btn-primary btn-sm" ng-click="exportData()"> Export Excel</a>
         
         <a href="#" class="btn btn-primary btn-sm" ng-click="downloadPdf()"> Export Pdf</a>
     </div>
     <div class="clearfix"></div>
    
 
-    <dvi class="table-responsive">
+    <div id='exportPdf' class="table-responsive">
     
-        <table class="table table-bordered table-striped" style='margin-top:10px'>
+        <table class="export-table table table-bordered table-striped" style='margin-top:10px'>
             <thead>
                 <tr>
                     <th style='text-align:center'> ประเภทหวย</th>
@@ -76,10 +76,10 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 </tr>
             </tfoot>
         </table>
+        </div>
+        <div id="exportable" style='display:none'>
+            
+            <?php echo $this->render('_all-excel'); ?>
         
-        <div id="exportable">
-        <?php echo $this->render('_all-excel'); ?>
          </div>
-
-    </div>
 </div>

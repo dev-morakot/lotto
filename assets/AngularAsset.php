@@ -39,7 +39,8 @@ class AngularAsset extends AssetBundle
         'js/jspdf.js',
         'js/base64.js',
         'js/html2canvas.min.js',
-        'js/pdfmake.min.js'
+        'js/pdfmake.min.js',
+        'js/vfs_fonts.js'
        
     ];
     public $depends = [

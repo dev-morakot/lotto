@@ -143,6 +143,7 @@ app.directive('stringToNumber', function () {
     };
 });
 
+
 app.directive('exportTable', function(){
     var link = function ($scope, elm, attr) {
       $scope.$on('export-pdf', function (e, d) {
@@ -170,69 +171,79 @@ app.directive('exportTable', function(){
 app.controller("FormController", function ($scope, $http,$timeout,
         $location, $window,
         $filter, uibDateParser, Resource) {
-    // Resources
-    var ctrl = this;
-    $scope.result = [];
-    $scope.model = {};
-    $scope.sum={};
-    $scope.arr = [
-        {id: 1, type: 'สามตัวบน'},
-        {id: 2, type: 'สามตัวล่าง'},
-        {id: 3, type: 'สามตัวโต๊ด'},
-        {id: 4, type: 'สองตัวบน'},
-        {id: 5, type: 'สองตัวล่าง'}
-    ];
-
-    ctrl.loadData = function () {
-        console.log("refresh products expire");
-        var params = {           
-            filter: $scope.model,
-        };
-        console.log(params);
-        $http.get('/resource/res-doc-report/report-summary', {params: params})
-        .then(function (response) {
-            console.log(response.data);
-            $scope.result = response.data.result;
-            $scope.sum = parseFloat(response.data.sum);
-            $scope.display = "display";
-        });
-    }
-   
-    $scope.delete = function (line) {
-        var data = {
-            id: line.id
-        };
-        bootbox.confirm('ยืนยันการลบ', function (result) {
-            if(result) {
-                $http.post('/resource/res-doc-report/lotto-delete', data)
-                .then(function (response) {
-                    ctrl.loadData();
-                });
-            }
-        });
-    }
     
+    $scope.two_top = [];
+    $scope.two_below = [];
+
+    // ส่วนตัดเก็บ
+    $scope.two_cut_top_amount = [];
+    $scope.two_cut_below_amount = [];
+
+    // ส่วนตัดส่ง
+    $scope.two_send_top_amount = [];
+    $scope.two_send_below_amount = [];
+
+    // top
+    $http.get('/resource/res-doc-report/get-two-top')
+        .then(function (response) {
+            $scope.two_top = response.data.arr;
+            $scope.sum_top = response.data.sum;
+        });
+    // below
+    $http.get('/resource/res-doc-report/get-two-below')
+        .then(function (response) {
+            $scope.two_below = response.data.arr;
+            $scope.sum_below = response.data.sum;
+        });
+
+    // ส่วนตัด เก็บ
+    $scope.SaveCut = function (){
+        console.log("save cut", {msg_top: $scope.two_top, msg_below: $scope.two_below});
+        var data = {
+            two_top: $scope.two_top,
+            two_below: $scope.two_below
+        };
+        $http.post("/resource/res-doc-report/save-as-cut", data)
+            .then(function (response) {
+                console.log(response.data);
+                $scope.two_cut_top_amount = response.data.res_top_amount;
+                $scope.two_cut_below_amount = response.data.res_below_amount;
+                $scope.amount_total_top = response.data.sum_top;
+                $scope.amount_total_below = response.data.sum_below;
+            });
+    }
+
+    // ส่วนตัดส่ว
+    $scope.SaveSend = function (){ 
+        var data = {
+            two_top: $scope.two_top,
+            two_below: $scope.two_below
+        };
+
+        $http.post('/resource/res-doc-report/save-send-lotto', data)
+            .then(function (response) {
+                console.log(response.data);
+                $scope.two_send_top_amount = response.data.res_send_top_amount;
+                $scope.two_send_below_amount = response.data.res_send_below_amount;
+                $scope.total_top = response.data.sum_top;
+                $scope.total_below = response.data.sum_below;
+            });
+    }
+
+
     $scope.exportData = function () {
         var blob = new Blob([document.getElementById('exportable').innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, "สรุปเลขทั้งหมด.xls");
+        saveAs(blob, "สรุปยอดตัดเก็บ_เลขสองตัว.xls");
     };
 
-    $scope.downloadPdf = function () {
-        html2canvas(document.getElementById('exportPdf'), {
-            onrendered: function (canvas) {
-                var data = canvas.toDataURL();
-                var docDefinition = {
-                    content: [{
-                        image: data,
-                        width: 500,
-                    }]
-                };
-                pdfMake.createPdf(docDefinition).download("สรุปเลขทั้งหมด.pdf");
-            }
+    $scope.exportDataSend = function (){
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-    };
+        saveAs(blob, "สรุปยอดตัดส่ง_เลขสองตัว.xls");
+    }
 
     $scope.exportAction = function (option) {
         switch (option) {
@@ -248,10 +259,34 @@ app.controller("FormController", function ($scope, $http,$timeout,
         }
     }
 
-    $scope.$watch('params', function (newVal, oldVal) {
-        console.log('paramas change', newVal,oldVal);
-       // $location.search(newVal);
-        ctrl.loadData();
-    },true);
-});
+    $scope.downloadPdf = function () {
+        html2canvas(document.getElementById('exportable'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("สรุปยอดตัดเก็บ_เลขสองตัว.pdf");
+            }
+        });
+    };
 
+    $scope.downloadPdfSend = function (){
+        html2canvas(document.getElementById('exportable'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("สรุปยอดตัดส่ง_เลขสองตัว.pdf");
+            }
+        });
+    }
+
+});

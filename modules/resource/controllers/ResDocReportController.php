@@ -18,6 +18,8 @@ use app\modules\admin\models\AppUserLog;
 use app\modules\resource\models\ResDocMessage;
 use app\components\DateHelper;
 use app\modules\resource\models\report\LottoAll;
+use app\modules\resource\models\ResCut;
+use app\modules\resource\models\ResCutQuery;
 
 /**
  * Default controller for the `resource` module
@@ -74,6 +76,10 @@ class ResDocReportController extends Controller
 
     public function actionReportTwo(){
         return $this->render('report-two');
+    }
+
+    public function actionReportThree() {
+        return $this->render('report-three');
     }
 
     public function actionAll(){
@@ -142,6 +148,239 @@ class ResDocReportController extends Controller
         $id = $post['id'];
         $model = ResDocLotto::findOne(['id' => $id])->delete();
         
+    }
+
+
+    public function actionGetTwoTop() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สองตัวบน'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        foreach($model as $line) {
+            $sum += $line['top_amount'];
+            $data = [
+                'number'=> $line['number'],
+                'amount' => $line['top_amount'],
+            ];
+            $arr[] = $data;
+        }
+
+        return ['arr' => $arr, 'sum' => $sum];
+    }
+
+    public function actionGetTwoBelow() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สองตัวล่าง'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        foreach($model as $line) {
+            $sum += $line['below_amount'];
+            $data = [
+                'number'=> $line['number'],
+                'amount' => $line['below_amount'],
+            ];
+            $arr[] = $data;
+        }
+
+        return ['arr' => $arr, 'sum' => $sum];
+    }
+
+    public function actionGetThreeOtd(){ 
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สามตัวโต๊ด'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        foreach($model as $line) {
+            $sum += $line['otd_amount'];
+            $data = [
+                'number' => $line['number'],
+                'amount' => $line['otd_amount']
+            ];
+            $arr[] = $data;
+        }
+        return ['arr' => $arr, 'sum' => $sum];
+
+
+    }
+
+    public function actionGetThreeTop(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สามตัวบน'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        foreach($model as $line) {
+            $sum += $line['top_amount'];
+            $data = [
+                'number' => $line['number'],
+                'amount' => $line['top_amount']
+            ];
+            $arr[] = $data;
+        }
+        return ['arr'=>$arr, 'sum'=>$sum];
+    }
+
+    public function actionGetThreeBelow(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สามตัวล่าง'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        foreach($model as $line) {
+            $sum += $line['below_amount'];
+            $data = [
+                'number' => $line['number'],
+                'amount' => $line['below_amount']
+            ];
+            $arr[] = $data;
+        }
+        return ['arr'=>$arr, 'sum'=>$sum];
+    }
+
+    /**
+     * 
+     * Save as cut ส่วนตัดเก็บ
+     */
+    public function actionSaveAsCut() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->rawBody;
+        $data = Json::decode($post);
+        $two_top = $data['two_top'];
+        $two_below = $data['two_below'];
+
+        $current = ResCut::current();
+        $tx = ResDocLotto::getDb()->beginTransaction();
+        try {
+            $amount_top = 0;
+            $amount_below = 0;
+            $sum_top = 0;
+            $sum_below = 0;
+            $res_top_amount = [];
+            $res_below_amount = [];
+            foreach($two_top as $line) {
+                if($line['amount'] > $current->two_top) {
+                    $amount_top = $current->two_top;
+                } else {
+                    $amount_top = $line['amount'];
+                }
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_top
+                ];
+                $sum_top += $amount_top;
+                $res_top_amount[] = $data;
+            }
+
+            foreach($two_below as $line) {
+                if($line['amount'] > $current->two_below) {
+                    $amount_below = $current->two_below;
+                } else {
+                    $amount_below = $line['amount'];
+                }
+                $sum_below += $amount_below;
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_below
+                ];
+                $res_below_amount[] = $data;
+            }
+
+
+            $tx->commit();
+        } catch (\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+
+        return [
+            'res_top_amount' => $res_top_amount,
+            'res_below_amount' => $res_below_amount,
+            'sum_top' => $sum_top,
+            'sum_below' => $sum_below
+        ];
+    }
+
+    /**
+     * 
+     * Save send ส่วนตัดส่ง
+     */
+    public function actionSaveSendLotto() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->rawBody;
+        $data = Json::decode($post);
+        $two_top = $data['two_top'];
+        $two_below = $data['two_below'];
+        $current = ResCut::current();
+        $tx = ResDocLotto::getDb()->beginTransaction();
+        try {
+
+            $amount_top = 0;
+            $amount_below = 0;
+            $sum_top = 0;
+            $sum_below = 0;
+            $res_send_top_amount = [];
+            $res_send_below_amount = [];
+            foreach($two_top as $line) {
+                if($line['amount'] > $current->two_top) {
+                    $amount_top = ($line['amount'] - $current->two_top);
+                    $data = [
+                        'number' => $line['number'],
+                        'amount' => $amount_top
+                    ];
+                    $sum_top += $amount_top;
+                    $res_send_top_amount[] = $data;
+                }
+               
+            }
+
+            foreach($two_below as $line) {
+                if($line['amount'] > $current->two_below) {
+                    $amount_below = ($line['amount'] - $current->two_below);
+                    $data = [
+                        'number' => $line['number'],
+                        'amount' => $amount_below
+                    ];
+                    $sum_below += $amount_below;
+                    $res_send_below_amount[] = $data;
+                }
+                
+            }
+
+            $tx->commit();
+        } catch (\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+
+        return [
+            'res_send_top_amount' => $res_send_top_amount,
+            'res_send_below_amount' => $res_send_below_amount,
+            'sum_top' => $sum_top,
+            'sum_below' => $sum_below
+        ];
     }
 }
 
