@@ -30,11 +30,12 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
     <div class="row">
         <div class="col-sm-6">
 
-        <div class="panel panel-primary" style='margin-top: 15px'>
-            <div class="panel-heading"> สองตัวบน </div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped">
+       
+                <table class="table table-bordered table-striped" style='margin-top: 15px'>
                     <thead>
+                        <tr>
+                            <th colspan='2' style='text-align: center'> สองตัวบน</th>
+                        </tr>
                         <tr>
                             <th style='text-align: center'> ตัวเลข </th>
                             <th style='text-align: center'>  จำนวนเงิน</th>
@@ -53,18 +54,18 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </tfoot>
                 </table>
-            </div>        
-        </div>
+            
         
         </div>
 
         <div class="col-sm-6">
 
-            <div class="panel panel-primary" style='margin-top: 15px'>
-                <div class="panel-heading"> สองตัวล่าง </div>
-                <div class="panel-body">
-                <table class="table table-bordered table-striped">
+           
+                <table class="table table-bordered table-striped" style='margin-top: 15px'>
                     <thead>
+                        <tr>
+                            <th colspan='2' style='text-align: center'> สองตัวล่าง </th>
+                        </tr>
                         <tr>
                             <th style='text-align: center'> ตัวเลข </th>
                             <th style='text-align: center'>  จำนวนเงิน</th>
@@ -83,8 +84,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </tfoot>
                 </table>
-            </div>        
-        </div>
+            
 
 </div>
 

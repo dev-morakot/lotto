@@ -63,17 +63,16 @@ AppAsset::register($this);
                 'url'=>['/resource/default'],
                 'visible'=>Yii::$app->user->can('partner/menu_main'),
                 'items'=>[
-                    ['label'=>'สรุปยอดซื้อ','url'=>'/resource/default'],                    
-                    ['label' => 'สรุปเลขวิ่ง', 'url' => '/resource/res-partner'],
-                    ['label' => 'สรุปเลขสองตัว', 'url' => '/resource/res-partner'],
-                    ['label' => 'สรุปเลขสามตัว', 'url' => '/resource/res-partner'],
-                    ['label' => 'สรุปเลขทั้งหมด', 'url' => '/resource/res-partner']
+                    ['label'=>'สรุปยอดซื้อ','url'=>'/resource/res-doc-report/report-all'],                    
+                    ['label' => 'สรุปเลขสองตัว', 'url' => '/resource/res-doc-report/report-two'],
+                    ['label' => 'สรุปเลขสามตัว', 'url' => '/resource/res-doc-report/report-three'],
+                    ['label' => 'สรุปเลขทั้งหมด', 'url' => '/resource/res-doc-report/all']
                 ],
                 
             ],
             [
                 'label' => 'คีย์ข้อมูลหวย',
-                'url'=>['/purchase/default'],
+                'url'=>['/resource/res-doc-lotto/'],
                 
             ],
             [

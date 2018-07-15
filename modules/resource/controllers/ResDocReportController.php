@@ -382,6 +382,166 @@ class ResDocReportController extends Controller
             'sum_below' => $sum_below
         ];
     }
+
+
+    /**
+     * 
+     * ส่วนตัดเก็บ 3 ตัว
+     */
+    public function actionSaveCutThree(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->rawBody;
+        $data = Json::decode($post);
+        $three_top = $data['three_top'];
+        $three_below = $data['three_below'];
+        $three_otd = $data['three_otd'];
+        $current = ResCut::current();
+        $tx = ResDocLotto::getDb()->beginTransaction();
+        try {
+
+            $amount_three_top = 0;
+            $res_amount_three_top = [];
+            $sum_three_top = 0;
+            foreach($three_top as $line) {
+                if($line['amount'] > $current->three_top) {
+                    $amount_three_top = $current->three_top;
+                } else {
+                    $amount_three_top = $line['amount'];
+                }
+
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_three_top
+                ];
+                $sum_three_top += $amount_three_top;
+                $res_amount_three_top[] = $data;
+            }
+
+            $amount_three_below = 0;
+            $res_amount_three_below = [];
+            $sum_three_below = 0;
+            foreach($three_below as $line) {
+                if($line['amount'] > $current->three_below) {
+                    $amount_three_below = $current->three_below;
+                } else {
+                    $amount_three_below = $line['amount'];
+                }
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_three_below
+                ];
+                $sum_three_below += $amount_three_below;
+                $res_amount_three_below[] = $data;
+            }
+
+            $amount_three_otd = 0;
+            $res_amount_three_otd = [];
+            $sum_three_otd = 0;
+            foreach($three_otd as $line) {
+                if($line['amount'] > $current->tree_otd) {
+                    $amount_three_otd = $current->tree_otd;
+                } else {
+                    $amount_three_otd = $line['amount'];
+                }
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_three_otd
+                ];
+                $sum_three_otd += $amount_three_otd;
+                $res_amount_three_otd[] = $data;
+            }   
+
+            $tx->commit();
+        } catch (\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+
+        return [
+            'res_amount_three_top' => $res_amount_three_top,
+            'sum_three_top' => $sum_three_top,
+            'res_amount_three_below' => $res_amount_three_below,
+            'sum_three_below' => $sum_three_below,
+            'res_amount_three_otd' => $res_amount_three_otd,
+            'sum_three_otd' => $sum_three_otd
+        ];
+    }
+
+    /**
+     * 
+     * ตัดส่วน ส่ง 3 ตัว
+     */
+    public function actionSaveSendThree(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->rawBody;
+        $data = Json::decode($post);
+        $three_top = $data['three_top'];
+        $three_below = $data['three_below'];
+        $three_otd = $data['three_otd'];
+        $current = ResCut::current();
+        $tx = ResDocLotto::getDb()->beginTransaction();
+        try {
+
+            $amount_three_top = 0;
+            $res_three_top = [];
+            $sum_three_top = 0;
+            foreach($three_top as $line) {
+                if($line['amount'] > $current->three_top) {
+                    $amount_three_top = ($line['amount'] - $current->three_top);
+                    $data = [
+                        'number' => $line['number'],
+                        'amount' => $amount_three_top
+                    ];
+                    $sum_three_top += $amount_three_top;
+                    $res_three_top[] = $data;
+                }
+            }
+
+            $amount_three_below = 0;
+            $res_three_below = [];
+            $sum_three_below = 0;
+            foreach($three_below as $line) {
+                if($line['amount'] > $current->three_below) {
+                    $amount_three_below = ($line['amount'] - $current->three_below);
+                    $data = [
+                        'number' => $line['number'],
+                        'amount' => $amount_three_below
+                    ];
+                    $sum_three_below += $amount_three_below;
+                    $res_three_below[] = $data;
+                }
+            }
+
+            $amount_three_otd = 0;
+            $res_three_otd = [];
+            $sum_three_otd = 0;
+            foreach($three_otd as $line) {
+                if($line['amount'] > $current->tree_otd) {
+                    $amount_three_otd = ($line['amount'] - $current->tree_otd);
+                    $data = [
+                        'number' => $line['number'],
+                        'amount' => $amount_three_otd
+                    ];
+                    $sum_three_otd += $amount_three_otd;
+                    $res_three_otd[] = $data;
+                }
+            }
+
+            $tx->commit();
+        } catch(\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+
+        return [
+            'res_three_top' => $res_three_top,
+            'sum_three_top' => $sum_three_top,
+            'res_three_below' => $res_three_below,
+            'sum_three_below' =>$sum_three_below,
+            'res_three_otd' => $res_three_otd,
+            'sum_three_otd' => $sum_three_otd
+        ];
+    }
 }
 
 ?>

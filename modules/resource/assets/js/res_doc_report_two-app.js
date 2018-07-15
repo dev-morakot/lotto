@@ -182,6 +182,9 @@ app.controller("FormController", function ($scope, $http,$timeout,
     // ส่วนตัดส่ง
     $scope.two_send_top_amount = [];
     $scope.two_send_below_amount = [];
+    $scope.total_top = {};
+    $scope.total_below = {};
+
 
     // top
     $http.get('/resource/res-doc-report/get-two-top')
