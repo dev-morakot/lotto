@@ -41,7 +41,7 @@
     <h4>Settings</h4>
     <ul>
         <li><a href="/resource/res-doc-lotto">คีย์ข้อมูลหวย</a></li>
-        <li><a href="/resource/res-doc-sequence">ตรวจหวย</a></li>
+        <li><a href="/resource/res-doc-check-lotto">ตรวจหวย</a></li>
         <li><a href="/resource/res-cut">ตั้งค่าตัดเก็บรายตัว</a>
             <small class="help help-block">กำหนดราคาหวย</small></li>
     </ul>

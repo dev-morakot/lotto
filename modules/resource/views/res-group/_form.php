@@ -11,8 +11,6 @@ use yii\helpers\ArrayHelper;
 ?>
 <?php
     ResGroupFormAsset::register($this);
-    
-    $prSequenceOptions = ArrayHelper::map(ResDocSequence::find()->where(['type'=>'purchase.request'])->all(), 'id', 'name');
 ?>
 <div class="res-group-form" >
     <input type="hidden" id='model_id' value="<?=$model->id?>">
