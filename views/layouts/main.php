@@ -77,7 +77,7 @@ AppAsset::register($this);
             ],
             [
                 'label' => 'ตรวจหวย',
-                'url'=>['/purchase/default'],
+                'url'=>['/resource/res-doc-check-lotto/'],
                 
             ],
             //['label' => 'About', 'url' => ['/site/about']],

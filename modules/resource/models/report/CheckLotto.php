@@ -66,7 +66,7 @@ class CheckLotto extends \yii\base\Model {
                     if($line['discount']) {
                         $line_total = ($amount *  Yii::$app->params['three_otd']);
                         $discount = ($line_total * $line['discount']) / 100;
-                        $amount_total ($line_total - $discount);
+                        $amount_total = ($line_total - $discount);
                     } else {
                         $amount_total = ($amount *  Yii::$app->params['three_otd']);
                     }          
