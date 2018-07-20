@@ -42,14 +42,14 @@ class ResUsers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username'], 'required'],
-            [['username','email'],'unique'],
+           // [['username'], 'required'],
+         //   [['username','email'],'unique'],
             [['active', 'discount' ,'company_id', 'create_uid', 'write_uid'], 'integer'],
             [['create_date', 'write_date'], 'safe'],
             [['username','firstname','lastname','email'], 'string', 'max' => 255],
             [['code'],'string'],
-            ['password_hash', 'required'],
-            ['password_hash', 'string', 'min' => 6],
+          //  ['password_hash', 'required'],
+         //   ['password_hash', 'string', 'min' => 6],
         ];
     }
     
@@ -141,14 +141,14 @@ class ResUsers extends \yii\db\ActiveRecord
     {
         if ($this->validate()) {
             $user = new ResUsers();
-            $user->username = $this->username;
-            $user->email = $this->email;
+           // $user->username = $this->username;
+           // $user->email = $this->email;
             $user->discount = $this->discount;
             $user->code = $this->code;
             $user->firstname = $this->firstname;
             $user->lastname = $this->lastname;
             $user->active = $this->active;
-            $user->setPassword($this->password_hash);
+          //  $user->setPassword($this->password_hash);
             
             if ($user->save()) {
                 return $user;

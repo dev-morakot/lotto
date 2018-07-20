@@ -71,7 +71,7 @@ $config = [
             'class' => '\yii\rbac\DbManager',
             'db'=>$db,
         ],
-        'pdf'=> require(__DIR__ . '/mpdf.php'),
+     //   'pdf'=> require(__DIR__ . '/mpdf.php'),
         'userlog'=>[
             'class'=>'app\components\UserLogComponent',
             'db'=>  $db,

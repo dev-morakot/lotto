@@ -177,7 +177,8 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 amount: model.top_amount,
                 number: model.number,
                 type: 'สามตัวบน',
-            };           
+            };        
+            
             $scope.lottos.push(top_three);
             $scope.calculationStack();
             $scope.model = {};
@@ -239,11 +240,8 @@ app.controller("FormController", function ($scope, $http,$timeout,
         if(numbers === 2 && model.otd_amount > 1) {
             bootbox.alert('ตัวเลข 2 ตัวไม่สามารถซื้อโต๊ด/กลับเลขได้');
             return false;
-            $scope.model = {};
         }
-
         
-      
     }
 
     $scope.doRemoveLine = function (_line) {

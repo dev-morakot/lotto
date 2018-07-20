@@ -59,6 +59,36 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 
         <div class="col-sm-4">
 
+          
+<table class="table table-bordered table-striped" style='margin-top: 15px'>
+    <thead>
+        <tr>
+            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
+        </tr>
+        <tr>
+            <th style='text-align: center'> ตัวเลข </th>
+            <th style='text-align: center'>  จำนวนเงิน</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="line in three_otd">
+            <td align='center'>{{ line.number }}</td>
+            <td align='right' >{{ line.amount | number }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>รวม</td>
+            <td align='right'>{{ sum_otd | number }}</td>
+        </tr>
+    </tfoot>
+</table>
+
+
+</div>
+
+        <div class="col-sm-4">
+
             
                 <table class="table table-bordered table-striped" style='margin-top: 15px'>
                     <thead>
@@ -86,35 +116,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
             
     </div>
 
-    <div class="col-sm-4">
-
-          
-                <table class="table table-bordered table-striped" style='margin-top: 15px'>
-                    <thead>
-                        <tr>
-                            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
-                        </tr>
-                        <tr>
-                            <th style='text-align: center'> ตัวเลข </th>
-                            <th style='text-align: center'>  จำนวนเงิน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="line in three_otd">
-                            <td align='center'>{{ line.number }}</td>
-                            <td align='right' >{{ line.amount | number }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>รวม</td>
-                            <td align='right'>{{ sum_otd | number }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-           
-
-        </div>
+    
 
 
         <!-- Modal ตัดเก็บ -->
@@ -155,6 +157,34 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 </table>
             
             </div>
+
+            <div class="col-sm-4">
+
+<table class="table table-bordered table-striped" style='margin-top: 15px'>
+    <thead>
+        <tr>
+            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
+        </tr>
+        <tr>
+            <th style='text-align: center'> ตัวเลข </th>
+            <th style='text-align: center'>  จำนวนเงิน</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="line in amount_three_otd">
+            <td align='center'>{{ line.number }}</td>
+            <td align='right' >{{ line.amount | number }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>รวม</td>
+            <td align='right'>{{ amount_total_three_otd | number }}</td>
+        </tr>
+    </tfoot>
+</table>
+</div>
+
             <div class="col-sm-4">
 
                 <table class="table table-bordered table-striped" style='margin-top: 15px'>
@@ -182,32 +212,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 </table>
             
             </div>
-            <div class="col-sm-4">
-
-                <table class="table table-bordered table-striped" style='margin-top: 15px'>
-                    <thead>
-                        <tr>
-                            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
-                        </tr>
-                        <tr>
-                            <th style='text-align: center'> ตัวเลข </th>
-                            <th style='text-align: center'>  จำนวนเงิน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="line in amount_three_otd">
-                            <td align='center'>{{ line.number }}</td>
-                            <td align='right' >{{ line.amount | number }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>รวม</td>
-                            <td align='right'>{{ amount_total_three_otd | number }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            
 
 
         </div>
@@ -266,6 +271,35 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 </table>
             
             </div>
+
+            <div ng-show="line_total_three_otd.length !== 0" class="col-sm-4">
+
+<table class="table table-bordered table-striped" style='margin-top: 15px'>
+    <thead>
+        <tr>
+            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
+        </tr>
+        <tr>
+            <th style='text-align: center'> ตัวเลข </th>
+            <th style='text-align: center'>  จำนวนเงิน</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="line in line_total_three_otd">
+            <td align='center'>{{ line.number }}</td>
+            <td align='right' >{{ line.amount | number }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>รวม</td>
+            <td align='right'>{{ total_three_otd | number }}</td>
+        </tr>
+    </tfoot>
+</table>
+</div>
+
+
             <div ng-show="line_total_three_below.length !== 0" class="col-sm-4">
 
                 <table class="table table-bordered table-striped" style='margin-top: 15px'>
@@ -293,32 +327,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 </table>
             
             </div>
-            <div ng-show="line_total_three_otd.length !== 0" class="col-sm-4">
-
-                <table class="table table-bordered table-striped" style='margin-top: 15px'>
-                    <thead>
-                        <tr>
-                            <th colspan='2' style='text-align: center'>สามตัวโต๊ด</th>
-                        </tr>
-                        <tr>
-                            <th style='text-align: center'> ตัวเลข </th>
-                            <th style='text-align: center'>  จำนวนเงิน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="line in line_total_three_otd">
-                            <td align='center'>{{ line.number }}</td>
-                            <td align='right' >{{ line.amount | number }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>รวม</td>
-                            <td align='right'>{{ total_three_otd | number }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            
 
 
         </div>

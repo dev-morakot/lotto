@@ -57,18 +57,20 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                     </div>
 
                     <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3">โต๊ด (จำนวนเงิน)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bic-required-field" ng-model="model.otd_amount" />
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">ล่าง (จำนวนเงิน)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control bic-required-field" ng-model="model.below_amount" />
                         </div>
                     </div>
 
-                    <div class="form-group form-group-sm">
-                        <label class="control-label col-sm-3">โต๊ด/กลับ (จำนวนเงิน)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control bic-required-field" ng-model="model.otd_amount" />
-                        </div>
-                    </div>
+                    
 
                 </div>
             </div>

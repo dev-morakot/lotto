@@ -202,18 +202,34 @@ class ResDocReportController extends Controller
             ->orderBy('id asc')
             ->asArray()
             ->all();
-        $arr = [];
-        $amount = 0;
-        $sum = 0;
-        foreach($model as $line) {
-            $sum += $line['otd_amount'];
-            $data = [
-                'number' => $line['number'],
-                'amount' => $line['otd_amount']
-            ];
-            $arr[] = $data;
+        $data = [
+            ['name' => 'a', 'number' => 123, 'otd_amount' => 100],
+            ['name' => 'b' , 'number' => 321, 'otd_amount' => 50],
+            ['name' => 'c' , 'number' => 213, 'otd_amount' => 200],
+            ['name' => 'd', 'number' =>  231, 'otd_amount' => 100],
+            ['name' => 'e' , 'number' => 312, 'otd_amount' => 150],
+            ['name' => 'f' , 'number' => 132, 'otd_amount' => 100],
+            ['name' => 'g' , 'number' => 456, 'otd_amount' => 500],
+            ['name' => 'h' , 'number' => 654, 'otd_amount' => 500],
+            ['name' => 'i' , 'number' => 789, 'otd_amount' => 1000],
+        ];
+
+
+        $sum = [];
+        foreach($model as $key => $item) {
+            $item['code_temp'] = str_split($item['number']);
+            sort($item['code_temp']);
+            $item['number'] = implode('', $item['code_temp']);
+            $data[$key] = $item;
+            $sum[$item['number']] = 0;
         }
-        return ['arr' => $arr, 'sum' => $sum];
+
+        foreach($model as $key => $item) {
+            $sum[$item['number']] += $item['otd_amount'];
+        }
+
+        print_r($sum);
+        
 
 
     }
