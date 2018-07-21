@@ -180,8 +180,15 @@ app.controller("FormController", function ($scope, $http,$timeout,
             };        
             
             $scope.lottos.push(top_three);
-            $scope.calculationStack();
             $scope.model = {};
+            $scope.model.user = {
+                id: model.user.id,
+                firstname: model.user.firstname,
+                lastname: model.user.lastname
+            };
+            
+            $scope.calculationStack();
+            
         }
 
         if(numbers === 3 && model.below_amount > 1) {
@@ -194,8 +201,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 type: 'สามตัวล่าง',
             };
             $scope.lottos.push(below_amount);
-            $scope.calculationStack();
             $scope.model = {};
+            $scope.model.user = {
+                id: model.user.id,
+                firstname: model.user.firstname,
+                lastname: model.user.lastname
+            };
+            $scope.calculationStack();
+            
         }
         if(numbers === 3 && model.otd_amount > 1) {
             var otd_amount = {
@@ -207,8 +220,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 type: 'สามตัวโต๊ด'
             };
             $scope.lottos.push(otd_amount);
-            $scope.calculationStack();
             $scope.model = {};
+            $scope.model.user = {
+                id: model.user.id,
+                firstname: model.user.firstname,
+                lastname: model.user.lastname
+            };
+            $scope.calculationStack();
+            
         }
 
         if(numbers === 2 && model.top_amount > 1) {
@@ -221,8 +240,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 type: 'สองตัวบน'
             };
             $scope.lottos.push(top_two);
-            $scope.calculationStack();
             $scope.model = {};
+            $scope.model.user = {
+                id: model.user.id,
+                firstname: model.user.firstname,
+                lastname: model.user.lastname
+            };
+            $scope.calculationStack();
+            
         }
         if(numbers === 2 && model.below_amount > 1) {
             var below = {
@@ -234,8 +259,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 type: 'สองตัวล่าง'
             };
             $scope.lottos.push(below);
-            $scope.calculationStack();
             $scope.model = {};
+            $scope.model.user = {
+                id: model.user.id,
+                firstname: model.user.firstname,
+                lastname: model.user.lastname
+            };
+            $scope.calculationStack();
+            
         }
         if(numbers === 2 && model.otd_amount > 1) {
             bootbox.alert('ตัวเลข 2 ตัวไม่สามารถซื้อโต๊ด/กลับเลขได้');

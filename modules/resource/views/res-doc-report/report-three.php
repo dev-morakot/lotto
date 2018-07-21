@@ -222,8 +222,8 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 
       </div>
       <div class="modal-footer">
-        <button type="button" ng-click="exportData()" class="btn btn-default">พิมพ์รายงาน</button>
-        <button type="button" ng-click="downloadPdf()" class="btn btn-primary">บันทึกเป็น Excel</button>
+        <button type="button" ng-click="downloadPdf()" class="btn btn-default">พิมพ์รายงาน</button>
+        <button type="button" ng-click="exportData()" class="btn btn-primary">บันทึกเป็น Excel</button>
       </div>
     </div>
   </div>
@@ -337,8 +337,8 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 
       </div>
       <div class="modal-footer">
-        <button type="button" ng-click="exportDataSend()" class="btn btn-default">พิมพ์รายงาน</button>
-        <button type="button" ng-click="downloadPdfSend()" class="btn btn-primary">บันทึกเป็น Excel</button>
+        <button type="button" ng-click="downloadPdfSend()" class="btn btn-default">พิมพ์รายงาน</button>
+        <button type="button" ng-click="exportDataSend()" class="btn btn-primary">บันทึกเป็น Excel</button>
       </div>
     </div>
   </div>

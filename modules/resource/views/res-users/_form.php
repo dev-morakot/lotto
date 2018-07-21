@@ -14,11 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'discount')->textInput(['maxlength' => true])->label('ส่วนลด %') ?>
     
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-    <?php if($model->isNewRecord): ?>
-    <?= $form->field($model, 'password_hash')->passwordInput() ?>
-    <?php endif; ?>
+   
   
     <?= $form->field($model,'firstname')->textInput(['maxlength'=>true])->label('ชื่อ') ?>
     

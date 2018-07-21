@@ -242,7 +242,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
     };
 
     $scope.exportDataSend = function (){
-        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+        var blob = new Blob([document.getElementById('exportableSend').innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
         saveAs(blob, "สรุปยอดตัดส่ง_เลขสองตัว.xls");
@@ -278,7 +278,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
     };
 
     $scope.downloadPdfSend = function (){
-        html2canvas(document.getElementById('exportable'), {
+        html2canvas(document.getElementById('exportableSend'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
                 var docDefinition = {

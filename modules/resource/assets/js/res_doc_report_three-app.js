@@ -216,6 +216,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
     $http.get('/resource/res-doc-report/get-three-otd')
         .then(function (response) {
             $scope.three_otd = response.data.arr;
+            console.log($scope.three_otd);
             $scope.sum_otd = response.data.sum;
         });
 

@@ -196,13 +196,22 @@ class ResDocReportController extends Controller
     }
 
     public function actionGetThreeOtd(){ 
+        error_reporting(E_ALL ^ E_NOTICE);
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $model = ResDocLotto::find()
+        $result = ResDocLotto::find()
             ->where(['type' => 'สามตัวโต๊ด'])
             ->orderBy('id asc')
             ->asArray()
             ->all();
-        $data = [
+        $data = [];
+        foreach($result as $line) {
+            $row = [
+                'number' => $line['number'],
+                'amount' => $line['otd_amount']
+            ];
+            $data[] = $row;
+        }
+       /* $data = [
             ['name' => 'a', 'number' => 123, 'otd_amount' => 100],
             ['name' => 'b' , 'number' => 321, 'otd_amount' => 50],
             ['name' => 'c' , 'number' => 213, 'otd_amount' => 200],
@@ -212,26 +221,34 @@ class ResDocReportController extends Controller
             ['name' => 'g' , 'number' => 456, 'otd_amount' => 500],
             ['name' => 'h' , 'number' => 654, 'otd_amount' => 500],
             ['name' => 'i' , 'number' => 789, 'otd_amount' => 1000],
-        ];
-
+        ];*/
+        
 
         $sum = [];
-        foreach($model as $key => $item) {
+        $arr = [];
+        $total = 0;
+        foreach($data as $key => $item) {
             $item['code_temp'] = str_split($item['number']);
             sort($item['code_temp']);
             $item['number'] = implode('', $item['code_temp']);
+            $number = $item['number'];
             $data[$key] = $item;
-            $sum[$item['number']] = 0;
-        }
+            $sum[$item['number']] += $item['amount'];
+        }   
 
-        foreach($model as $key => $item) {
-            $sum[$item['number']] += $item['otd_amount'];
+        foreach($sum as $key => $line) {
+            $get = [
+                'number' => $key,
+                'amount' => $line
+            ];
+            $arr[] = $get;
+            $total += $line;
         }
-
-        print_r($sum);
         
-
-
+        return [
+            'arr' => $arr,
+            'sum' => $total
+        ];
     }
 
     public function actionGetThreeTop(){
