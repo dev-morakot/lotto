@@ -42,7 +42,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_top">
+                        <tr ng-repeat="line in two_top | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -72,7 +72,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_below">
+                        <tr ng-repeat="line in two_below | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -114,7 +114,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_cut_top_amount">
+                        <tr ng-repeat="line in two_cut_top_amount | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -140,7 +140,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_cut_below_amount">
+                        <tr ng-repeat="line in two_cut_below_amount | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -192,7 +192,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_send_top_amount">
+                        <tr ng-repeat="line in two_send_top_amount | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -218,7 +218,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in two_send_below_amount">
+                        <tr ng-repeat="line in two_send_below_amount | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>

@@ -169,6 +169,11 @@ app.controller("FormController", function ($scope, $http,$timeout,
             bootbox.alert('กรุณาใส่จำนวนเลขให้ถูกต้อง');
         }
 
+      if(!model.user) {
+          bootbox.alert("กรุณาใส่ชื่อผู้ซื้อ");
+          return;
+      }
+
         if(numbers === 3 && model.top_amount > 1) {
             var top_three = {
                 firstname: model.user.firstname,

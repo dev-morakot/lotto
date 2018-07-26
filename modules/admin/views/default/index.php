@@ -1,57 +1,63 @@
 <div class="admin-default-index">
  
-    <div class="col-sm-6">
-    <h4>ผู้ซื้อ/คนเดิมโพยหวย</h4>
-    <ul>
-        <li><a href="/resource/res-users">ผู้ใช้งานระบบ</a></li>
-        <li><a href="/resource/res-group">กลุ่มผู้ใช้งานระบบ</a>
-            <small class="help help-block">กลุ่มผู้ใช้ตามฝังองค์กรของบริษัท</small></li>
-    </ul>
+<div class="col-sm-6">
+   
+<h4>ผู้ซื้อ/คนเดิมโพยหวย</h4>
+    <div class="list-group">
+       
+        <a href="/resource/res-users" class="list-group-item">ผู้ใช้งานระบบ</a>
+        <a href="/resource/res-group" class="list-group-item">กลุ่มผู้ใช้งานระบบ</a>
+    </div>
     
     <h4>สิทธิ์การใช้ระบบ</h4>
-    <ul>
-        <li><a href="/rbac/role">Role</a>
-            <small class="help help-block">กลุ่มผู้ใช้ระบบ เช่น Purchase Manager,Admin</small></li>
-        <li><a href="/rbac/permission">Permission</a>
-            <small class="help help-block">สิทธิ์การใช้ระบบ เช่น po/create</small></li>
-        <li><a href="/rbac/assignment">Assignment</a>
-            <small class="help help-block">เงื่อนไขผู้ใชักับกลุ่มผู้ใช้</small></li>
-        <li><a href="/rbac/rule">Rule</a></li>
-    </ul>
-    <h4>Logs</h4>
-    <ul>
-        <li><a href="/admin/app-userlog">User log</a></li>
-        <li><a href="/admin/app-model-log">Model log</a></li>
-    </ul>
+    <div class="list-group">
+        
+        <a href="/rbac/role" class="list-group-item">Role</a>
+        <a href="/rbac/permission" class="list-group-item">Permission</a>
+        <a href="/rbac/assignment" class="list-group-item">Assignment</a>
+        <a href="/rbac/rule" class="list-group-item">Rule</a>
     </div>
-    <div clsas="col-sm-6">
+    
+    <h4>Logs</h4>
+    <div class="list-group">
+        
+        <a href="/admin/app-userlog" class="list-group-item">User log</a>
+        <a href="/admin/app-model-log" class="list-group-item">Model log</a>
+    </div>
+</div>
+
+
+<div class="col-sm-6">
+  
     <h4>ข้อมูลมาสเตอร์ที่อยู่</h4>
-    <ul>
-       
-        <li>
-            <a href="/resource/res-province">จังหวัด</a>
-        </li>
-        <li>
-            <a href="/resource/res-district">อำเภอ/เขต</a>
-        </li>
-        <li>
-            <a href="/resource/res-subdistrict"> ตำบล/แขวง </a>
-        </li>
-    </ul>
-    <h4>Settings</h4>
-    <ul>
-        <li><a href="/resource/res-doc-lotto">คีย์ข้อมูลหวย</a></li>
-        <li><a href="/resource/res-doc-check-lotto">ตรวจหวย</a></li>
-        <li><a href="/resource/res-cut">ตั้งค่าตัดเก็บรายตัว</a>
-            <small class="help help-block">กำหนดราคาหวย</small></li>
-    </ul>
+    <div class="list-group">
+    
+        <a href="/resource/res-province" class="list-group-item">จังหวัด</a>
+        <a href="/resource/res-district" class="list-group-item">อำเภอ/เขต</a>
+        <a href="/resource/res-subdistrict" class="list-group-item">ตำบล/แขวง</a>
+    </div>
+    
+   
+    <h4>ตั้งค่าระบบ</h4>
+   
+    <div class="list-group">
+    
+        <a href="/resource/res-doc-lotto" class="list-group-item">คีย์ข้อมูลหวย</a>
+        <a href="/resource/res-doc-check-lotto" class="list-group-item">ตรวจหวย</a>
+        <a href="/resource/res-cut" class="list-group-item">ตั้งค่าตัดเก็บรายตัว</a>
+        <a href="/resource/res-res-traints" class="list-group-item">ตั้งค่าเลขไม่รับซื้อ</a>
+        
+    </div>
 
     <h4>สรุปรายงานยอดหวย</h4>
-    <ul>
-        <li><a href="/resource/res-doc-report/report-all">สรุปยอดซื้อ</a></li>
-        <li><a href="/resource/res-doc-report/report-two">สรุปเลขสองตัว</a></li>
-        <li><a href="/resource/res-doc-report/report-three">สรุปเลขสามตัว</a></li>
-        <li><a href="/resource/res-doc-report/all">สรุปเลขทั้งหมด</a></li>
-    </ul>
+    
+    <div class="list-group">
+    
+        <a href="/resource/res-doc-report/report-all" class="list-group-item">สรุปยอดซื้อ</a>
+        <a href="/resource/res-doc-report/report-two" class="list-group-item">สรุปเลขสองตัว</a>
+        <a href="/resource/res-doc-report/report-three" class="list-group-item">สรุปเลขสามตัว</a>
+        <a href="/resource/res-doc-report/all" class="list-group-item">สรุปเลขทั้งหมด</a>
+        
     </div>
+</div>
 </div>

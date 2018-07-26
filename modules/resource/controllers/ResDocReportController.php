@@ -20,6 +20,7 @@ use app\components\DateHelper;
 use app\modules\resource\models\report\LottoAll;
 use app\modules\resource\models\ResCut;
 use app\modules\resource\models\ResCutQuery;
+use app\modules\resource\models\ResResTraints;
 
 /**
  * Default controller for the `resource` module
@@ -155,7 +156,6 @@ class ResDocReportController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = ResDocLotto::find()
             ->where(['type' => 'สองตัวบน'])
-            ->orderBy('id asc')
             ->asArray()
             ->all();
         $arr = [];
@@ -176,8 +176,7 @@ class ResDocReportController extends Controller
     public function actionGetTwoBelow() {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = ResDocLotto::find()
-            ->where(['type' => 'สองตัวล่าง'])
-            ->orderBy('id asc')
+            ->where(['type' => 'สองตัวล่าง'])            
             ->asArray()
             ->all();
         $arr = [];
@@ -191,7 +190,6 @@ class ResDocReportController extends Controller
             ];
             $arr[] = $data;
         }
-
         return ['arr' => $arr, 'sum' => $sum];
     }
 
@@ -306,7 +304,8 @@ class ResDocReportController extends Controller
 
         $current = ResCut::current();
         $tx = ResDocLotto::getDb()->beginTransaction();
-        try {
+        try {        
+
             $amount_top = 0;
             $amount_below = 0;
             $sum_top = 0;
@@ -323,22 +322,68 @@ class ResDocReportController extends Controller
                     'number' => $line['number'],
                     'amount' => $amount_top
                 ];
-                $sum_top += $amount_top;
+               
                 $res_top_amount[] = $data;
             }
 
+            $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
+            $valid = ArrayHelper::getColumn($res_top_amount, 'number');
+        
+            // เลขทืี่ไม่รับซื้อ
+            foreach($res as $val) {
+                $num = $val['number_limit'];
+                $nums[] = $num;
+            }
+            foreach($valid as $key => $val) {
+            
+                $keydict = @$nums[$key];
+
+                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ไม่ต้องตัดเก็บ
+                if($val !== $keydict) {
+                    $TopArray[] = [
+                        'number' => $res_top_amount[$key]['number'],
+                        'amount' => $res_top_amount[$key]['amount']
+                    ];
+                    $sum_top += $res_top_amount[$key]['amount'];
+                }  
+            }
+
+
+            // เลขที่ไม่รับซื่อ 2 ตัวล่าง จะไม่เข้าในส่วนตัดเก็บ
             foreach($two_below as $line) {
                 if($line['amount'] > $current->two_below) {
                     $amount_below = $current->two_below;
                 } else {
                     $amount_below = $line['amount'];
                 }
-                $sum_below += $amount_below;
+               
                 $data = [
                     'number' => $line['number'],
                     'amount' => $amount_below
                 ];
                 $res_below_amount[] = $data;
+            }
+
+
+            $Belowvalid = ArrayHelper::getColumn($res_below_amount, 'number');
+        
+            // เลขทืี่ไม่รับซื้อ
+            foreach($res as $val) {
+                $num = $val['number_limit'];
+                $nums[] = $num;
+            }
+            foreach($Belowvalid as $key => $val) {
+            
+                $keydict = @$nums[$key];
+
+                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ไม่ต้องตัดเก็บ
+                if($val !== $keydict) {
+                    $BelowArray[] = [
+                        'number' => $res_below_amount[$key]['number'],
+                        'amount' => $res_below_amount[$key]['amount']
+                    ];
+                    $sum_below += $res_below_amount[$key]['amount'];
+                }  
             }
 
 
@@ -349,8 +394,8 @@ class ResDocReportController extends Controller
         }
 
         return [
-            'res_top_amount' => $res_top_amount,
-            'res_below_amount' => $res_below_amount,
+            'res_top_amount' => $TopArray,
+            'res_below_amount' => $BelowArray,
             'sum_top' => $sum_top,
             'sum_below' => $sum_below
         ];
@@ -370,24 +415,61 @@ class ResDocReportController extends Controller
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {
 
+            $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
+            
+            // เลขทืี่ไม่รับซื้อ
+            foreach($res as $val) {
+                $num = $val['number_limit'];
+                $nums[] = $num;
+            }
+
             $amount_top = 0;
             $amount_below = 0;
             $sum_top = 0;
             $sum_below = 0;
             $res_send_top_amount = [];
             $res_send_below_amount = [];
-            foreach($two_top as $line) {
+            $BelowArray = [];
+            $TopArray = [];
+            foreach($two_top as $key => $line) {
+               
                 if($line['amount'] > $current->two_top) {
                     $amount_top = ($line['amount'] - $current->two_top);
                     $data = [
                         'number' => $line['number'],
-                        'amount' => $amount_top
+                        'amount' => $amount_top,                       
                     ];
-                    $sum_top += $amount_top;
+                   // $sum_top += $amount_top;
                     $res_send_top_amount[] = $data;
                 }
                
             }
+
+            // เลขที่ไม่รับซื้อ 2 ตัวบน ถ้า เลขตรงกันในระบบ ให้ตัดส่งที่เจ้ามือทันที่
+            $valid = ArrayHelper::getColumn($two_top, 'number');
+            $avalidble = [];
+            foreach($valid as $key => $line) {
+                $keydict = @$nums[$key];
+                if($line == $keydict) {
+
+                    if($two_top[$key]['amount'] > $current->two_top) {
+                        $temp['number'] = $two_top[$key]['number'];
+                        $temp['amount'] = $two_top[$key]['amount'];
+                        $sum_top += $two_top[$key]['amount'];
+                        array_push($avalidble, $temp);
+                    }                    
+                } else {
+                    if($two_top[$key]['amount'] > $current->two_top) {
+                        $amount_top = ($two_top[$key]['amount'] - $current->two_top);
+                        $temp['number'] = $two_top[$key]['number'];
+                        $temp['amount'] = $amount_top;
+                        $sum_top += $amount_top;
+                        array_push($avalidble, $temp);
+                    }
+                }
+            }
+         
+
 
             foreach($two_below as $line) {
                 if($line['amount'] > $current->two_below) {
@@ -396,12 +478,40 @@ class ResDocReportController extends Controller
                         'number' => $line['number'],
                         'amount' => $amount_below
                     ];
-                    $sum_below += $amount_below;
+                  //  $sum_below += $amount_below;
                     $res_send_below_amount[] = $data;
                 }
                 
             }
 
+            // เลขไม่รับซื้อ 2 ตัวล่าง ถ้าตรงกับระบบ ให้ตัดส่งไปเจ้ามือเลย
+            $Belowvalid = ArrayHelper::getColumn($two_below, 'number');
+            $avalidbleBelow = [];
+            foreach($Belowvalid as $key => $val) {
+            
+                $keydict = @$nums[$key];
+
+                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ให้ตัดส่งทันที่
+                if($val == $keydict) {
+
+                    if($two_below[$key]['amount'] > $current->two_below) {
+                        $temp['number'] = $two_below[$key]['number'];
+                        $temp['amount'] = $two_below[$key]['amount'];
+                        $sum_top += $two_below[$key]['amount'];
+                        array_push($avalidbleBelow, $temp);
+                    }                    
+                } else {
+                    if($two_below[$key]['amount'] > $current->two_below) {
+                        $amount_below = ($two_below[$key]['amount'] - $current->two_below);
+                        $temp['number'] = $two_below[$key]['number'];
+                        $temp['amount'] = $amount_below;
+                        $sum_below += $amount_below;
+                        array_push($avalidbleBelow, $temp);
+                    }
+                }
+                 
+            }
+           
             $tx->commit();
         } catch (\Exception $e) {
             $tx->rollBack();
@@ -409,8 +519,8 @@ class ResDocReportController extends Controller
         }
 
         return [
-            'res_send_top_amount' => $res_send_top_amount,
-            'res_send_below_amount' => $res_send_below_amount,
+            'res_send_top_amount' => $avalidble,
+            'res_send_below_amount' => $avalidbleBelow,
             'sum_top' => $sum_top,
             'sum_below' => $sum_below
         ];
