@@ -9,6 +9,7 @@ use yii\helpers\Html;
 use yii\db\Query;
 use \DateTime;
 use app\modules\resource\models\ResDocLotto;
+use app\modules\resource\models\ResLottoDefault;
 
 class CheckLotto extends \yii\base\Model {
 

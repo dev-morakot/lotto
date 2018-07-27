@@ -293,6 +293,94 @@ class ResDocReportController extends Controller
 
     /**
      * 
+     * ทดสอบ เลข ไม่รับ
+     * 
+     */
+    public function actionTest(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $current = ResCut::current();
+        $model = ResDocLotto::find()
+            ->where(['type' => 'สองตัวบน'])
+            ->asArray()
+            ->all();
+        $arr = [];
+        $amount = 0;
+        $sum = 0;
+        $amount_top= 0;
+        foreach($model as $line) {
+            /*if($line['top_amount'] > $current->two_top) {
+                $amount_top = ($line['top_amount'] - $current->two_top);                
+            } else {
+                $amount_top = $line['top_amount'];
+            }*/
+
+            $data = [
+                'number' => $line['number'],
+                'amount' => $line['top_amount'] //$amount_top,                       
+            ];
+           
+            $res_send_top_amount[] = $data;
+        }
+
+        $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
+             // เลขทืี่ไม่รับซื้อ
+            foreach($res as $id => $val) {
+                $num = $val['number_limit'];
+                $nums[] = $num;
+        }
+       
+        $valid = ArrayHelper::getColumn($res_send_top_amount, 'number');
+        
+       
+        print_r($nums);
+        foreach($valid as $id => $val) {
+            $def[] = $val;
+        }
+        print_r($def);
+
+        $result = array_diff($def, $nums);
+      
+        print_r($result);
+       
+        $g = array_intersect($def, $nums);
+        print_r($g);
+
+        $empty = [];
+        $emptys = [];
+        $avalidbleTwoTop = [];
+        foreach($result as $k => $v) {
+           if(array_diff($def, $nums)) {
+               if($res_send_top_amount[$k]['amount'] > $current->two_top) {
+                    $amount_top = ($res_send_top_amount[$k]['amount'] - $current->two_top);
+                    $data = [
+                        'number' => $res_send_top_amount[$k]['number'],
+                        'amount' => $amount_top,                       
+                    ];
+                    $emptys[] = $data;
+               }
+           }
+        }
+        
+        print_r($emptys);
+       foreach($g as $k => $v) {
+            if(array_intersect($def,$nums)) {
+                $datas = [
+                    'number' => $res_send_top_amount[$k]['number'],
+                    'amount' => $res_send_top_amount[$k]['amount'],                       
+                ];
+                $empty[] = $datas;
+            }
+       }
+        
+       print_r($empty);
+       $mer = array_merge($emptys, $empty);
+       print_r($mer);
+      
+       
+    }
+
+    /**
+     * 
      * Save as cut ส่วนตัดเก็บ
      */
     public function actionSaveAsCut() {
@@ -305,6 +393,13 @@ class ResDocReportController extends Controller
         $current = ResCut::current();
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {        
+
+            $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
+             // เลขทืี่ไม่รับซื้อ
+            foreach($res as $val) {
+                $num = $val['number_limit'];
+                $nums[] = $num;
+            }
 
             $amount_top = 0;
             $amount_below = 0;
@@ -326,27 +421,23 @@ class ResDocReportController extends Controller
                 $res_top_amount[] = $data;
             }
 
-            $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
+           
             $valid = ArrayHelper::getColumn($res_top_amount, 'number');
-        
-            // เลขทืี่ไม่รับซื้อ
-            foreach($res as $val) {
-                $num = $val['number_limit'];
-                $nums[] = $num;
-            }
-            foreach($valid as $key => $val) {
             
-                $keydict = @$nums[$key];
-
-                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ไม่ต้องตัดเก็บ
-                if($val !== $keydict) {
-                    $TopArray[] = [
-                        'number' => $res_top_amount[$key]['number'],
-                        'amount' => $res_top_amount[$key]['amount']
-                    ];
-                    $sum_top += $res_top_amount[$key]['amount'];
-                }  
+            foreach($valid as $id => $val) {
+                $def[] = $val;
+            }        
+            $top_result = array_diff($def, $nums);
+            foreach($top_result as $k => $v) {
+    
+                $TopArray[] = [
+                    'number' => $res_top_amount[$k]['number'],
+                    'amount' => $res_top_amount[$k]['amount']
+                ];
+                $sum_top += $res_top_amount[$k]['amount'];
             }
+            
+    
 
 
             // เลขที่ไม่รับซื่อ 2 ตัวล่าง จะไม่เข้าในส่วนตัดเก็บ
@@ -368,22 +459,17 @@ class ResDocReportController extends Controller
             $Belowvalid = ArrayHelper::getColumn($res_below_amount, 'number');
         
             // เลขทืี่ไม่รับซื้อ
-            foreach($res as $val) {
-                $num = $val['number_limit'];
-                $nums[] = $num;
-            }
-            foreach($Belowvalid as $key => $val) {
-            
-                $keydict = @$nums[$key];
-
-                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ไม่ต้องตัดเก็บ
-                if($val !== $keydict) {
-                    $BelowArray[] = [
-                        'number' => $res_below_amount[$key]['number'],
-                        'amount' => $res_below_amount[$key]['amount']
-                    ];
-                    $sum_below += $res_below_amount[$key]['amount'];
-                }  
+            foreach($Belowvalid as $id => $val) {
+                $def_below[] = $val;
+            }        
+            $below_result = array_diff($def_below, $nums);
+            foreach($below_result as $k => $v) {
+    
+                $BelowArray[] = [
+                    'number' => $res_below_amount[$k]['number'],
+                    'amount' => $res_below_amount[$k]['amount']
+                ];
+                $sum_below += $res_below_amount[$k]['amount'];
             }
 
 
@@ -433,7 +519,7 @@ class ResDocReportController extends Controller
             $TopArray = [];
             foreach($two_top as $key => $line) {
                
-                if($line['amount'] > $current->two_top) {
+                /*if($line['amount'] > $current->two_top) {
                     $amount_top = ($line['amount'] - $current->two_top);
                     $data = [
                         'number' => $line['number'],
@@ -441,76 +527,108 @@ class ResDocReportController extends Controller
                     ];
                    // $sum_top += $amount_top;
                     $res_send_top_amount[] = $data;
-                }
+                }*/
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $line['amount']
+                ];
+                $res_send_top_amount[] = $data;
                
             }
 
             // เลขที่ไม่รับซื้อ 2 ตัวบน ถ้า เลขตรงกันในระบบ ให้ตัดส่งที่เจ้ามือทันที่
-            $valid = ArrayHelper::getColumn($two_top, 'number');
-            $avalidble = [];
-            foreach($valid as $key => $line) {
-                $keydict = @$nums[$key];
-                if($line == $keydict) {
+            $validTop = ArrayHelper::getColumn($res_send_top_amount, 'number');
+            foreach($validTop as $id => $val) {
+               $defTop[] = $val;
+            }
+            // หาค่าที่ไม่ซ้ำ
+            $result_top = array_diff($defTop, $nums);
 
-                    if($two_top[$key]['amount'] > $current->two_top) {
-                        $temp['number'] = $two_top[$key]['number'];
-                        $temp['amount'] = $two_top[$key]['amount'];
-                        $sum_top += $two_top[$key]['amount'];
-                        array_push($avalidble, $temp);
-                    }                    
-                } else {
-                    if($two_top[$key]['amount'] > $current->two_top) {
-                        $amount_top = ($two_top[$key]['amount'] - $current->two_top);
-                        $temp['number'] = $two_top[$key]['number'];
-                        $temp['amount'] = $amount_top;
+            // หาค่าที่เหมือนกัน
+            $intersectTop = array_intersect($defTop, $nums);
+
+            // สร้าง array
+            $diff_empty = [];
+            $intersect_empty = [];
+
+            foreach($result_top as $k => $v) {
+                if(array_diff($defTop, $nums)) {
+                    if($res_send_top_amount[$k]['amount'] > $current->two_top) {
+                        $amount_top = ($res_send_top_amount[$k]['amount'] - $current->two_top);
+                        $data_diff = [
+                            'number' => $res_send_top_amount[$k]['number'],
+                            'amount' => $amount_top
+                        ];
                         $sum_top += $amount_top;
-                        array_push($avalidble, $temp);
+                        $diff_empty[] = $data_diff;
                     }
                 }
             }
-         
 
-
-            foreach($two_below as $line) {
-                if($line['amount'] > $current->two_below) {
-                    $amount_below = ($line['amount'] - $current->two_below);
-                    $data = [
-                        'number' => $line['number'],
-                        'amount' => $amount_below
+            foreach($intersectTop as $k => $v) {
+                if(array_intersect($defTop, $nums)) {
+                    $data_intersect = [
+                        'number' => $res_send_top_amount[$k]['number'],
+                        'amount' => $res_send_top_amount[$k]['amount']
                     ];
-                  //  $sum_below += $amount_below;
-                    $res_send_below_amount[] = $data;
+                    $sum_top += $res_send_top_amount[$k]['amount'];
+                    $intersect_empty[] = $data_intersect;
                 }
-                
             }
 
-            // เลขไม่รับซื้อ 2 ตัวล่าง ถ้าตรงกับระบบ ให้ตัดส่งไปเจ้ามือเลย
-            $Belowvalid = ArrayHelper::getColumn($two_below, 'number');
-            $avalidbleBelow = [];
-            foreach($Belowvalid as $key => $val) {
-            
-                $keydict = @$nums[$key];
+            $merge_top = array_merge($diff_empty, $intersect_empty);
 
-                // ถ้าเลขไม่รับซื้อ ตรงกับ เลขในระบบ ให้ตัดส่งทันที่
-                if($val == $keydict) {
 
-                    if($two_below[$key]['amount'] > $current->two_below) {
-                        $temp['number'] = $two_below[$key]['number'];
-                        $temp['amount'] = $two_below[$key]['amount'];
-                        $sum_top += $two_below[$key]['amount'];
-                        array_push($avalidbleBelow, $temp);
-                    }                    
-                } else {
-                    if($two_below[$key]['amount'] > $current->two_below) {
-                        $amount_below = ($two_below[$key]['amount'] - $current->two_below);
-                        $temp['number'] = $two_below[$key]['number'];
-                        $temp['amount'] = $amount_below;
+
+            // 2 ตัวล่าง
+            foreach($two_below as $line) {
+               
+                $rows = ['number' => $line['number'], 'amount' => $line['amount']];
+                $res_send_below_amount[] = $rows;
+            }
+
+            $helpers = ArrayHelper::getColumn($res_send_below_amount, 'number');
+            foreach($helpers as $id => $val) {
+                $defaultBelow[] = $val;
+            }
+
+            // หาค่าที่ไม่ซ้ำกัน
+            $result_below = array_diff($defaultBelow, $nums);
+
+            // หาค่าที่เหมือนกัน 
+            $intersectBelow = array_intersect($defaultBelow, $nums);
+
+            // สร้าง array
+            $diff_empty_below = [];
+            $intersect_empty_below = [];
+
+            foreach($result_below as $k => $v) {
+                if(array_diff($defaultBelow, $nums)) {
+                    if($res_send_below_amount[$k]['amount'] > $current->two_below) {
+                        $amount_below = ($res_send_below_amount[$k]['amount'] - $current->two_below);
+                        $data_below = [
+                            'number' => $res_send_below_amount[$k]['number'],
+                            'amount' => $amount_below
+                        ];
                         $sum_below += $amount_below;
-                        array_push($avalidbleBelow, $temp);
+                        $diff_empty_below[] = $data_below;
                     }
                 }
-                 
             }
+
+            foreach($intersectBelow as $k => $v) {
+                if(array_intersect($defaultBelow, $nums)) {
+                    $below_intersect = [
+                        'number' => $res_send_below_amount[$k]['number'],
+                        'amount' => $res_send_below_amount[$k]['amount']
+                    ];
+                    $sum_below += $res_send_below_amount[$k]['amount'];
+                    $intersect_empty_below[] = $below_intersect;
+                }
+            }
+
+            $merge_below = array_merge($diff_empty_below, $intersect_empty_below);
+
            
             $tx->commit();
         } catch (\Exception $e) {
@@ -519,8 +637,8 @@ class ResDocReportController extends Controller
         }
 
         return [
-            'res_send_top_amount' => $avalidble,
-            'res_send_below_amount' => $avalidbleBelow,
+            'res_send_top_amount' => $merge_top,
+            'res_send_below_amount' => $merge_below,
             'sum_top' => $sum_top,
             'sum_below' => $sum_below
         ];

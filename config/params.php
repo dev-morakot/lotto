@@ -11,5 +11,6 @@ return [
     'three_below' => 90,
     'three_otd' => 90,
     'two_top' => 65,
-    'two_below' => 65
+    'two_below' => 65,
+    'res_lotto_default' => 1
 ];
