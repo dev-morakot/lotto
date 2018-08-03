@@ -226,14 +226,17 @@ class ResDocReportController extends Controller
         $arr = [];
         $total = 0;
         foreach($data as $key => $item) {
+           
             $item['code_temp'] = str_split($item['number']);
             sort($item['code_temp']);
             $item['number'] = implode('', $item['code_temp']);
-            $number = $item['number'];
+         
+            
             $data[$key] = $item;
             $sum[$item['number']] += $item['amount'];
+           
         }   
-
+       
         foreach($sum as $key => $line) {
             $get = [
                 'number' => $key,

@@ -52,26 +52,28 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                 <tr>
                     <th style='text-align: center'>ประเภทหวย</th>
                     <th style='text-align: center'>ตัวเลข</th>
-                    <th style='text-align: center'>จำนวนเงิน</th>
+                    <!--<th style='text-align: center'>จำนวนเงิน</th>-->
                     <th style='text-align: center'>รายละเอียด</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr ng-repeat-start="line in result">
+            <tbody ng-repeat="line in result">
+                <tr>
                     <td>{{ line.type }}</td>
                     <td>{{ line.number }}</td>
-                    <td align='right'>{{ line.amount | number }}</td>
+                   <!-- <td align='right'>{{ line.amount | number }}</td> -->
                     <td align="center">
                         <button ng-if="line.expanded" ng-click="line.expanded = false" class='btn btn-primary btn-sm'><i class='glyphicon glyphicon-minus'></i></button>
                         <button ng-if="!line.expanded" ng-click="expandSelected(line)" class='btn btn-primary btn-sm'><i class='glyphicon glyphicon-plus'></i></button>
                     </td>
                 </tr>
-                <tr ng-if="line.expanded" ng-repeat-end="">
+                <tr ng-if="line.expanded" ng-repeat="row in line.rows">
                     <td colspan='4'>
-                        <p> ชื่อ : {{ line.name }} - {{ line.lastname }} </p>
-                        <p>มีส่วนลด (ถ้ามี) :  {{ line.discount }}   %</p>
-                        <p>วิธีคำนวณค่าหวย :  ราคาหวย  *  {{ line.message }}  </p>
-                        <p>รวมเงิน : {{ line.amount_total | number }} </p>
+                        <p> ชื่อ : {{ row.name }} - {{ row.lastname }} </p> 
+                        <p>เลข :  <span class='badge'> {{ row.number }} </span> </p>
+                        <p>ราคาซื้อ: {{ row.amount | number }}   บาท</p>
+                        <p>มีส่วนลด (ถ้ามี) :  {{ row.discount }}   %</p>
+                        <p>วิธีคำนวณค่าหวย :  ราคาหวย  *  {{ row.message }}  </p>
+                        <p>รวมเงิน : {{ row.amount_total | number }} </p>
                     </td>
                    
                 </tr>

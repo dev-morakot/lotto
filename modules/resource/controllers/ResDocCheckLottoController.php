@@ -46,6 +46,89 @@ class ResDocCheckLottoController extends Controller
         $result = $chk->process();
         return $result;
     }
+
+
+    public function actionTest(){
+       
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $result = ResDocLotto::find()
+            ->where(['type' => 'สามตัวโต๊ด'])
+            ->orderBy('id asc')
+            ->asArray()
+            ->all();
+        $data = [];
+        foreach($result as $line) {
+            $row = [
+                'number' => $line['number'],
+                'amount' => $line['otd_amount']
+            ];
+            $data[] = $row;
+        }
+     
+        $a = 123;
+        $_a = str_split($a);
+        $output = $this->permutation($_a);
+        
+        $loc_ids = ArrayHelper::getColumn($data, 'number');
+        print_r($output);
+        $m_sql = $this->selectQuery($output);
+        foreach($m_sql as $sql) {
+           if($sql['type'] == 'สามตัวโต๊ด') {
+            print_r($sql);
+           }
+            
+
+        }
+
+        
+    }
+
+    public function selectQuery($output) {
+        $query = (new Query())->select('
+            a.number, a.top_amount, a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname,b.discount
+        ')->from('res_doc_lotto as a')
+        ->leftJoin('res_users as b','b.id = a.user_id');
+        $query->where(['<>','a.number', 'is null']);
+        if($output) {
+            $query->andWhere(['in','a.number', $output]);
+        }
+        $res = $query->all();
+        return $res;
+
+    }
+
+    private function permutation($_a, $buffer='', $delimiter='') {
+        $output = array();
+    
+        $num = count($_a);
+        if ($num > 1) {
+            foreach ($_a as $key=>$val) {
+                $temp = $_a;
+                unset($temp[$key]);
+                sort($temp);
+    
+                $return = $this->permutation($temp, trim($buffer.$delimiter.$val, $delimiter), $delimiter);
+    
+                if(is_array($return)) {
+                    $output = array_merge($output, $return);
+                    $output = array_unique($output);
+                }
+                else {
+                    $output[] = $return;
+                }
+    
+            }
+            return $output;
+        }
+        else {
+            return $buffer.$delimiter.$_a[0];
+        }
+    }
+
+
+    
+    
 }
 
 ?>
