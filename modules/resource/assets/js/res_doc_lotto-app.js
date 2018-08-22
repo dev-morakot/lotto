@@ -345,5 +345,15 @@ app.controller("FormController", function ($scope, $http,$timeout,
     function navigateToView() {
         $window.location.href = '/resource/res-doc-lotto/';
     }
+
+    $scope.keydown = function ($event, nextId) {
+        if($event.keyCode === 13) {
+            angular.element(
+                document.querySelector('#f_' + nextId))[0].focus();
+        
+        }
+      
+        
+    }
 });
 

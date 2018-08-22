@@ -42,7 +42,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">ตัวเลข</label>
                         <div class="col-sm-9">
-                            <input type="text" name="input" class="form-control bic-required-field" ng-model="model.number" min="0" max="999" required />
+                            <input type="text" name="input" class="form-control bic-required-field" id="f_1" ng-keydown="keydown($event,2)" ng-model="model.number" min="0" max="999" required />
                             <small class="help-block help-block-error" ng-show="form.input.$error.max">กรุณาใส่จำนวนตัวเลขไม่เกิน 3 หลัก</small>
                         </div>
                         
@@ -52,21 +52,21 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">บน (จำนวนเงิน)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bic-required-field" ng-model="model.top_amount" />
+                            <input type="text" name="top_amount" class="form-control bic-required-field" id="f_2" ng-keydown="keydown($event,3)" ng-model="model.top_amount" />
                         </div>
                     </div>
 
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">โต๊ด (จำนวนเงิน)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bic-required-field" ng-model="model.otd_amount" />
+                            <input type="text" class="form-control bic-required-field" id="f_3" ng-keydown="keydown($event,4)" name="otd_amount" ng-model="model.otd_amount" />
                         </div>
                     </div>
 
                     <div class="form-group form-group-sm">
                         <label class="control-label col-sm-3">ล่าง (จำนวนเงิน)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bic-required-field" ng-model="model.below_amount" />
+                            <input type="text" class="form-control bic-required-field" id="f_4" ng-keydown="keydown($event, 5)" name="below_amount" ng-model="model.below_amount" />
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
     </form>
 
     <div class="pull-left">
-        <button type="button" class="btn btn-primary" id="po-line-add3" ng-click="openAddLine()">เพิ่มรายการ</button>
+        <button type="button" class="btn btn-primary"  id="f_5" ng-click="openAddLine()">เพิ่มรายการ</button>
     </div>
     <div class="clearfix"></div>
 
