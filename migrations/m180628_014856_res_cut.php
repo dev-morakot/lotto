@@ -22,11 +22,11 @@ class m180628_014856_res_cut extends Migration
     {
         $this->createTable('res_cut', [
             'id' => $this->primaryKey(),
-            'three_top' => $this->integer()->comment('3ตัวบน'),
-            'three_below'=>$this->integer()->comment('3ตัวล่าง'),
-            'tree_otd' => $this->integer()->comment('3ตัวโต๊ด'),
-            'two_top'=> $this->integer()->comment('2ตัวบน'),
-            'two_below'=>$this->integer()->comment('2ตัวล่าง'),
+            'three_top' => $this->string(100)->comment('3ตัวบน'),
+            'three_below'=>$this->string(100)->comment('3ตัวล่าง'),
+            'tree_otd' => $this->string(100)->comment('3ตัวโต๊ด'),
+            'two_top'=> $this->string(100)->comment('2ตัวบน'),
+            'two_below'=>$this->string(100)->comment('2ตัวล่าง'),
 
             //
             'create_uid' => $this->integer(), // Created by

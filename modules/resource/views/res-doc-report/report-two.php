@@ -20,7 +20,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 ?>
 <div ng-app="myapp" ng-controller="FormController" ng-cloak class="res-doc-report">
     <h1><?= Html::encode($this->title) ?></h1>
-
+   
     <div class="pull-left">
         <a href="#" ng-click="SaveCut()" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">สรุปส่วน ตัดเก็บ</a>
         <a href="#" ng-click="SaveSend()" data-toggle="modal" data-target="#mySend" class="btn btn-success btn-sm">สรุปส่วน ตัดส่ง</a>

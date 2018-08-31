@@ -24,10 +24,10 @@ class m180628_042811_res_doc_lotto extends Migration
         $this->createTable('res_doc_lotto', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer(),
-            'number' => $this->integer()->comment('ตัวเลข'),
-            'top_amount' => $this->integer()->comment('บน/จำนวนเงิน'),
-            'below_amount' => $this->integer()->comment('ล่าง/จำนวนเงิน'),
-            'otd_amount' => $this->integer()->comment('โต๊ด/กลับ จำนวนเงิน'),
+            'number' => $this->string(100)->comment('ตัวเลข'),
+            'top_amount' => $this->string(100)->comment('บน/จำนวนเงิน'),
+            'below_amount' => $this->string(100)->comment('ล่าง/จำนวนเงิน'),
+            'otd_amount' => $this->string(100)->comment('โต๊ด/กลับ จำนวนเงิน'),
             'type' => $this->string()->comment('ประเภทหวย'),
             //
             'create_uid' => $this->integer(), // Created by

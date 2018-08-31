@@ -23,11 +23,11 @@ class m180727_011409_res_lotto_default extends Migration
     {
         $this->createTable('res_lotto_default', [
             'id' => $this->primaryKey(),
-            'three_top' => $this->integer()->comment('3ตัวบน'),
-            'three_below'=>$this->integer()->comment('3ตัวล่าง'),
-            'three_otd' => $this->integer()->comment('3ตัวโต๊ด'),
-            'two_top'=> $this->integer()->comment('2ตัวบน'),
-            'two_below'=>$this->integer()->comment('2ตัวล่าง'),
+            'three_top' => $this->string(100)->comment('3ตัวบน'),
+            'three_below'=>$this->string(100)->comment('3ตัวล่าง'),
+            'three_otd' => $this->string(100)->comment('3ตัวโต๊ด'),
+            'two_top'=> $this->string(100)->comment('2ตัวบน'),
+            'two_below'=>$this->string(100)->comment('2ตัวล่าง'),
 
             //
             'create_uid' => $this->integer(), // Created by

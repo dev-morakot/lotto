@@ -167,10 +167,52 @@ class ResDocReportController extends Controller
                 'number'=> $line['number'],
                 'amount' => $line['top_amount'],
             ];
+            
             $arr[] = $data;
+         
+        }
+        print_r($arr);
+    
+        $res = [];
+        foreach($arr as $key => $val) {
+            $res[$key] = $val['number'];
+        }
+        print_r($res);
+
+        $arr_total = [];
+        foreach($arr as $key => $val) {
+            $arr_total[$key] = $val['amount'];
         }
 
-        return ['arr' => $arr, 'sum' => $sum];
+        print_r($arr_total);
+
+
+        // ตรวจสอบเลขที่ซ้ำกัน
+        $result = array_unique( $res );
+        print_r($result);
+
+
+        
+        $new_arr = [];
+        $push = null;
+        foreach($result as $k => $rows) {         
+         
+            if(isset($new_arr[$k])) {
+                $new_arr[$k] += $arr[$k]['amount'];
+            } else {
+                $new_arr[$k] = $arr[$k]['amount'];
+            }
+            /*$row = [
+                'number' => $rows,
+                
+            ];
+            $new_arr[] = $row;*/
+        }
+
+        print_r($new_arr);
+        
+
+      //  return ['arr' => $arr, 'sum' => $sum];
     }
 
     public function actionGetTwoBelow() {
@@ -392,7 +434,7 @@ class ResDocReportController extends Controller
         $data = Json::decode($post);
         $two_top = $data['two_top'];
         $two_below = $data['two_below'];
-
+        $nums = [];
         $current = ResCut::current();
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {        
@@ -411,26 +453,40 @@ class ResDocReportController extends Controller
             $res_top_amount = [];
             $res_below_amount = [];
             foreach($two_top as $line) {
+
+                // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
                 if($line['amount'] > $current->two_top) {
                     $amount_top = $current->two_top;
                 } else {
+                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
                     $amount_top = $line['amount'];
                 }
+
+                // ถ้าหวย2ตัวเหมือนกัน แต่ ซื้อเกินราคาที่กำหนด ให้ ตัดออกไปที่ ตัดส่ง (เจ้ามือ)
+                // เช้่น 2 ตัวบน รับแค่ 200 บาท แต่ผู้ซื้อ เลข 88 หลายคน แต่รวมราคาแล้วเกิด กว่า 200
+                // ตัวอย่าง ก. 88 = 50  ข. 88 = 50  ค. 88 = 200
+                // ดังนั้น 88 = 300 บาท ซึงเกิดราคาที่กำหนดไว้ ให้ ตัดออกไป จะได้เท่ากับ
+                // 88 = 200 บาท  อีก 100 บาท จะถูกส่งไปที่ ตัดส่ง
+
+
                 $data = [
                     'number' => $line['number'],
                     'amount' => $amount_top
                 ];
                
                 $res_top_amount[] = $data;
-            }
+               
+            }            
+            
 
            
             $valid = ArrayHelper::getColumn($res_top_amount, 'number');
             
             foreach($valid as $id => $val) {
                 $def[] = $val;
-            }        
-            $top_result = array_diff($def, $nums);
+            }
+            $twotop_nums = $nums;
+            $top_result = array_diff($def, $twotop_nums);
             foreach($top_result as $k => $v) {
     
                 $TopArray[] = [
@@ -464,8 +520,9 @@ class ResDocReportController extends Controller
             // เลขทืี่ไม่รับซื้อ
             foreach($Belowvalid as $id => $val) {
                 $def_below[] = $val;
-            }        
-            $below_result = array_diff($def_below, $nums);
+            }
+            $twobelow_nums = $nums;
+            $below_result = array_diff($def_below, $twobelow_nums);
             foreach($below_result as $k => $v) {
     
                 $BelowArray[] = [
@@ -486,7 +543,8 @@ class ResDocReportController extends Controller
             'res_top_amount' => $TopArray,
             'res_below_amount' => $BelowArray,
             'sum_top' => $sum_top,
-            'sum_below' => $sum_below
+            'sum_below' => $sum_below,
+            'u' => $k
         ];
     }
 
@@ -501,6 +559,7 @@ class ResDocReportController extends Controller
         $two_top = $data['two_top'];
         $two_below = $data['two_below'];
         $current = ResCut::current();
+        $nums  = [];
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {
 
@@ -544,18 +603,19 @@ class ResDocReportController extends Controller
             foreach($validTop as $id => $val) {
                $defTop[] = $val;
             }
+            $twotop_nums = $nums;
             // หาค่าที่ไม่ซ้ำ
-            $result_top = array_diff($defTop, $nums);
+            $result_top = array_diff($defTop, $twotop_nums);
 
             // หาค่าที่เหมือนกัน
-            $intersectTop = array_intersect($defTop, $nums);
+            $intersectTop = array_intersect($defTop, $twotop_nums);
 
             // สร้าง array
             $diff_empty = [];
             $intersect_empty = [];
 
             foreach($result_top as $k => $v) {
-                if(array_diff($defTop, $nums)) {
+                if(array_diff($defTop, $twotop_nums)) {
                     if($res_send_top_amount[$k]['amount'] > $current->two_top) {
                         $amount_top = ($res_send_top_amount[$k]['amount'] - $current->two_top);
                         $data_diff = [
@@ -569,7 +629,7 @@ class ResDocReportController extends Controller
             }
 
             foreach($intersectTop as $k => $v) {
-                if(array_intersect($defTop, $nums)) {
+                if(array_intersect($defTop, $twotop_nums)) {
                     $data_intersect = [
                         'number' => $res_send_top_amount[$k]['number'],
                         'amount' => $res_send_top_amount[$k]['amount']
@@ -594,19 +654,19 @@ class ResDocReportController extends Controller
             foreach($helpers as $id => $val) {
                 $defaultBelow[] = $val;
             }
-
+            $twobelow_nums = $nums;
             // หาค่าที่ไม่ซ้ำกัน
-            $result_below = array_diff($defaultBelow, $nums);
+            $result_below = array_diff($defaultBelow, $twobelow_nums);
 
             // หาค่าที่เหมือนกัน 
-            $intersectBelow = array_intersect($defaultBelow, $nums);
+            $intersectBelow = array_intersect($defaultBelow, $twobelow_nums);
 
             // สร้าง array
             $diff_empty_below = [];
             $intersect_empty_below = [];
 
             foreach($result_below as $k => $v) {
-                if(array_diff($defaultBelow, $nums)) {
+                if(array_diff($defaultBelow, $twobelow_nums)) {
                     if($res_send_below_amount[$k]['amount'] > $current->two_below) {
                         $amount_below = ($res_send_below_amount[$k]['amount'] - $current->two_below);
                         $data_below = [
@@ -620,7 +680,7 @@ class ResDocReportController extends Controller
             }
 
             foreach($intersectBelow as $k => $v) {
-                if(array_intersect($defaultBelow, $nums)) {
+                if(array_intersect($defaultBelow, $twobelow_nums)) {
                     $below_intersect = [
                         'number' => $res_send_below_amount[$k]['number'],
                         'amount' => $res_send_below_amount[$k]['amount']
