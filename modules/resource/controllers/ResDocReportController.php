@@ -161,9 +161,9 @@ class ResDocReportController extends Controller
         $arr = [];
         $amount = 0;
         $sum = 0;
-        foreach($model as $line) {
+        foreach($model as $key => $line) {
             $sum += $line['top_amount'];
-            $data = [
+            $data = [                
                 'number'=> $line['number'],
                 'amount' => $line['top_amount'],
             ];
@@ -172,44 +172,25 @@ class ResDocReportController extends Controller
          
         }
         print_r($arr);
-    
-        $res = [];
-        foreach($arr as $key => $val) {
-            $res[$key] = $val['number'];
+
+        $groups = [];
+        $key = 0;
+        foreach($arr as $k => $item) {
+            $key = $item['number'];
+            if(!array_key_exists($key, $groups)) {
+                $groups[$key] = [
+                    'number' => $item['number'],
+                    'amount' => $item['amount']
+                ];
+            } else {               
+                $groups[$key]['amount'] = $groups[$key]['amount'] + $item['amount'];
+            }
+            $key++;
         }
-        print_r($res);
-
-        $arr_total = [];
-        foreach($arr as $key => $val) {
-            $arr_total[$key] = $val['amount'];
-        }
-
-        print_r($arr_total);
-
-
-        // ตรวจสอบเลขที่ซ้ำกัน
-        $result = array_unique( $res );
-        print_r($result);
-
 
         
-        $new_arr = [];
-        $push = null;
-        foreach($result as $k => $rows) {         
-         
-            if(isset($new_arr[$k])) {
-                $new_arr[$k] += $arr[$k]['amount'];
-            } else {
-                $new_arr[$k] = $arr[$k]['amount'];
-            }
-            /*$row = [
-                'number' => $rows,
-                
-            ];
-            $new_arr[] = $row;*/
-        }
 
-        print_r($new_arr);
+        print_r($groups);
         
 
       //  return ['arr' => $arr, 'sum' => $sum];
