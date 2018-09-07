@@ -171,29 +171,9 @@ class ResDocReportController extends Controller
             $arr[] = $data;
          
         }
-        print_r($arr);
+       // print_r($arr);
 
-        $groups = [];
-        $key = 0;
-        foreach($arr as $k => $item) {
-            $key = $item['number'];
-            if(!array_key_exists($key, $groups)) {
-                $groups[$key] = [
-                    'number' => $item['number'],
-                    'amount' => $item['amount']
-                ];
-            } else {               
-                $groups[$key]['amount'] = $groups[$key]['amount'] + $item['amount'];
-            }
-            $key++;
-        }
-
-        
-
-        print_r($groups);
-        
-
-      //  return ['arr' => $arr, 'sum' => $sum];
+        return ['arr' => $arr, 'sum' => $sum];
     }
 
     public function actionGetTwoBelow() {
@@ -433,7 +413,7 @@ class ResDocReportController extends Controller
             $sum_below = 0;
             $res_top_amount = [];
             $res_below_amount = [];
-            foreach($two_top as $line) {
+           /* foreach($two_top as $line) {
 
                 // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
                 if($line['amount'] > $current->two_top) {
@@ -442,14 +422,6 @@ class ResDocReportController extends Controller
                     //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
                     $amount_top = $line['amount'];
                 }
-
-                // ถ้าหวย2ตัวเหมือนกัน แต่ ซื้อเกินราคาที่กำหนด ให้ ตัดออกไปที่ ตัดส่ง (เจ้ามือ)
-                // เช้่น 2 ตัวบน รับแค่ 200 บาท แต่ผู้ซื้อ เลข 88 หลายคน แต่รวมราคาแล้วเกิด กว่า 200
-                // ตัวอย่าง ก. 88 = 50  ข. 88 = 50  ค. 88 = 200
-                // ดังนั้น 88 = 300 บาท ซึงเกิดราคาที่กำหนดไว้ ให้ ตัดออกไป จะได้เท่ากับ
-                // 88 = 200 บาท  อีก 100 บาท จะถูกส่งไปที่ ตัดส่ง
-
-
                 $data = [
                     'number' => $line['number'],
                     'amount' => $amount_top
@@ -457,7 +429,52 @@ class ResDocReportController extends Controller
                
                 $res_top_amount[] = $data;
                
-            }            
+            }*/
+
+             // ถ้าหวย2ตัวเหมือนกัน แต่ ซื้อเกินราคาที่กำหนด ให้ ตัดออกไปที่ ตัดส่ง (เจ้ามือ)
+                // เช้่น 2 ตัวบน รับแค่ 200 บาท แต่ผู้ซื้อ เลข 88 หลายคน แต่รวมราคาแล้วเกิด กว่า 200
+                // ตัวอย่าง ก. 88 = 50  ข. 88 = 50  ค. 88 = 200
+                // ดังนั้น 88 = 300 บาท ซึงเกิดราคาที่กำหนดไว้ ให้ ตัดออกไป จะได้เท่ากับ
+                // 88 = 200 บาท  อีก 100 บาท จะถูกส่งไปที่ ตัดส่ง
+
+            
+            $groups = [];
+            $key = 0;
+            foreach($two_top as $k => $item) {
+                $key = $item['number'];
+                if($item['amount'] > $current->two_top) {
+                    $amount_top = $current->two_top;
+                } else {
+                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
+                    $amount_top = $item['amount'];
+                }
+                if(!array_key_exists($key, $groups)) {
+                    $groups[$key] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_top
+                    ];
+                } else {               
+                    $groups[$key]['amount'] = $groups[$key]['amount'] + $amount_top;
+                }
+                $key++;
+            }
+            //sort($groups);
+
+            foreach($groups as $group) {
+                // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
+                if($group['amount'] > $current->two_top) {
+                    $amount_top = $current->two_top;
+                } else {
+                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
+                    $amount_top = $group['amount'];
+                }
+                $data = [
+                    'number' => $group['number'],
+                    'amount' => $amount_top
+                ];
+               
+                $res_top_amount[] = $data;
+            }
             
 
            
@@ -481,7 +498,42 @@ class ResDocReportController extends Controller
 
 
             // เลขที่ไม่รับซื่อ 2 ตัวล่าง จะไม่เข้าในส่วนตัดเก็บ
-            foreach($two_below as $line) {
+            /*foreach($two_below as $line) {
+                if($line['amount'] > $current->two_below) {
+                    $amount_below = $current->two_below;
+                } else {
+                    $amount_below = $line['amount'];
+                }
+               
+                $data = [
+                    'number' => $line['number'],
+                    'amount' => $amount_below
+                ];
+                $res_below_amount[] = $data;
+            }*/
+
+            $groups_below = [];
+            $key_below = 0;
+            foreach($two_below as $k => $item) {
+                $key_below = $item['number'];
+                if($item['amount'] > $current->two_below) {
+                    $amount_below = $current->two_below;
+                } else {
+                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
+                    $amount_below = $item['amount'];
+                }
+                if(!array_key_exists($key_below, $groups_below)) {
+                    $groups_below[$key_below] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_below
+                    ];
+                } else {               
+                    $groups_below[$key_below]['amount'] = $groups_below[$key_below]['amount'] + $amount_below;
+                }
+                $key_below++;
+            }
+
+            foreach($groups_below as $line) {
                 if($line['amount'] > $current->two_below) {
                     $amount_below = $current->two_below;
                 } else {
@@ -578,6 +630,30 @@ class ResDocReportController extends Controller
                 $res_send_top_amount[] = $data;
                
             }
+
+
+            /*$groups = [];
+            $key = 0;
+            foreach($two_top as $k => $item) {
+                $key = $item['number'];
+                if($item['amount'] > $current->two_top) {
+                    $amount_top = $current->two_top;
+                } else {
+                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
+                    $amount_top = $item['amount'];
+                }
+                if(!array_key_exists($key, $groups)) {
+                    $groups[$key] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_top
+                    ];
+                } else {               
+                    $groups[$key]['amount'] = $groups[$key]['amount'] + $amount_top;
+                }
+                $key++;
+            }*/
+
+
 
             // เลขที่ไม่รับซื้อ 2 ตัวบน ถ้า เลขตรงกันในระบบ ให้ตัดส่งที่เจ้ามือทันที่
             $validTop = ArrayHelper::getColumn($res_send_top_amount, 'number');
