@@ -213,7 +213,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 $scope.two_cut_below_amount = response.data.res_below_amount;
                 $scope.amount_total_top = response.data.sum_top;
                 $scope.amount_total_below = response.data.sum_below;
-                console.log("ซ้ำกัน",response.data.u);
+                
             });
     }
 

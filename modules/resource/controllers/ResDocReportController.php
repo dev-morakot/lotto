@@ -577,7 +577,7 @@ class ResDocReportController extends Controller
             'res_below_amount' => $BelowArray,
             'sum_top' => $sum_top,
             'sum_below' => $sum_below,
-            'u' => $k
+            
         ];
     }
 
@@ -612,7 +612,7 @@ class ResDocReportController extends Controller
             $res_send_below_amount = [];
             $BelowArray = [];
             $TopArray = [];
-            foreach($two_top as $key => $line) {
+            /*foreach($two_top as $key => $line) {
                
                 /*if($line['amount'] > $current->two_top) {
                     $amount_top = ($line['amount'] - $current->two_top);
@@ -623,35 +623,31 @@ class ResDocReportController extends Controller
                    // $sum_top += $amount_top;
                     $res_send_top_amount[] = $data;
                 }*/
-                $data = [
+                /*$data = [
                     'number' => $line['number'],
                     'amount' => $line['amount']
                 ];
                 $res_send_top_amount[] = $data;
                
-            }
+            }*/
 
 
-            /*$groups = [];
+            $groups_send_top_amount = [];
             $key = 0;
             foreach($two_top as $k => $item) {
                 $key = $item['number'];
-                if($item['amount'] > $current->two_top) {
-                    $amount_top = $current->two_top;
-                } else {
-                    //  2 ตัวบน ให้เก็บราคาหวยเท่าเดิม
-                    $amount_top = $item['amount'];
-                }
-                if(!array_key_exists($key, $groups)) {
-                    $groups[$key] = [
+              
+                if(!array_key_exists($key, $res_send_top_amount)) {
+                    $res_send_top_amount[$key] = [
                         'number' => $item['number'],
-                        'amount' => $amount_top
+                        'amount' => $item['amount']
                     ];
                 } else {               
-                    $groups[$key]['amount'] = $groups[$key]['amount'] + $amount_top;
+                    $res_send_top_amount[$key]['amount'] = $res_send_top_amount[$key]['amount'] + $item['amount'];
                 }
                 $key++;
-            }*/
+            }
+            sort($res_send_top_amount);
 
 
 
@@ -701,13 +697,34 @@ class ResDocReportController extends Controller
 
 
             // 2 ตัวล่าง
-            foreach($two_below as $line) {
+            /*foreach($two_below as $line) {
                
-                $rows = ['number' => $line['number'], 'amount' => $line['amount']];
+                $rows = [
+                    'number' => $line['number'],
+                     'amount' => $line['amount']
+                ];
                 $res_send_below_amount[] = $rows;
-            }
+            }*/
 
-            $helpers = ArrayHelper::getColumn($res_send_below_amount, 'number');
+            $groups_send_below_amount = [];
+            $key_send_below_amount = 0;
+            foreach($two_below as $k => $item) {
+                $key_send_below_amount = $item['number'];
+              
+                if(!array_key_exists($key_send_below_amount, $groups_send_below_amount)) {
+                    $groups_send_below_amount[$key_send_below_amount] = [
+                        'number' => $item['number'],
+                        'amount' => $item['amount']
+                    ];
+                } else {               
+                    $groups_send_below_amount[$key_send_below_amount]['amount'] = $groups_send_below_amount[$key_send_below_amount]['amount'] + $item['amount'];
+                }
+                $key_send_below_amount++;
+            }
+            sort($groups_send_below_amount);
+
+
+            $helpers = ArrayHelper::getColumn($groups_send_below_amount, 'number');
             foreach($helpers as $id => $val) {
                 $defaultBelow[] = $val;
             }
@@ -724,10 +741,10 @@ class ResDocReportController extends Controller
 
             foreach($result_below as $k => $v) {
                 if(array_diff($defaultBelow, $twobelow_nums)) {
-                    if($res_send_below_amount[$k]['amount'] > $current->two_below) {
-                        $amount_below = ($res_send_below_amount[$k]['amount'] - $current->two_below);
+                    if($groups_send_below_amount[$k]['amount'] > $current->two_below) {
+                        $amount_below = ($groups_send_below_amount[$k]['amount'] - $current->two_below);
                         $data_below = [
-                            'number' => $res_send_below_amount[$k]['number'],
+                            'number' => $groups_send_below_amount[$k]['number'],
                             'amount' => $amount_below
                         ];
                         $sum_below += $amount_below;
@@ -739,10 +756,10 @@ class ResDocReportController extends Controller
             foreach($intersectBelow as $k => $v) {
                 if(array_intersect($defaultBelow, $twobelow_nums)) {
                     $below_intersect = [
-                        'number' => $res_send_below_amount[$k]['number'],
-                        'amount' => $res_send_below_amount[$k]['amount']
+                        'number' => $groups_send_below_amount[$k]['number'],
+                        'amount' => $groups_send_below_amount[$k]['amount']
                     ];
-                    $sum_below += $res_send_below_amount[$k]['amount'];
+                    $sum_below += $groups_send_below_amount[$k]['amount'];
                     $intersect_empty_below[] = $below_intersect;
                 }
             }
@@ -783,7 +800,8 @@ class ResDocReportController extends Controller
             $amount_three_top = 0;
             $res_amount_three_top = [];
             $sum_three_top = 0;
-            foreach($three_top as $line) {
+            $groups_three_top = [];
+            /*foreach($three_top as $line) {
                 if($line['amount'] > $current->three_top) {
                     $amount_three_top = $current->three_top;
                 } else {
@@ -796,12 +814,51 @@ class ResDocReportController extends Controller
                 ];
                 $sum_three_top += $amount_three_top;
                 $res_amount_three_top[] = $data;
+            }*/
+            $key = 0;
+            foreach($three_top as $k => $item) {
+                $key = $item['number'];
+                if($item['amount'] > $current->three_top) {
+                    $amount_three_top = $current->three_top;
+                } else {
+                    $amount_three_top = $item['amount'];
+                }
+              
+                if(!array_key_exists($key, $groups_three_top)) {
+                    $groups_three_top[$key] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_three_top
+                    ];
+                    
+                } else {               
+                    $groups_three_top[$key]['amount'] = $groups_three_top[$key]['amount'] + $amount_three_top;
+                }
+                $key++;
             }
+
+            foreach($groups_three_top as $group) {
+                // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
+                if($group['amount'] > $current->three_top) {
+                    $amount_three_top = $current->three_top;
+                } else {
+                    $amount_three_top = $group['amount'];
+                }
+                $data = [
+                    'number' => $group['number'],
+                    'amount' => $amount_three_top
+                ];
+                $sum_three_top += $amount_three_top;
+                $res_amount_three_top[] = $data;
+            }
+
+
+
 
             $amount_three_below = 0;
             $res_amount_three_below = [];
             $sum_three_below = 0;
-            foreach($three_below as $line) {
+            $groups_three_below = [];
+            /*foreach($three_below as $line) {
                 if($line['amount'] > $current->three_below) {
                     $amount_three_below = $current->three_below;
                 } else {
@@ -813,12 +870,52 @@ class ResDocReportController extends Controller
                 ];
                 $sum_three_below += $amount_three_below;
                 $res_amount_three_below[] = $data;
+            }*/
+            $key_below = 0;
+            foreach($three_below as $k => $item) {
+                $key_below = $item['number'];
+                if($item['amount'] > $current->three_below) {
+                    $amount_three_below = $current->three_below;
+                } else {
+                    $amount_three_below = $item['amount'];
+                }
+              
+                if(!array_key_exists($key_below, $groups_three_below)) {
+                    $groups_three_below[$key_below] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_three_below
+                    ];
+                   
+                } else {               
+                    $groups_three_below[$key_below]['amount'] = $groups_three_below[$key_below]['amount'] + $amount_three_below;
+                }
+                $key_below++;
             }
+
+            foreach($groups_three_below as $group) {
+                // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
+                if($group['amount'] > $current->three_below) {
+                    $amount_three_below = $current->three_below;
+                } else {
+                    $amount_three_below = $group['amount'];
+                }
+                $data = [
+                    'number' => $group['number'],
+                    'amount' => $amount_three_below
+                ];
+                $sum_three_below += $amount_three_below;
+                $res_amount_three_below[] = $data;
+            }
+
+
+
+
 
             $amount_three_otd = 0;
             $res_amount_three_otd = [];
             $sum_three_otd = 0;
-            foreach($three_otd as $line) {
+            $groups_three_otd = [];
+            /*foreach($three_otd as $line) {
                 if($line['amount'] > $current->tree_otd) {
                     $amount_three_otd = $current->tree_otd;
                 } else {
@@ -830,7 +927,44 @@ class ResDocReportController extends Controller
                 ];
                 $sum_three_otd += $amount_three_otd;
                 $res_amount_three_otd[] = $data;
-            }   
+            }*/
+            
+            $key_otd = 0;
+            foreach($three_otd as $k => $item) {
+                $key_otd = $item['number'];
+                if($item['amount'] > $current->tree_otd) {
+                    $amount_three_otd = $current->tree_otd;
+                } else {
+                    $amount_three_otd = $item['amount'];
+                }
+              
+                if(!array_key_exists($key_otd, $groups_three_otd)) {
+                    $groups_three_otd[$key_otd] = [
+                        'number' => $item['number'],
+                        'amount' => $amount_three_otd
+                    ];
+                    $sum_three_otd += $amount_three_otd;
+                } else {               
+                    $groups_three_otd[$key_otd]['amount'] = $groups_three_otd[$key_otd]['amount'] + $amount_three_otd;
+                }
+                $key_otd++;
+            }
+
+
+            foreach($groups_three_otd as $group) {
+                // ถ้าราคาหวย มากกว่า ราคาที่กำหนดราคาหวย ให้ตัดออกไป
+                if($group['amount'] > $current->tree_otd) {
+                    $amount_three_otd = $current->tree_otd;
+                } else {
+                    $amount_three_otd = $group['amount'];
+                }
+                $data = [
+                    'number' => $group['number'],
+                    'amount' => $amount_three_otd
+                ];
+               
+                $res_amount_three_otd[] = $data;
+            }
 
             $tx->commit();
         } catch (\Exception $e) {
@@ -866,7 +1000,8 @@ class ResDocReportController extends Controller
             $amount_three_top = 0;
             $res_three_top = [];
             $sum_three_top = 0;
-            foreach($three_top as $line) {
+            $groups_three_top = [];
+            /*foreach($three_top as $line) {
                 if($line['amount'] > $current->three_top) {
                     $amount_three_top = ($line['amount'] - $current->three_top);
                     $data = [
@@ -876,12 +1011,48 @@ class ResDocReportController extends Controller
                     $sum_three_top += $amount_three_top;
                     $res_three_top[] = $data;
                 }
+            }*/
+
+            $key = 0;
+            foreach($three_top as $k => $item) {
+                $key = $item['number'];
+                
+                if(!array_key_exists($key, $groups_three_top)) {
+                   // if($item['amount'] > $current->three_top) {
+                    //    $amount_three_top = ($item['amount'] - $current->three_top);
+                        $groups_three_top[$key] = [
+                            'number' => $item['number'],
+                            'amount' => $item['amount']
+                        ];
+                       
+                   // }
+                    
+                } else {               
+                    $groups_three_top[$key]['amount'] = $groups_three_top[$key]['amount'] + $item['amount'];
+                }
+                $key++;
             }
+
+            foreach($groups_three_top as $group) {
+                if($group['amount'] > $current->three_top) {
+                    $amount_three_top = ($group['amount'] - $current->three_top);
+                    $data = [
+                        'number' => $group['number'],
+                        'amount' => $amount_three_top
+                    ];
+                    $sum_three_top += $amount_three_top;
+                    $res_three_top[] = $data;
+                }
+            }
+
+
+
 
             $amount_three_below = 0;
             $res_three_below = [];
             $sum_three_below = 0;
-            foreach($three_below as $line) {
+            $groups_three_below = [];
+            /*foreach($three_below as $line) {
                 if($line['amount'] > $current->three_below) {
                     $amount_three_below = ($line['amount'] - $current->three_below);
                     $data = [
@@ -891,12 +1062,49 @@ class ResDocReportController extends Controller
                     $sum_three_below += $amount_three_below;
                     $res_three_below[] = $data;
                 }
+            }*/
+
+            $key_below = 0;
+            foreach($three_below as $k => $item) {
+                $key_below = $item['number'];
+                
+                if(!array_key_exists($key_below, $groups_three_below)) {
+                    //if($item['amount'] > $current->three_below) {
+                      //  $amount_three_below = ($item['amount'] - $current->three_below);
+                        $groups_three_below[$key_below] = [
+                            'number' => $item['number'],
+                            'amount' => $item['amount']
+                        ];
+                       
+                    //}
+                    
+                } else {               
+                    $groups_three_below[$key_below]['amount'] = $groups_three_below[$key_below]['amount'] + $item['amount'];
+                }
+                $key_below++;
             }
+
+            foreach($groups_three_below as $group) {
+                if($group['amount'] > $current->three_below) {
+                    $amount_three_below = ($group['amount'] - $current->three_below);
+                    $data = [
+                        'number' => $group['number'],
+                        'amount' => $amount_three_below
+                    ];
+                    $sum_three_below += $amount_three_below;
+                    $res_three_below[] = $data;
+                }
+            }
+
+
+
+
 
             $amount_three_otd = 0;
             $res_three_otd = [];
             $sum_three_otd = 0;
-            foreach($three_otd as $line) {
+            $groups_three_otd = [];
+            /*foreach($three_otd as $line) {
                 if($line['amount'] > $current->tree_otd) {
                     $amount_three_otd = ($line['amount'] - $current->tree_otd);
                     $data = [
@@ -906,7 +1114,43 @@ class ResDocReportController extends Controller
                     $sum_three_otd += $amount_three_otd;
                     $res_three_otd[] = $data;
                 }
+            }*/
+
+            $key_otd = 0;
+            foreach($three_otd as $k => $item) {
+                $key_otd = $item['number'];
+                
+                if(!array_key_exists($key_otd, $groups_three_otd)) {
+                  //  if($item['amount'] > $current->tree_otd) {
+                  //     $amount_three_otd = ($item['amount'] - $current->tree_otd);
+                        $groups_three_otd[$key_otd] = [
+                            'number' => $item['number'],
+                            'amount' => $item['amount']
+                        ];
+                        
+                  //  }
+                    
+                } else {               
+                    $groups_three_otd[$key_otd]['amount'] = $groups_three_otd[$key_otd]['amount'] + $amount_three_otd;
+                }
+                $key_otd++;
             }
+
+            foreach($groups_three_otd as $group) {
+                if($group['amount'] > $current->tree_otd) {
+                    $amount_three_otd = ($group['amount'] - $current->tree_otd);
+                    $data = [
+                        'number' => $group['number'],
+                        'amount' => $amount_three_otd
+                    ];
+                    $sum_three_otd += $amount_three_otd;
+                    $res_three_otd[] = $data;
+                }
+            }
+
+
+
+
 
             $tx->commit();
         } catch(\Exception $e) {

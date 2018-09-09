@@ -38,7 +38,7 @@ class CheckLotto extends \yii\base\Model {
                 $m_sql = $this->selectQuery($output);
                 foreach($m_sql as $sql) {
 
-                    $sum_total_amount = $this->switch($sql, $defualt);
+                    $sum_total_amount = $this->SetSwitch($sql, $defualt);
 
                     if($sql['type'] == 'สามตัวโต๊ด') {
                         $data = [
@@ -58,7 +58,7 @@ class CheckLotto extends \yii\base\Model {
             foreach($move_lines as $k => $value) {
 
                 // คำนวนค่าหวยที่ถูก
-                $sum_total_amount = $this->switch($value, $defualt);
+                $sum_total_amount = $this->SetSwitch($value, $defualt);
                 if($line['type'] == "สามตัวบน") {
                     $data = [                    
                         'name' => $value['firstname'],
@@ -67,7 +67,8 @@ class CheckLotto extends \yii\base\Model {
                         'amount' => $sum_total_amount['amount'],
                         'amount_total' => $sum_total_amount['amount_total'],
                         'message' =>  $sum_total_amount['message'],
-                        'discount' => $value['discount']
+                        'discount' => $value['discount'],
+                        'all_amount_lotto' => $sum_total_amount['all_amount_lotto']
                     ];
                     $loc_obj['rows'][] = $data;
                 }
@@ -123,7 +124,7 @@ class CheckLotto extends \yii\base\Model {
     }
 
     public function query_sql($model) {
-        $query = (new Query())->select('a.number, a.top_amount , a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname, b.discount')
+        $query = (new Query())->select('a.number, a.top_amount , a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname, b.discount,b.id')
             ->from('res_doc_lotto as a')
             ->leftJoin('res_users as b','b.id = a.user_id');
         $query->where(['<>', 'a.number', 'is null']);
@@ -139,7 +140,7 @@ class CheckLotto extends \yii\base\Model {
 
     public function processQueryLotto($value) {
         $query = (new Query())->select('
-            a.number, a.top_amount, a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname,b.discount
+            a.number, a.top_amount, a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname,b.discount,b.id
         ')->from('res_doc_lotto as a')
         ->leftJoin('res_users as b','b.id = a.user_id');
         $query->where(['<>', 'a.number','is null']);
@@ -156,7 +157,7 @@ class CheckLotto extends \yii\base\Model {
      */
     public function selectQuery($output) {
         $query = (new Query())->select('
-            a.number, a.top_amount, a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname,b.discount
+            a.number, a.top_amount, a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname,b.discount, b.id
         ')->from('res_doc_lotto as a')
         ->leftJoin('res_users as b','b.id = a.user_id');
         $query->where(['<>','a.number', 'is null']);
@@ -166,6 +167,20 @@ class CheckLotto extends \yii\base\Model {
         $res = $query->all();
         return $res;
 
+    }
+
+    /**
+     * คำนวนรวมราคาหวยทั้งหมดของคนๆ นั้น
+     *
+     */
+    private function useAmountLotto($value) {
+        $query = (new Query())->select('
+            (sum(top_amount) + sum(below_amount) + sum(otd_amount)) as amount
+        ')
+        ->from('res_doc_lotto')
+        ->where(['user_id' => $value['id']]);
+        $res = $query->one();
+        return $res;
     }
     
     /**
@@ -200,23 +215,26 @@ class CheckLotto extends \yii\base\Model {
     }
 
 
-    private function switch($value, $defualt) {
+    private function SetSwitch($value, $defualt) {
         $amount_total = 0;
         $amount = 0;
         $discount = 0;
         $line_total = 0;
+        $user_amount_lotto = 0;
         switch (@$value['type']) {
             case 'สามตัวบน':
                 $amount = $value['top_amount'];
                 $this->message =  $defualt->three_top." / บาท";
+
+                $user_amount_lotto = $this->useAmountLotto($value);
                 
                 // ถ้ามีส่วนลด ให้ทำ
                 if($value['discount']) {
-                    $line_total = ($amount *  $defualt->three_top);
-                    $discount = ($line_total * $value['discount']) / 100;
-                    $amount_total = ($line_total - $discount);
+                   // $line_total = ($amount *  $defualt->three_top);
+                   // $discount = ($line_total * $value['discount']) / 100;
+                   // $amount_total = ($line_total - $discount);
                 } else {
-                    $amount_total = ($amount *  $defualt->three_top);
+                   // $amount_total = ($amount *  $defualt->three_top);
                 }
 
                 break;
@@ -280,7 +298,12 @@ class CheckLotto extends \yii\base\Model {
                 }
                 break;
         }
-        return ['amount_total' => $amount_total, 'message' => $this->message,'amount' => $amount];
+        return [
+            'amount_total' => $amount_total, 
+            'message' => $this->message,
+            'all_amount_lotto' => $user_amount_lotto,
+            'amount' => $amount
+        ];
     }
 }
 ?>
