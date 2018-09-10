@@ -73,7 +73,11 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         <p>ราคาซื้อ: {{ row.amount | number }}   บาท</p>
                         <p>มีส่วนลด (ถ้ามี) :  {{ row.discount }}   %</p>
                         <p>ราคาหวยที่ซื้อทั้งหมด :  {{ row.all_amount_lotto }}  บาท </p>
-                        <p>วิธีคำนวณค่าหวย :  ราคาหวย  *  {{ row.message }}  </p>
+                        <p>วิธีคำนวณค่าหวย : ค่าหวยที่ซือทั้งหมด - ส่วนลด% (ถ้ามี)  </p>
+                        <p>ถ้าถูกหวย : ราคาที่ซื้อ * ราคาหวย </p>
+                        <p>จากสูตร : {{ row.all_amount_lotto }} - {{ row.discount }} %</p>
+                        <p>จากสูตร :  {{ row.amount | number }} * {{ row.message }}</p>
+                        <p>ดังนั้น : {{ row.line_total }} - {{ row.sum_discount }}</p>
                         <p>รวมเงิน : {{ row.amount_total | number }} </p>
                     </td>
                    

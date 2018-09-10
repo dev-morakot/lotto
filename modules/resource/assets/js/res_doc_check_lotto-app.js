@@ -173,6 +173,7 @@ app.controller("FormController", function ($scope, $http,$timeout, DocService,
         DocService.query(params)
             .then(function (response) {
                 console.log('query resp', response);
+               
                 $scope.result = response.data.locs;
             });
     };
