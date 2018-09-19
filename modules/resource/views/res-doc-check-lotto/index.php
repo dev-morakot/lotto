@@ -77,7 +77,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         <p>ถ้าถูกหวย : ราคาที่ซื้อ * ราคาหวย </p>
                         <p>จากสูตร : {{ row.all_amount_lotto }} - {{ row.discount }} %</p>
                         <p>จากสูตร :  {{ row.amount | number }} * {{ row.message }}</p>
-                        <p>ดังนั้น : {{ row.line_total }} - {{ row.sum_discount }}</p>
+                        <p>ดังนั้น : {{ row.line_total }} - {{ row.diff_amount }}</p>
                         <p>รวมเงิน : {{ row.amount_total | number }} </p>
                     </td>
                    

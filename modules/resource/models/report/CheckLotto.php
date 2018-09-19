@@ -51,7 +51,8 @@ class CheckLotto extends \yii\base\Model {
                             'discount' => $sql['discount'],
                             'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
                             'sum_discount' => $sum_total_amount['discount'],
-                            'line_total' => $sum_total_amount['line_total']
+                            'line_total' => $sum_total_amount['line_total'],
+                            'diff_amount' => $sum_total_amount['diff_amount']
                         ];
                         $loc_obj['rows'][] = $data;
                     }                       
@@ -73,7 +74,8 @@ class CheckLotto extends \yii\base\Model {
                         'discount' => $value['discount'],
                         'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
                         'sum_discount' => $sum_total_amount['discount'],
-                        'line_total' => $sum_total_amount['line_total']
+                        'line_total' => $sum_total_amount['line_total'],
+                        'diff_amount' => $sum_total_amount['diff_amount']
                     ];
                     $loc_obj['rows'][] = $data;
                 }
@@ -89,7 +91,8 @@ class CheckLotto extends \yii\base\Model {
                         'discount' => $value['discount'],
                         'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
                         'sum_discount' => $sum_total_amount['discount'],
-                        'line_total' => $sum_total_amount['line_total']
+                        'line_total' => $sum_total_amount['line_total'],
+                        'diff_amount' => $sum_total_amount['diff_amount']
                     ];
                     $loc_obj['rows'][] = $data;
                 }
@@ -105,7 +108,8 @@ class CheckLotto extends \yii\base\Model {
                         'discount' => $value['discount'],
                         'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
                         'sum_discount' => $sum_total_amount['discount'],
-                        'line_total' => $sum_total_amount['line_total']
+                        'line_total' => $sum_total_amount['line_total'],
+                        'diff_amount' => $sum_total_amount['diff_amount']
                     ];
                     $loc_obj['rows'][] = $data;
                 }
@@ -120,7 +124,8 @@ class CheckLotto extends \yii\base\Model {
                         'discount' => $value['discount'],
                         'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
                         'sum_discount' => $sum_total_amount['discount'],
-                        'line_total' => $sum_total_amount['line_total']
+                        'line_total' => $sum_total_amount['line_total'],
+                        'diff_amount' => $sum_total_amount['diff_amount']
                     ];
                     $loc_obj['rows'][] = $data;
                 }
@@ -243,6 +248,7 @@ class CheckLotto extends \yii\base\Model {
         $discount = 0;
         $line_total = 0;
         $user_amount_lotto = 0;
+        $diff_amount = 0;
         switch (@$value['type']) {
             case 'สามตัวบน':
                 $amount = $value['top_amount'];
@@ -255,9 +261,10 @@ class CheckLotto extends \yii\base\Model {
                     // ถ้ามีส่วนลด ให้นำ จำนวนซื้อทั้งหมด - ส่วนลด
                     $discount = ($user_amount_lotto * $value['discount']) / 100;
 
+                    $diff_amount = ($user_amount_lotto - $discount);
                     // ถ้าถูก เอา ราคาที่ซื้อหวย * ราคาหวย เช้น 3ตัว บาทละ 500 เป็นต้น
                     $line_total = ($amount * $defualt->three_top);
-                    $amount_total = ($line_total - $discount);
+                    $amount_total = ($line_total - $diff_amount);
 
                    // $line_total = ($amount *  $defualt->three_top);
                    // $discount = ($line_total * $value['discount']) / 100;
@@ -276,10 +283,11 @@ class CheckLotto extends \yii\base\Model {
                 if($value['discount']) {
                     // ถ้ามีส่วนลด ให้นำ จำนวนซื้อทั้งหมด - ส่วนลด
                     $discount = ($user_amount_lotto * $value['discount']) / 100;
+                    $diff_amount = ($user_amount_lotto - $discount);
 
                     // ถ้าถูก เอา ราคาที่ซื้อหวย * ราคาหวย เช้น 3ตัว บาทละ 500 เป็นต้น
                     $line_total = ($amount * $defualt->three_below);
-                    $amount_total = ($line_total - $discount);
+                    $amount_total = ($line_total - $diff_amount);
 
                    // $line_total = ($amount *  $defualt->three_below);
                    // $discount = ($line_total * $value['discount']) / 100;
@@ -299,10 +307,10 @@ class CheckLotto extends \yii\base\Model {
                 if($value['discount']) {
                     // ถ้ามีส่วนลด ให้นำ จำนวนซื้อทั้งหมด - ส่วนลด
                     $discount = ($user_amount_lotto * $value['discount']) / 100;
-
+                    $diff_amount = ($user_amount_lotto - $discount);
                     // ถ้าถูก เอา ราคาที่ซื้อหวย * ราคาหวย เช้น 3ตัว บาทละ 500 เป็นต้น
                     $line_total = ($amount * $defualt->three_otd);
-                    $amount_total = ($line_total - $discount);
+                    $amount_total = ($line_total - $diff_amount);
 
                    // $line_total = ($amount *  $defualt->three_otd);
                    // $discount = ($line_total * $value['discount']) / 100;
@@ -322,10 +330,10 @@ class CheckLotto extends \yii\base\Model {
                 if($value['discount']) {
                     // ถ้ามีส่วนลด ให้นำ จำนวนซื้อทั้งหมด - ส่วนลด
                     $discount = ($user_amount_lotto * $value['discount']) / 100;
-
+                    $diff_amount = ($user_amount_lotto - $discount);
                     // ถ้าถูก เอา ราคาที่ซื้อหวย * ราคาหวย เช้น 3ตัว บาทละ 500 เป็นต้น
                     $line_total = ($amount * $defualt->two_top);
-                    $amount_total = ($line_total - $discount);
+                    $amount_total = ($line_total - $diff_amount);
 
                    // $line_total = ($amount *  $defualt->two_top);
                    // $discount = ($line_total * $value['discount']) / 100;
@@ -341,14 +349,16 @@ class CheckLotto extends \yii\base\Model {
                 
 
                 $user_amount_lotto = $this->useAmountLotto($value);
+
                 // ถ้ามีส่วนลด ให้ทำ
                 if($value['discount']) {
                     // ถ้ามีส่วนลด ให้นำ จำนวนซื้อทั้งหมด - ส่วนลด
                     $discount = ($user_amount_lotto * $value['discount']) / 100;
+                    $diff_amount = ($user_amount_lotto - $discount);
 
                     // ถ้าถูก เอา ราคาที่ซื้อหวย * ราคาหวย เช้น 3ตัว บาทละ 500 เป็นต้น
                     $line_total = ($amount * $defualt->two_below);
-                    $amount_total = ($line_total - $discount);
+                    $amount_total = ($line_total - $diff_amount);
 
                    // $line_total = ($amount *  $defualt->two_top);
                    // $discount = ($line_total * $value['discount']) / 100;
@@ -364,7 +374,8 @@ class CheckLotto extends \yii\base\Model {
             'all_amount_lotto' => $user_amount_lotto,
             'amount' => $amount,
             'discount' => $discount,
-            'line_total' => $line_total
+            'line_total' => $line_total,
+            'diff_amount' => $diff_amount
         ];
     }
 }

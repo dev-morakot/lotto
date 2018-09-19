@@ -78,7 +78,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
     </form>
 
     <div class="pull-left">
-        <button type="button" class="btn btn-primary"  id="f_5" ng-click="openAddLine()">เพิ่มรายการ</button>
+        <button type="button" class="btn btn-primary"  id="f_5" ng-keydown="keydown($event, 1)" ng-click="openAddLine()">เพิ่มรายการ</button>
     </div>
     <div class="clearfix"></div>
 

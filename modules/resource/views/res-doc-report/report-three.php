@@ -41,7 +41,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in three_top">
+                        <tr ng-repeat="line in three_top | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -71,7 +71,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="line in three_otd">
+        <tr ng-repeat="line in three_otd | orderBy: 'number'">
             <td align='center'>{{ line.number }}</td>
             <td align='right' >{{ line.amount | number }}</td>
         </tr>
@@ -101,7 +101,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in three_below">
+                        <tr ng-repeat="line in three_below | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -143,7 +143,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in amount_three_top">
+                        <tr ng-repeat="line in amount_three_top | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -171,7 +171,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="line in amount_three_otd">
+        <tr ng-repeat="line in amount_three_otd | orderBy: 'number'">
             <td align='center'>{{ line.number }}</td>
             <td align='right' >{{ line.amount | number }}</td>
         </tr>
@@ -198,7 +198,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in amount_three_below">
+                        <tr ng-repeat="line in amount_three_below | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -257,7 +257,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in line_total_three_top">
+                        <tr ng-repeat="line in line_total_three_top | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
@@ -285,7 +285,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="line in line_total_three_otd">
+        <tr ng-repeat="line in line_total_three_otd | orderBy: 'number'">
             <td align='center'>{{ line.number }}</td>
             <td align='right' >{{ line.amount | number }}</td>
         </tr>
@@ -313,7 +313,7 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="line in line_total_three_below">
+                        <tr ng-repeat="line in line_total_three_below | orderBy: 'number'">
                             <td align='center'>{{ line.number }}</td>
                             <td align='right' >{{ line.amount | number }}</td>
                         </tr>
