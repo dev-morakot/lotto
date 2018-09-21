@@ -51,26 +51,12 @@ class ResDocCheckLottoController extends Controller
     public function actionTest(){
        
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        $result = ResDocLotto::find()
-            ->where(['type' => 'สามตัวโต๊ด'])
-            ->orderBy('id asc')
-            ->asArray()
-            ->all();
-        $data = [];
-        foreach($result as $line) {
-            $row = [
-                'number' => $line['number'],
-                'amount' => $line['otd_amount']
-            ];
-            $data[] = $row;
-        }
      
-        $a = 123;
+        $a = 312;
         $_a = str_split($a);
         $output = $this->permutation($_a);
         
-        $loc_ids = ArrayHelper::getColumn($data, 'number');
+        
         print_r($output);
         $m_sql = $this->selectQuery($output);
         foreach($m_sql as $sql) {

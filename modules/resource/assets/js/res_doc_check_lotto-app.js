@@ -162,6 +162,7 @@ app.controller("FormController", function ($scope, $http,$timeout, DocService,
 
     $scope.model = {};
     $scope.result= [];
+    $scope.otd = [];
 
     console.log("init");
     $scope.openAddLine = function (){
@@ -173,7 +174,7 @@ app.controller("FormController", function ($scope, $http,$timeout, DocService,
         DocService.query(params)
             .then(function (response) {
                 console.log('query resp', response);
-               
+               $scope.otd = response.data.otdNumber;
                 $scope.result = response.data.locs;
             });
     };

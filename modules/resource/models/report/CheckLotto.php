@@ -22,6 +22,9 @@ class CheckLotto extends \yii\base\Model {
         $defualt = ResLottoDefault::current();
         $model = $this->models;
 
+        //$input_split = str_split($model['number']);
+        //$split = $this->permutation($input_split);
+       
         $sql = $this->query_sql($model);
         $obj = [];
         $locs = [];
@@ -30,7 +33,9 @@ class CheckLotto extends \yii\base\Model {
 
             $move_lines = $this->processQueryLotto($line);
 
-            if($line['type'] == "สามตัวโต๊ด") {
+           
+           /* if($line['type'] == "สามตัวโต๊ด") {
+              
                 $a = $line['number'];
                 $_a = str_split($a);
                 $output = $this->permutation($_a);
@@ -56,14 +61,14 @@ class CheckLotto extends \yii\base\Model {
                         ];
                         $loc_obj['rows'][] = $data;
                     }                       
-                }                               
-            }
+                }                             
+            }*/
 
             foreach($move_lines as $k => $value) {
 
                 // คำนวนค่าหวยที่ถูก
                 $sum_total_amount = $this->SetSwitch($value, $defualt);
-                if($line['type'] == "สามตัวบน") {
+                if($value['type'] == "สามตัวบน") {
                     $data = [                    
                         'name' => $value['firstname'],
                         'lastname' => $value['lastname'],
@@ -80,7 +85,7 @@ class CheckLotto extends \yii\base\Model {
                     $loc_obj['rows'][] = $data;
                 }
 
-                if($line['type'] == 'สามตัวล่าง') {
+                if($value['type'] == 'สามตัวล่าง') {
                     $data = [                    
                         'name' => $value['firstname'],
                         'lastname' => $value['lastname'],
@@ -97,7 +102,7 @@ class CheckLotto extends \yii\base\Model {
                     $loc_obj['rows'][] = $data;
                 }
 
-                if($line['type'] == 'สองตัวบน') {
+                if($value['type'] == 'สองตัวบน') {
                     $data = [                    
                         'name' => $value['firstname'],
                         'lastname' => $value['lastname'],
@@ -113,7 +118,7 @@ class CheckLotto extends \yii\base\Model {
                     ];
                     $loc_obj['rows'][] = $data;
                 }
-                if($line['type'] == 'สองตัวล่าง') {
+                if($value['type'] == 'สองตัวล่าง') {
                     $data = [                    
                         'name' => $value['firstname'],
                         'lastname' => $value['lastname'],
@@ -137,18 +142,52 @@ class CheckLotto extends \yii\base\Model {
 
             $locs[] = $loc_obj;
         } // end queryLine
+
+        /**
+         * 
+         * แยกส่วน สามตัวโต๊ด
+         */
+        $otd = [];
+        $a = $model['number'];
+        $_a = str_split($a);
+        $output = $this->permutation($_a);
+        $input_otd = $this->selectQuery($output);
+        foreach($input_otd as $sql) {
+
+            $sum_total_amount = $this->SetSwitch($sql, $defualt);
+
+            if($sql['type'] == 'สามตัวโต๊ด') {
+                $data = [
+                    'name' => $sql['firstname'],
+                    'lastname' => $sql['lastname'],
+                    'number' => $sql['number'],
+                    'amount' => $sum_total_amount['amount'],
+                    'amount_total' => $sum_total_amount['amount_total'],
+                    'message' =>  $sum_total_amount['message'],
+                    'discount' => $sql['discount'],
+                    'all_amount_lotto' => $sum_total_amount['all_amount_lotto'],
+                    'sum_discount' => $sum_total_amount['discount'],
+                    'line_total' => $sum_total_amount['line_total'],
+                    'diff_amount' => $sum_total_amount['diff_amount']
+                ];
+                $otd[] = $data;
+            }
+        }         
+
         return [
-            'locs' => $locs
+            'locs' => $locs,
+            'otdNumber' => $otd
         ];
     }
+
 
     public function query_sql($model) {
         $query = (new Query())->select('a.number, a.top_amount , a.below_amount, a.type, a.otd_amount, b.firstname, b.lastname, b.discount,b.id')
             ->from('res_doc_lotto as a')
             ->leftJoin('res_users as b','b.id = a.user_id');
         $query->where(['<>', 'a.number', 'is null']);
-
-        $query->andFilterWhere(['a.number' => @$model['number']]);
+        $query->andWhere(['<>', 'a.type', 'สามตัวโต๊ด']);
+        $query->andWhere(['a.number' => @$model['number']]);
         Yii::info($query->createCommand()->rawSql);
         $query->groupBy('a.number,a.type');
         $objQuery = $query->all();

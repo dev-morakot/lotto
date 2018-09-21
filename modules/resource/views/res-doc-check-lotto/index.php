@@ -23,15 +23,15 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
 <br />
 <hr />
     <div class="row">
-    <div class="col-sm-6">
-        <h1><?= Html::encode($this->title) ?></h1>   
+    <div class="col-sm-3">
+        <h3><?= Html::encode($this->title) ?></h3>   
         <div class="well">
-        <form class="form-horizontal" role="form" ng-submit="addRow()">
+        <form class="form-line" role="form" ng-submit="addRow()">
             
 	        <div class="form-group">
-		        <label class="col-md-2 control-label">ตัวเลข</label>
+		        <label class="col-md-1 control-label"></label>
 		        <div class="col-md-6">
-			        <input type="text" class="form-control" name="name" ng-model="model.number" />
+			        <input type="text" class="form-control" placeholder="ตัวเลข" name="name" ng-model="model.number" />
 		        </div>
 	        </div>
 
@@ -43,9 +43,24 @@ $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-
         </form>
         </div>
     </div>
-    
-    <div class="col-sm-6">
-        <h1>ผลการตรวจ</h1>
+    <div class="col-sm-4">
+        <h3>ผลการตรวจ เลขโต๊ด</h3>
+        <div ng-repeat="row in otd" class="well">
+            <p> ชื่อ : {{ row.name }} - {{ row.lastname }} </p> 
+            <p>เลข :  <span class='badge'> {{ row.number }} </span> </p>
+            <p>ราคาซื้อ: {{ row.amount | number }}   บาท</p>
+            <p>มีส่วนลด (ถ้ามี) :  {{ row.discount }}   %</p>
+            <p>ราคาหวยที่ซื้อทั้งหมด :  {{ row.all_amount_lotto }}  บาท </p>
+            <p>วิธีคำนวณค่าหวย : ค่าหวยที่ซือทั้งหมด - ส่วนลด% (ถ้ามี)  </p>
+            <p>ถ้าถูกหวย : ราคาที่ซื้อ * ราคาหวย </p>
+            <p>จากสูตร : {{ row.all_amount_lotto }} - {{ row.discount }} %</p>
+            <p>จากสูตร :  {{ row.amount | number }} * {{ row.message }}</p>
+            <p>ดังนั้น : {{ row.line_total }} - {{ row.diff_amount }}</p>
+            <p>รวมเงิน : {{ row.amount_total | number }} </p>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <h3>ผลการตรวจ สอง-สามตัว บน-ล่าง</h3>
 
         <table class="table table-striped">
             <thead>
