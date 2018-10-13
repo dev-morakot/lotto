@@ -31,6 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'number_limit',
             [
+                'label' => 'ประเภทหวย',
+                'format' => 'html',
+                'value' => function ($model) {
+                    if($model['type'] == 'two_top') {
+                        return 'สองตัวบน';
+                    } else if($model['type'] == 'two_below') {
+                        return 'สองตัวล่าง';
+                    }
+                }
+            ],
+            [
                 'label' => 'Active',
                 'format' => 'html',
                 'value' => function ($model) {

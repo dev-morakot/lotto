@@ -25,6 +25,7 @@ class m180724_045935_number_restraints extends Migration
         $this->createTable('res_restraints', [
             'id' => $this->bigPrimaryKey(),
             'number_limit' => $this->string(100),
+            'type' => $this->string(50),
             'active' => $this->boolean(),
             'create_uid' => $this->integer(), // Created by
             'create_date' =>$this->timestamp()->defaultValue(null), // Created on

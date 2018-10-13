@@ -9,6 +9,7 @@ use yii\db\Expression;
  *
  * @property string $id
  * @property int $number_limit
+ * @property string type
  * @property integer $active
  * @property int $create_uid
  * @property string $create_date
@@ -17,6 +18,15 @@ use yii\db\Expression;
  */
 class ResRestraints extends \yii\db\ActiveRecord
 {
+
+    public static function TraintsType() {
+        $arr = [
+            ['id' => 'two_top' , 'name' => 'สองตัวบน'],
+            ['id' => 'two_below', 'name' => 'สองตัวล่าง']
+        ];
+        return $arr;
+    }
+
     /**
      * @inheritdoc
      */
@@ -31,6 +41,7 @@ class ResRestraints extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['type'], 'required'],
             [['active','number_limit', 'create_uid', 'write_uid'], 'integer'],
             [['create_date', 'write_date'], 'safe'],
         ];
@@ -44,6 +55,7 @@ class ResRestraints extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'number_limit' => 'เลข ไม่รับซื้อ',
+            'type' => 'ประเภทหวย',
             'active' => Yii::t('app', 'Active'),
             'create_uid' => 'Create Uid',
             'create_date' => 'Create Date',

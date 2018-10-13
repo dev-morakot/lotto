@@ -403,8 +403,16 @@ class ResDocReportController extends Controller
             $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
              // เลขทืี่ไม่รับซื้อ
             foreach($res as $val) {
-                $num = $val['number_limit'];
-                $nums[] = $num;
+                if($val['type'] == "two_top") {
+                    $num = $val['number_limit'];
+                    $nums_top[] = $num;
+                }
+
+                if($val['type'] == "two_below") {
+                    $num = $val['number_limit'];
+                    $nums_below[] = $num;
+                }
+                
             }
 
             $amount_top = 0;
@@ -483,7 +491,7 @@ class ResDocReportController extends Controller
             foreach($valid as $id => $val) {
                 $def[] = $val;
             }
-            $twotop_nums = $nums;
+            $twotop_nums = $nums_top;
             $top_result = array_diff($def, $twotop_nums);
             foreach($top_result as $k => $v) {
     
@@ -554,7 +562,7 @@ class ResDocReportController extends Controller
             foreach($Belowvalid as $id => $val) {
                 $def_below[] = $val;
             }
-            $twobelow_nums = $nums;
+            $twobelow_nums = $nums_below;
             $below_result = array_diff($def_below, $twobelow_nums);
             foreach($below_result as $k => $v) {
     
