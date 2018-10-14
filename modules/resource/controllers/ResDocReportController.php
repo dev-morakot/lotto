@@ -412,7 +412,11 @@ class ResDocReportController extends Controller
                     $num = $val['number_limit'];
                     $nums_below[] = $num;
                 }
-                
+                if($val['type'] == 'two_all') {
+                    $num = $val['number_limit'];
+                    $nums_top[] = $num;
+                    $nums_below[] = $num;
+                }
             }
 
             $amount_top = 0;

@@ -38,6 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 'สองตัวบน';
                     } else if($model['type'] == 'two_below') {
                         return 'สองตัวล่าง';
+                    } else if($model['type'] == 'two_all') {
+                        return 'สองตัวบน - ล่าง';
                     }
                 }
             ],

@@ -21,6 +21,7 @@ class ResRestraints extends \yii\db\ActiveRecord
 
     public static function TraintsType() {
         $arr = [
+            ['id' => 'two_all', 'name' => 'สองตัวบน - ล่าง'],
             ['id' => 'two_top' , 'name' => 'สองตัวบน'],
             ['id' => 'two_below', 'name' => 'สองตัวล่าง']
         ];
