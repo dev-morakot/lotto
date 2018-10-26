@@ -396,10 +396,12 @@ class ResDocReportController extends Controller
         $two_top = $data['two_top'];
         $two_below = $data['two_below'];
         $nums = [];
+        $TopArray = [];
+        $BelowArray = [];
         $current = ResCut::current();
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {        
-
+            
             $res = ResRestraints::find()->where(['active' => 1])->asArray()->all();
              // เลขทืี่ไม่รับซื้อ
             foreach($res as $val) {
@@ -605,6 +607,8 @@ class ResDocReportController extends Controller
         $two_below = $data['two_below'];
         $current = ResCut::current();
         $nums  = [];
+        $nums_top = [];
+        $nums_below = [];
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {
 
@@ -612,8 +616,20 @@ class ResDocReportController extends Controller
             
             // เลขทืี่ไม่รับซื้อ
             foreach($res as $val) {
-                $num = $val['number_limit'];
-                $nums[] = $num;
+                if($val['type'] == "two_top") {
+                    $num = $val['number_limit'];
+                    $nums_top[] = $num;
+                }
+
+                if($val['type'] == "two_below") {
+                    $num = $val['number_limit'];
+                    $nums_below[] = $num;
+                }
+                if($val['type'] == 'two_all') {
+                    $num = $val['number_limit'];
+                    $nums_top[] = $num;
+                    $nums_below[] = $num;
+                }
             }
 
             $amount_top = 0;
@@ -668,7 +684,7 @@ class ResDocReportController extends Controller
             foreach($validTop as $id => $val) {
                $defTop[] = $val;
             }
-            $twotop_nums = $nums;
+            $twotop_nums = $nums_top;
             // หาค่าที่ไม่ซ้ำ
             $result_top = array_diff($defTop, $twotop_nums);
 
@@ -740,7 +756,7 @@ class ResDocReportController extends Controller
             foreach($helpers as $id => $val) {
                 $defaultBelow[] = $val;
             }
-            $twobelow_nums = $nums;
+            $twobelow_nums = $nums_below;
             // หาค่าที่ไม่ซ้ำกัน
             $result_below = array_diff($defaultBelow, $twobelow_nums);
 

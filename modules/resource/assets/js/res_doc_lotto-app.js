@@ -348,9 +348,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
 
     $scope.keydown = function ($event, nextId) {
         if($event.keyCode === 13) {
-            angular.element(
-                document.querySelector('#f_' + nextId))[0].focus();
-        
+            //angular.element(document.querySelector('#f_' + nextId))[0].focus();
+            if(angular.element(document.querySelector('#f_1')).focus() && $scope.model.number === undefined) {
+                console.log('true');
+                return;
+
+            } else {
+                angular.element(document.querySelector('#f_' + nextId))[0].focus();
+            }
         }
       
         
