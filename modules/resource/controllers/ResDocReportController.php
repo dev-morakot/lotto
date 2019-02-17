@@ -398,6 +398,8 @@ class ResDocReportController extends Controller
         $nums = [];
         $TopArray = [];
         $BelowArray = [];
+        $nums_top = [];
+        $nums_below = [];
         $current = ResCut::current();
         $tx = ResDocLotto::getDb()->beginTransaction();
         try {        

@@ -48,8 +48,13 @@ class ResDocLottoController extends Controller
                 $lotto->attributes = $line;
                 $lo_lines[] = $lotto;
             }
+
+            foreach ($lo_lines as $key => $value) {
+                # code...
+                $value->save(false);
+            }
             
-            if(Model::validateMultiple($lo_lines)) {
+           /* if(Model::validateMultiple($lo_lines)) {
                 foreach($lo_lines as $line) {
                     $line->save(false);
                 }
@@ -59,7 +64,7 @@ class ResDocLottoController extends Controller
                 $response->statusCode = 422;
                 $response->statusText = "Validation failed";
                 return $lotto->errors;
-            }
+            }*/
 
             // logger
             Yii::$app->userlog->info(

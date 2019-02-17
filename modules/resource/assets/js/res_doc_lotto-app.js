@@ -319,7 +319,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
                         navigateToView();
                     }
                 });
-            }, function errorCallback(response) {
+            }); /*function errorCallback(response) {
             console.log('save-lotto error', response);
             switch(response.status) {
                 case 422:
@@ -340,7 +340,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
                     bootbox.alert(response.data.message);
                     break;
             }
-        });
+        });*/
     }
     function navigateToView() {
         $window.location.href = '/resource/res-doc-lotto/';
