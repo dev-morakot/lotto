@@ -36,7 +36,7 @@ class m180727_011409_res_lotto_default extends Migration
             'write_date' => $this->timestamp()->defaultValue(null), // Last Updated on
         ], $this->tableOptions());
 
-        $this->batchInsert('res_lotto_default', ['id', 'three_top', 'three_below', 'tree_otd', 'two_top', 'two_below'], [
+        $this->batchInsert('res_lotto_default', ['id', 'three_top', 'three_below', 'three_otd', 'two_top', 'two_below'], [
             [1,450,90,90,65,65]
         ]);
     }

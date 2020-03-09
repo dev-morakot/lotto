@@ -36,7 +36,7 @@
         <a href="/resource/res-doc-report/report-two" class="list-group-item">สรุปเลขสองตัว</a>
         <a href="/resource/res-doc-report/report-three" class="list-group-item">สรุปเลขสามตัว</a>
         <a href="/resource/res-doc-report/all" class="list-group-item">สรุปเลขทั้งหมด</a>
-        
+        <a href="/resource/res-doc-report/report-user" class="list-group-item">สรุปยอดซื้อตามรายชื่อลูกค้า</a>
     </div>
 
     <h4>Logs</h4>

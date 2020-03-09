@@ -22,7 +22,7 @@ class AdminModule extends \yii\base\Module
         // custom initialization code goes here
     }
     
-    public function behaviors() {
+    /*public function behaviors() {
         $behaviors = parent::behaviors();
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
@@ -34,5 +34,5 @@ class AdminModule extends \yii\base\Module
             ]
         ];
         return $behaviors;
-    }
+    }*/
 }

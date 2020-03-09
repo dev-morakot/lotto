@@ -22,6 +22,9 @@ use app\modules\resource\models\ResCut;
 use app\modules\resource\models\ResCutQuery;
 use app\modules\resource\models\ResResTraints;
 
+use app\modules\resource\models\ResUsersSearch;
+
+
 /**
  * Default controller for the `resource` module
  */
@@ -68,6 +71,88 @@ class ResDocReportController extends Controller
         return $this->render('report-all',[
             'temp' => $temp
         ]);
+    }
+
+    public function actionReportUser() {
+
+         $searchModel = new ResUsersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('report-user', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionTestUser(){
+        $model = ResDocLotto::find()
+                ->where(['user_id' => 1])
+                //->groupBy("number")
+                ->orderBy('number desc')
+                ->asArray()->all();
+            $arr = [];
+            foreach ($model as $key => $line) {
+                 $data = [
+                    $line['number'],
+                   $line['top_amount'],
+                     $line['below_amount'],
+                    $line['otd_amount'],
+                ];
+                $arr[] = $data;
+              print_r(array_unique($data));
+            }
+              
+    }
+
+    public function actionGetLottoUser() {
+        
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->rawBody;
+        $data = Json::decode($post);
+        $id = $data['id'];
+
+        $tx = ResDocLotto::getDb()->beginTransaction();
+        try {
+
+            $model = ResDocLotto::find()
+                ->where(['user_id' => $id])
+                //->groupBy("number")
+                ->orderBy('number desc')
+                ->asArray()->all();
+
+            $array = [];
+            $sum = 0;
+            $amount = '';
+            $cDate = '';
+            foreach($model as $line) {
+                $cDate = $line['create_date'];
+                $sum += ($line['below_amount'] + $line['top_amount'] + $line['otd_amount']);
+                $data = [
+                    'number'=> $line['number'],
+                    'amount' => $line['below_amount'],
+                ];
+                $array[] = $data;
+            }
+
+
+             $tx->commit();
+        } catch (\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+
+        return [
+            "res" => $array,
+            "sum" => $sum,
+            "date" => $cDate
+        ];
     }
 
     public function actionDelete(){
@@ -1196,6 +1281,22 @@ class ResDocReportController extends Controller
             'res_three_otd' => $res_three_otd,
             'sum_three_otd' => $sum_three_otd
         ];
+    }
+
+    /**
+     * Finds the ResUsers model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return ResUsers the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = ResUsers::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }
 
