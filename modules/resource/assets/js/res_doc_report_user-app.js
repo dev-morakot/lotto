@@ -143,10 +143,12 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 var docDefinition = {
                     content: [{
                         image: data,
-                        width: 300,
+                        width: 100,
+                        height: 200
                     }],
-                    pageSize: 'A4',
-            		pageMargins: [20,20,20,20],
+                   
+            		pageMargins: [0,0,0,0],
+            		pageOrientation: 'landscape'
                 };
                 pdfMake.createPdf(docDefinition).open("สรุปยอดซื้อตามรายชื่อลูกค้า.pdf");
             }

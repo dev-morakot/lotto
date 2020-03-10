@@ -99,15 +99,25 @@ class ResDocReportController extends Controller
                 ->asArray()->all();
             $arr = [];
             foreach ($model as $key => $line) {
-                 $data = [
-                    $line['number'],
-                   $line['top_amount'],
-                     $line['below_amount'],
-                    $line['otd_amount'],
-                ];
-                $arr[] = $data;
-              print_r(array_unique($data));
+                 $data = $line['number'];
+                 $arr[] = $data;
+
+                
             }
+             $unique = array_unique($arr);
+                print_r($unique);
+            
+            /*$array = [];
+            foreach ($unique as $key => $value) {
+                $seconds = ResDocLotto::find()
+                ->where(['user_id' => 1, "number" => $value])
+                ->groupBy("number")
+                ->asArray()->all();
+
+                foreach ($seconds as $key => $v) {
+                    print_r($v);
+                }
+            }*/
               
     }
 
@@ -127,7 +137,7 @@ class ResDocReportController extends Controller
                 ->orderBy('number desc')
                 ->asArray()->all();
 
-            $array = [];
+            /*$array = [];
             $sum = 0;
             $amount = '';
             $cDate = '';
@@ -139,6 +149,37 @@ class ResDocReportController extends Controller
                     'amount' => $line['below_amount'],
                 ];
                 $array[] = $data;
+            }*/
+
+
+            $arr = [];
+            $sum = 0;
+            $amount = '';
+            $cDate = '';
+            foreach ($model as $key => $line) {
+                 $data = $line['number'];
+                 $arr[] = $data;
+            }
+            $unique = array_unique($arr);
+
+            $result = [];
+            foreach ($unique as $key => $value) {
+                $seconds = ResDocLotto::find()
+                ->where(["number" => $value])
+                ->groupBy(["number", "top_amount", "below_amount", "otd_amount"])
+                ->asArray()->all();
+
+                foreach ($seconds as $key => $v) {
+                     $cDate = $v['create_date'];
+                    $sum += ($v['below_amount'] + $v['top_amount'] + $v['otd_amount']);
+                    $data = [
+                        'number'=> $v['number'],
+                        'below_amount' => $v['below_amount'],
+                        'top_amount' => $v['top_amount'],
+                        'otd_amount' => $v['otd_amount'],
+                    ];
+                    $result[] = $data;
+                }
             }
 
 
@@ -149,7 +190,7 @@ class ResDocReportController extends Controller
         }
 
         return [
-            "res" => $array,
+            "res" => $result,
             "sum" => $sum,
             "date" => $cDate
         ];
