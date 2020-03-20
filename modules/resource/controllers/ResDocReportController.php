@@ -99,13 +99,18 @@ class ResDocReportController extends Controller
                 ->asArray()->all();
             $arr = [];
             foreach ($model as $key => $line) {
-                 $data = $line['number'];
-                 $arr[] = $data;
-
-                
+                 $data = array(
+                    "number" => $line['number'],
+                    "top_amount" => $line['top_amount'],
+                    "below_amount" => $line['below_amount'],
+                    "otd_amount" => $line['otd_amount']
+                );
+                // $arr[$key] = ["tset" => $line['number']];
+ $unique = array_unique($data);
+             print_r($unique);
+               
             }
-             $unique = array_unique($arr);
-                print_r($unique);
+           
             
             /*$array = [];
             foreach ($unique as $key => $value) {

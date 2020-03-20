@@ -152,6 +152,9 @@ $config = [
         ],       
         'resource'=>[
             'class' => 'app\modules\resource\Resource'
+        ], 
+        'jan'=>[
+            'class' => 'app\modules\jan\Jan'
         ],      
         'admin'=>[
             'class'=>'app\modules\admin\AdminModule'

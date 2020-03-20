@@ -91,7 +91,15 @@ class DocSequenceHelper {
         if(!$resDocSeq){
             throw new \Exception('ไม่พบรหัสเอกสาร โปรดตั้งค่ารหัสเอกสาร');
         }
-        $prefix = $resDocSeq->prefix;
+        $running_length = 3;
+        $counter = $resDocSeq->counter;
+        $suffix = str_pad($counter, $running_length, "0",STR_PAD_LEFT);
+        $doc_no = $suffix;
+        $resDocSeq->counter += 1;
+        if($save){
+            $resDocSeq->save(false);
+        }
+        /*$prefix = $resDocSeq->prefix;
         $t = new \DateTime('now');
         if($resDocSeq->era && $resDocSeq->era == 'be'){
             $t->setDate($t->format('Y')+543, $t->format('m'), $t->format('d'));
@@ -104,7 +112,7 @@ class DocSequenceHelper {
         $resDocSeq->counter += 1;
         if($save){
             $resDocSeq->save(false);
-        }
+        }*/
         return $doc_no;
     }
 }

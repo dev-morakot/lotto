@@ -71,6 +71,11 @@ AppAsset::register($this);
                 
             ],
             [
+                'label' => 'ตั้งค่าเลขไม่รับซื้อ',
+                'url'=>['/resource/res-res-traints'],
+                'linkOptions' => ['target' => '_blank']
+            ]  
+            /*[
                 'label' => 'คีย์ข้อมูลหวย',
                 'url'=>['/resource/res-doc-lotto/'],
                 
@@ -79,7 +84,7 @@ AppAsset::register($this);
                 'label' => 'ตรวจหวย',
                 'url'=>['/resource/res-doc-check-lotto/'],
                 
-            ],
+            ],*/
             //['label' => 'About', 'url' => ['/site/about']],
             //['label' => 'Contact', 'url' => ['/site/contact']],
             ];

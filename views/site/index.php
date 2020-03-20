@@ -10,7 +10,7 @@ $this->title = Yii::$app->params['companyLabel'];
     
     <h1>เจ้ามือหวยรายย่อย ออนไลน์</h1>
 
-    <p><a class="btn btn-lg btn-success" href="/admin/default">เริ่มใช้งาน</a></p>
+    <p><a class="btn btn-lg btn-success" href="/jan/default">เริ่มใช้งาน</a></p>
 </div>
 </div>
 <div class="body-content">
