@@ -243,6 +243,14 @@ input:checked + .slider:before {
 			</div>
 			<div class="col-md-3">
 				<div class="panel panel-primary">
+				  <div class="panel-heading">ฟังก์ชั่น</div>
+				  <div class="panel-body">
+				   <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-success btn-block"><b class="glyphicon glyphicon-list-alt"></b> รายการซื้อ</button>
+						<button type="button" data-toggle="modal" data-target="#myAll" ng-click="reportAll()" class="btn btn-primary  btn-block"><b class="glyphicon glyphicon-file"></b> สรุปยอดทั้งหมด</button>
+						<button type="button" ng-click="clearBill()" class="btn btn-danger  btn-block"><b class="glyphicon glyphicon-book"></b> Clear บิลทั้งหมด</button>
+				  </div>
+				</div>
+				<!--<div class="panel panel-primary">
 				    <div class="panel-body">
 				      <h3 class="text-on-pannel text-primary"><strong class="text-uppercase"> ฟังก์ชั่น  </strong></h3>
 				    
@@ -250,9 +258,9 @@ input:checked + .slider:before {
 						<button type="button" data-toggle="modal" data-target="#myAll" ng-click="reportAll()" class="btn btn-primary  btn-block"><b class="glyphicon glyphicon-file"></b> สรุปยอดทั้งหมด</button>
 						<button type="button" ng-click="clearBill()" class="btn btn-danger  btn-block"><b class="glyphicon glyphicon-book"></b> Clear บิลทั้งหมด</button>
 				    </div>
-				</div>
+				</div> -->
 
-			</div>
+			</div> 
 		</div>
 		<div class="row">
             <div class="col-sm-6">
@@ -291,8 +299,26 @@ input:checked + .slider:before {
   				</div>
             </div>
             <div class="col-sm-3">
-            
-				<section style="margin: 10px;">
+	            <div class="panel panel-primary">
+				  <div class="panel-heading">ส่วนลด เลขวิ่ง(%)</div>
+				  <div class="panel-body">
+				    	<form>
+							 <div class="form-group" style="padding: 8px">
+							    <label for="exampleInputEmail1">ส่วนลด เลขวิ่ง(%)</label>
+							    <input type="text" class="form-control show-number text-right" name="discount_run" ng-model="modline.discount_run" ng-change="disTwo()"  placeholder="ส่วนลด เลขวิ่ง(%)">
+							 </div>
+							 <div class="form-group" style="padding: 8px">
+							    <label for="exampleInputEmail1">ส่วนลด 2 ตัว (%)</label>
+							    <input type="text" class="form-control show-number text-right" name="discount_two" ng-model="modline.discount_two" ng-change="disTwo()"  placeholder="ส่วนลด 2 ตัว (%)">
+							 </div>
+							 <div class="form-group" style="padding: 8px">
+							    <label for="exampleInputEmail1">ส่วนลด 3 ตัว (%)</label>
+							    <input type="text" class="form-control show-number text-right" name="discount_three" ng-model="modline.discount_three" ng-change="disTwo()"   placeholder="ส่วนลด 3 ตัว (%)">
+							 </div>
+						</form>
+				  </div>
+				</div>
+				<!--<section style="margin: 10px;">
 					<fieldset style="min-height:100px;">
 					<legend><b> ส่วนลด </b> </legend>
 						<form>
@@ -310,11 +336,31 @@ input:checked + .slider:before {
 							 </div>
 						</form>
 					</fieldset>
-				</section>
+				</section> -->
             </div>
             <div class="col-sm-3">
-            
-				<section style="margin: 10px;">
+            	<div class="panel panel-primary">
+				  <div class="panel-heading">ยอดที่ต้องชำระ</div>
+				  <div class="panel-body">
+				   	 	<form>
+							 <div class="form-group" style="padding: 4px">
+							    <label>ยอดที่ซื้อ</label>
+							    <p id='purchaseorder-amount_total' style="background-color:#449D44;color:white;" class="form-control show-number text-right" >{{modline.amount_total| number }}
+							    </p>
+							 </div>
+							 <div class="form-group" style="padding: 4px">
+							    <label>ส่วนลด</label>
+							    <p id='purchaseorder-amount_total' style="background-color:#449D44;color:white;" class="form-control show-number text-right" >{{modline.discount| number }}
+							 </div>
+							 <div class="form-group" style="padding: 4px">
+							    <label>เหลือ</label>
+							    <p id='purchaseorder-amount_total' style="background-color:#449D44;color:white;" class="form-control show-number text-right" >{{modline.amount_total_remain| number }}
+							    </p>
+							 </div>
+						</form>
+				  </div>
+				</div>
+				<!--<section style="margin: 10px;">
 					<fieldset style="min-height:100px;">
 					<legend><b> ยอดที่ต้องชำระ </b> </legend>
 						<form>
@@ -334,7 +380,7 @@ input:checked + .slider:before {
 							 </div>
 						</form>
 					</fieldset>
-				</section>
+				</section>-->
 				
             </div>
             <div class="row">

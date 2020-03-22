@@ -1,13 +1,13 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use yii\helpers\Html;
 $this->title = Yii::$app->params['companyLabel'];
 ?>
 <div class="site-index">
 <div class="well">
 <div class="jumbotron">
-    
+   
     <h1>เจ้ามือหวยรายย่อย ออนไลน์</h1>
 
     <p><a class="btn btn-lg btn-success" href="/jan/default">เริ่มใช้งาน</a></p>
@@ -19,9 +19,9 @@ $this->title = Yii::$app->params['companyLabel'];
         <div class="col-lg-4">
             <h2>ช่องทางการติดต่อ</h2>
 
-            <p>ชื่อ มรกต มณีเลิศ</p>
+            <p>ชื่อ หยก</p>
             <p>LINE: morakot035</p>
-           
+            <p>Tel: 085-5135532</p>
         </div>
         <div class="col-lg-4">
             <h2>ความสามารถของโปรแกรม</h2>
