@@ -5,7 +5,6 @@ namespace app\modules\jan\controllers;
 use yii\web\Controller;
 use app\components\DocSequenceHelper;
 use Yii;
-
 use yii\helpers\Html;
 use yii\base\Model;
 use app\modules\jan\models\ResJanLotto;
@@ -23,6 +22,10 @@ use app\modules\admin\models\AppUserLog;
 use app\modules\resource\models\ResDocMessage;
 use app\components\DateHelper;
 use app\modules\resource\models\ResResTraints;
+use kartik\mpdf\Pdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
+//use mPDF;
 /**
  * Default controller for the `jan` module
  */
@@ -281,13 +284,17 @@ class DefaultController extends Controller
                         }
                     }
 
-
+                    
                 }
 
                 
          
 
         	$tx->commit();
+            return [
+                        'limit' => count($g),
+                        'cusid' => $cus->id
+                    ];
         } catch (\Exception $e){
             $tx->rollBack();
             throw $e;
@@ -301,5 +308,181 @@ class DefaultController extends Controller
         $seq = ResDocSequence::findOne(1);
         $seq->counter = 1;
         $seq->save(false);
+    }
+
+    public function actionPdf($id){
+       
+        $cus = ResJanCustomer::findOne($id);
+        $res = ResJanLotto::find()->where(['user_id' => $id])->asArray()->all();
+            $arr = [];
+            $sum = 0;
+            foreach($res as $id => $val) {
+                $sum += ($val['line_amount_total']);
+                $data = [
+                    "number"=> $val['number'],
+                    "top_amount"=>$val['top_amount'],
+                    "below_amount"=>$val['below_amount'],
+                    "otd_amount"=>$val['otd_amount'],
+                ];
+                $arr[] = $data;
+            }
+
+        $content = $this->renderPartial('_preview' , [
+            'customer'=> $cus,
+            'arr' => $arr
+            
+        ]);
+       // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+
+            'mode' => Pdf::MODE_UTF8,
+            // A4 paper format
+            //'format' => Pdf::FORMAT_A4,
+            // A4 paper format
+            'format' => [80, 150],//Pdf::FORMAT_A4,
+            'marginLeft' => 10,
+            'marginRight' => 10,
+            'marginTop' => 10,
+            'marginBottom' => 10,
+            'marginFooter' => 5,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER,
+            // your html content input
+            'content' => $content,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting
+           // 'cssFile' => '@frontend/web/css/pdf.css',
+            // any css to be embedded if required
+            'cssInline' => '*,body{font-family:thsarabun;font-size:16pt}',
+            // set mPDF properties on the fly
+            'options' => ['title' => 'Preview Report Case:'],
+            // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle' => 'ระบบเจ้ามือหวย By Janny',
+               // 'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
+                //'SetHeader' => ['Krajee Privacy Policy||Generated On: ' . date("r")],
+               // 'SetFooter' => ['<div style="text-align: center;font-size: 16px" >@ITHiNKplus</div>'],
+               // 'SetAuthor' => 'Kartik Visweswaran',
+               // 'SetCreator' => 'Kartik Visweswaran',
+                //'SetKeywords' => 'Krajee, Yii2, Export, PDF, MPDF, Output, Privacy, Policy, yii2-mpdf',
+            ]
+        ]);
+
+         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        /**
+         * We set more options as showing in "vendors/kartik-v/yii2-mpdf/src/Pdf.php/Pdf/options" method
+         * What we do, we merge the options array to the existing one.
+         */
+        $pdf->options = array_merge($pdf->options , [
+            'fontDir' => array_merge($fontDirs, [ Yii::$app->basePath . '/web/fonts']),  // make sure you refer the right physical path
+            'fontdata' => array_merge($fontData, [
+                'thsarabun' => [
+                    'R' => 'THSarabunNew.ttf',
+                    'I' => 'THSarabunNew Italic.ttf',
+                    'B' => 'THSarabunNew Bold.ttf',
+                ]
+            ])
+        ]);
+
+      
+        // return the pdf output as per the destination setting
+        return $pdf->render();
+        
+      
+    }
+
+    public function actionPdfLimit($id){
+       
+        $cus = ResJanCustomer::findOne($id);
+        $res = ResJanLottoLimit::find()->where(['user_id' => $id])->asArray()->all();
+            $arr = [];
+            $sum = 0;
+            foreach($res as $id => $val) {
+                $sum += ($val['line_amount_total']);
+                $data = [
+                    "number"=> $val['number'],
+                    "top_amount"=>$val['top_amount'],
+                    "below_amount"=>$val['below_amount'],
+                    "otd_amount"=>$val['otd_amount'],
+                ];
+                $arr[] = $data;
+            }
+
+        $content = $this->renderPartial('_preview' , [
+            'customer'=> $cus,
+            'arr' => $arr
+            
+        ]);
+       // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+
+            'mode' => Pdf::MODE_UTF8,
+            // A4 paper format
+            //'format' => Pdf::FORMAT_A4,
+            // A4 paper format
+            'format' => [80, 150],//Pdf::FORMAT_A4,
+            'marginLeft' => 10,
+            'marginRight' => 10,
+            'marginTop' => 10,
+            'marginBottom' => 10,
+            'marginFooter' => 5,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER,
+            // your html content input
+            'content' => $content,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting
+           // 'cssFile' => '@frontend/web/css/pdf.css',
+            // any css to be embedded if required
+            'cssInline' => '*,body{font-family:thsarabun;font-size:16pt}',
+            // set mPDF properties on the fly
+            'options' => ['title' => 'Preview Report Case:'],
+            // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle' => 'ระบบเจ้ามือหวย By Janny',
+               // 'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
+                //'SetHeader' => ['Krajee Privacy Policy||Generated On: ' . date("r")],
+               // 'SetFooter' => ['<div style="text-align: center;font-size: 16px" >@ITHiNKplus</div>'],
+               // 'SetAuthor' => 'Kartik Visweswaran',
+               // 'SetCreator' => 'Kartik Visweswaran',
+                //'SetKeywords' => 'Krajee, Yii2, Export, PDF, MPDF, Output, Privacy, Policy, yii2-mpdf',
+            ]
+        ]);
+
+         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        /**
+         * We set more options as showing in "vendors/kartik-v/yii2-mpdf/src/Pdf.php/Pdf/options" method
+         * What we do, we merge the options array to the existing one.
+         */
+        $pdf->options = array_merge($pdf->options , [
+            'fontDir' => array_merge($fontDirs, [ Yii::$app->basePath . '/web/fonts']),  // make sure you refer the right physical path
+            'fontdata' => array_merge($fontData, [
+                'thsarabun' => [
+                    'R' => 'THSarabunNew.ttf',
+                    'I' => 'THSarabunNew Italic.ttf',
+                    'B' => 'THSarabunNew Bold.ttf',
+                ]
+            ])
+        ]);
+
+      
+        // return the pdf output as per the destination setting
+        return $pdf->render();
+        
+      
     }
 }

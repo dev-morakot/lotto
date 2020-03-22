@@ -315,7 +315,14 @@ app.controller("FormController", function ($scope, $http,$timeout,
                     bootbox.confirm('บันทึกรายการเรียบร้อย', function (result) {
                         if(result) {
                             console.log(response.data);
-                            navigateToView();
+                            redirect_blank('/jan/default/pdf?id=' + JSON.stringify(response.data.cusid))
+                            if (parseInt(response.data.limit)) {
+                                redirect_blank('/jan/default/pdf-limit?id=' + JSON.stringify(response.data.cusid))
+                            }
+                            setTimeout(function() {
+                                 navigateToView();
+                            }, 1000);
+                           
                         }
                 });
             });
@@ -649,6 +656,15 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 }
             })
         }
+
+       
+        function redirect_blank(url) {
+          var a = document.createElement('a');
+          a.target="_blank";
+          a.href=url;
+          a.click();
+        }
+        
 
         $scope.keydown = function ($event, nextId) {
             if($event.keyCode === 13) {

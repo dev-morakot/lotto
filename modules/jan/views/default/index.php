@@ -359,8 +359,7 @@ input:checked + .slider:before {
             	<button type="button" ng-click="CancelAll()" class="btn btn-danger btn-lg"><b class="glyphicon glyphicon-ban-circle"></b> ยกเลิกทั้งหมด</button>
             </div>
  			 <div class="col-md-4">
- 			 	<button type="button" class="btn btn-primary btn-lg"><b class="glyphicon glyphicon-print
-"></b> แสดงใบเสร็จ</button> &nbsp;&nbsp;
+ 			 	
  			 	<button type="button" ng-click="saveAs()" class="btn btn-success btn-lg"><b class="glyphicon glyphicon-plus"></b> บันทึกและพิมพ์</button>
  			 </div>
         </div>
