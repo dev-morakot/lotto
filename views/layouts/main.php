@@ -99,10 +99,10 @@ AppAsset::register($this);
         $menuItems[] = [
           'label' => 'Me',
           'items'=>[
-             ['label'=>'Profile ('.Yii::$app->user->identity->username.')', 'url'=>['/site/profile']],
+             ['label'=> Yii::$app->user->identity->firstname . "   " . Yii::$app->user->identity->lastname],
              //'<li class="divider"></li>',
-             '<li style="padding-left:22px; padding-right:22px; color:grey;"><small>'.$tags.'</small></li>',
-             '<li class="divider"</li>',
+             //'<li style="padding-left:22px; padding-right:22px; color:grey;"><small>'.$tags.'</small></li>',
+             //'<li class="divider"</li>',
              [
                  'label' => 'Logout',
                  'url' => ['/site/logout'],

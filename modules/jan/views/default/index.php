@@ -11,7 +11,7 @@ JanAsset::register($this);
 /* @var $model app\modules\resource\models\ResUsers */
 
 $this->title = Yii::t('app', 'คีย์ข้อมูลหวย');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'หน้าแรก'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'หน้าแรก'), 'url' => ['/']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerCss('[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -401,10 +401,10 @@ input:checked + .slider:before {
 
             		</div>
 				</div>
-            <div class="col-md-8">
+            <div class="col-md-10">
             	<button type="button" ng-click="CancelAll()" class="btn btn-danger btn-lg"><b class="glyphicon glyphicon-ban-circle"></b> ยกเลิกทั้งหมด</button>
             </div>
- 			 <div class="col-md-4">
+ 			 <div class="col-md-2">
  			 	
  			 	<button type="button" ng-click="saveAs()" class="btn btn-success btn-lg"><b class="glyphicon glyphicon-plus"></b> บันทึกและพิมพ์</button>
  			 </div>
