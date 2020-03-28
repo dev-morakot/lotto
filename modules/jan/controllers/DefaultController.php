@@ -316,6 +316,7 @@ class DefaultController extends Controller
         $res = ResJanLotto::find()->where(['user_id' => $id])->asArray()->all();
             $arr = [];
             $sum = 0;
+            $per = 0;
             foreach($res as $id => $val) {
                 $sum += ($val['line_amount_total']);
                 $data = [
@@ -326,10 +327,21 @@ class DefaultController extends Controller
                 ];
                 $arr[] = $data;
             }
+             if($cus->discount_run !== "0.00") {
+                $per = $cus->discount_run;
+            }
+            if($cus->discount_two !== "0.00") {
+                $per = $cus->discount_two;
+            }
+            if($cus->discount_three !== "0.00") {
+                $per = $cus->discount_three;
+            }
 
         $content = $this->renderPartial('_preview' , [
             'customer'=> $cus,
-            'arr' => $arr
+            'arr' => $arr,
+            'sum' => $sum,
+            'per' => $per
             
         ]);
        // setup kartik\mpdf\Pdf component
@@ -339,7 +351,7 @@ class DefaultController extends Controller
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             // A4 paper format
-            'format' => [80, 105],//Pdf::FORMAT_A4,
+            'format' => [80, 160],//Pdf::FORMAT_A4,
             'marginLeft' => 5,
             'marginRight' => 5,
             'marginTop' => 0,
@@ -404,8 +416,11 @@ class DefaultController extends Controller
         $res = ResJanLottoLimit::find()->where(['user_id' => $id])->asArray()->all();
             $arr = [];
             $sum = 0;
+            $dis = 0;
+            $per = 0;
             foreach($res as $id => $val) {
                 $sum += ($val['line_amount_total']);
+
                 $data = [
                     "number"=> $val['number'],
                     "top_amount"=>$val['top_amount'],
@@ -413,11 +428,23 @@ class DefaultController extends Controller
                     "otd_amount"=>$val['otd_amount'],
                 ];
                 $arr[] = $data;
+                
+            }
+            if($cus->discount_run !== "0.00") {
+                $per = $cus->discount_run;
+            }
+            if($cus->discount_two !== "0.00") {
+                $per = $cus->discount_two;
+            }
+            if($cus->discount_three !== "0.00") {
+                $per = $cus->discount_three;
             }
 
-        $content = $this->renderPartial('_preview' , [
+        $content = $this->renderPartial('_preview_limie' , [
             'customer'=> $cus,
-            'arr' => $arr
+            'arr' => $arr,
+            'sum' => $sum,
+            'per' => $per
             
         ]);
        // setup kartik\mpdf\Pdf component
@@ -427,12 +454,11 @@ class DefaultController extends Controller
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             // A4 paper format
-            'format' => [80, 150],//Pdf::FORMAT_A4,
+            'format' => [80, 180],//Pdf::FORMAT_A4,
             'marginLeft' => 5,
             'marginRight' => 5,
-            'marginTop' => 10,
-            'marginBottom' => 10,
-            'marginFooter' => 5,
+            'marginTop' => 0,
+            'marginBottom' => 0,
             // portrait orientation
             'orientation' => Pdf::ORIENT_PORTRAIT,
             // stream to browser inline
@@ -448,7 +474,7 @@ class DefaultController extends Controller
             'options' => ['title' => 'Preview Report Case:'],
             // call mPDF methods on the fly
             'methods' => [
-                'SetTitle' => 'ระบบเจ้ามือหวย By Janny',
+                'SetTitle' => 'หวยอั้น',
                // 'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
                 //'SetHeader' => ['Krajee Privacy Policy||Generated On: ' . date("r")],
                // 'SetFooter' => ['<div style="text-align: center;font-size: 16px" >@ITHiNKplus</div>'],

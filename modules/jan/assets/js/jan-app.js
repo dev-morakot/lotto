@@ -215,14 +215,33 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 // แทงเร็ว
                 var result = $scope.model.number_quick[0].split("\n")
                 var mydata = {};
+                console.log(result)
                 
                 angular.forEach(result, function (v, k) {
-                    mydata = {
+                    console.log("v", v.length)
+                    if (v.length === 1) {
+                        mydata = {
                         "number": v, 
-                        "top_amount": ($scope.model.top_amount)?$scope.model.top_amount:0,
-                        "below_amount": ($scope.model.below_amount)?$scope.model.below_amount:0,
-                        "otd_amount": ($scope.model.otd_amount)?$scope.model.otd_amount:0
+                            "top_amount": ($scope.model.top_amount)?$scope.model.top_amount:0,
+                            "below_amount": ($scope.model.below_amount)?$scope.model.below_amount:0,
+                            "otd_amount": 0//($scope.model.otd_amount)?$scope.model.otd_amount:0
+                        }   
+                    } else if (v.length === 3) {
+                         mydata = {
+                        "number": v, 
+                            "top_amount": ($scope.model.top_amount)?$scope.model.top_amount:0,
+                            "below_amount": 0,//($scope.model.below_amount)?$scope.model.below_amount:0,
+                            "otd_amount": ($scope.model.otd_amount)?$scope.model.otd_amount:0
+                        } 
+                    } else if (v.length === 2) {
+                         mydata = {
+                        "number": v, 
+                            "top_amount": ($scope.model.top_amount)?$scope.model.top_amount:0,
+                            "below_amount": ($scope.model.below_amount)?$scope.model.below_amount:0,
+                            "otd_amount": 0//($scope.model.otd_amount)?$scope.model.otd_amount:0
+                        } 
                     }
+                    
                     
                     $scope.lottos.push(mydata)
                     
@@ -280,7 +299,7 @@ app.controller("FormController", function ($scope, $http,$timeout,
             $scope.modline.amount_total = sum;
             $scope.modline.discount = (parseFloat((two)?two:0) + parseFloat((three)?three:0) + parseFloat((run)?run:0 ));
             $scope.modline.amount_total_remain = (parseFloat($scope.modline.amount_total) - parseFloat($scope.modline.discount))
-           
+            
             console.log("amount_total", $scope.modline.discount);
         }
 
