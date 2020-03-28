@@ -339,12 +339,12 @@ class DefaultController extends Controller
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             // A4 paper format
-            'format' => [80, 150],//Pdf::FORMAT_A4,
-            'marginLeft' => 10,
-            'marginRight' => 10,
-            'marginTop' => 10,
-            'marginBottom' => 10,
-            'marginFooter' => 5,
+            'format' => [80, 105],//Pdf::FORMAT_A4,
+            'marginLeft' => 5,
+            'marginRight' => 5,
+            'marginTop' => 0,
+            'marginBottom' => 0,
+          //  'marginFooter' => 5,
             // portrait orientation
             'orientation' => Pdf::ORIENT_PORTRAIT,
             // stream to browser inline
@@ -355,7 +355,7 @@ class DefaultController extends Controller
             // enhanced bootstrap css built by Krajee for mPDF formatting
            // 'cssFile' => '@frontend/web/css/pdf.css',
             // any css to be embedded if required
-            'cssInline' => '*,body{font-family:thsarabun;font-size:16pt}',
+            'cssInline' => '*,body{font-family:thsarabun;font-size:20pt;font-weight: Bold}',
             // set mPDF properties on the fly
             'options' => ['title' => 'Preview Report Case:'],
             // call mPDF methods on the fly
@@ -428,8 +428,8 @@ class DefaultController extends Controller
             //'format' => Pdf::FORMAT_A4,
             // A4 paper format
             'format' => [80, 150],//Pdf::FORMAT_A4,
-            'marginLeft' => 10,
-            'marginRight' => 10,
+            'marginLeft' => 5,
+            'marginRight' => 5,
             'marginTop' => 10,
             'marginBottom' => 10,
             'marginFooter' => 5,
@@ -443,7 +443,7 @@ class DefaultController extends Controller
             // enhanced bootstrap css built by Krajee for mPDF formatting
            // 'cssFile' => '@frontend/web/css/pdf.css',
             // any css to be embedded if required
-            'cssInline' => '*,body{font-family:thsarabun;font-size:16pt}',
+            'cssInline' => '*,body{font-family:thsarabun;font-size:20pt;font-weight: Bold}',
             // set mPDF properties on the fly
             'options' => ['title' => 'Preview Report Case:'],
             // call mPDF methods on the fly
