@@ -143,6 +143,12 @@ input:checked + .slider:before {
 				    <div class="col-sm-10">
 				      <select ng-model="modline.type" class="form-control">
 				      	<option value="หวยไทย">หวยไทย</option>
+						  <option value="ลาวจันทร์">ลาวจันทร์</option>
+						  <option value="ลาวพุธ">ลาวพุธ</option>
+						  <option value="ลาวพฤหัส">ลาวพฤหัส</option>
+						  <option value="ฮานอย">ฮานอย</option>
+						  <option value="ฮานอย vip">ฮานอย vip</option>
+						  <option value="หวยดาวโจนไทย">ดาวโจน</option>
 				      </select>
 				    </div>
 				  </div>

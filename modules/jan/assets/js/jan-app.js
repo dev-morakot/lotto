@@ -490,9 +490,11 @@ app.controller("FormController", function ($scope, $http,$timeout,
                 }
                 var result = $scope.model.number_quick[0]
                 var code_temp = result.split('').reverse().join('');
-                
-                $scope.model.number_quick = [result+"\n"+code_temp].sort()
-               
+                var a = [result+"\n"+code_temp].sort()
+                var b = [result][0].split("\n")
+                var c = [code_temp][0].split("\n")
+                var d = [...b,...c].reduce((x, y) => x.includes(y) ? x : [...x, y], [])
+                $scope.model.number_quick = [d.join("\n")]
             }
         }
 
